@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gingersnaps WMS</title>
+<style>
+  :root {
+    --bg:       #0d1117;
+    --surface:  #161b22;
+    --border:   #30363d;
+    --text:     #e6edf3;
+    --muted:    #8b949e;
+    --accent:   #f0a500;
+    --green:    #3fb950;
+    --blue:     #58a6ff;
+    --orange:   #f0883e;
+    --red:      #f85149;
+    --radius:   10px;
+    --font:     'Segoe UI', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 14px;
+    min-height: 100vh;
+    padding: 16px;
+  }
+
+  /* ── Header ── */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .header-left { display: flex; align-items: center; gap: 10px; }
+  .logo {
+    width: 34px; height: 34px;
+    background: var(--accent);
+    border-radius: 8px;
+    display: grid; place-items: center;
+    font-weight: 900; font-size: 16px; color: #000;
+  }
+  .header h1 { font-size: 16px; font-weight: 700; }
+  .header p  { font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .pulse-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--green);
+    animation: pulse 2s infinite;
+    flex-shrink: 0;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; }
+    50%      { opacity: .3; }
+  }
+  .timestamp { font-size: 11px; color: var(--muted); text-align: right; }
+
+  /* ── Grid ── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 10px;
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 14px 12px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color .2s;
+  }
+  .card:hover { border-color: var(--accent); }
+  .card-accent {
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    border-radius: var(--radius) 0 0 var(--radius);
+  }
+  .card-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .card-value {
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .card-sub {
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .card-sub b { color: var(--text); }
+
+  /* Span 2 cols on wide screens */
+  .card-wide { grid-column: span 2; }
+
+  /* ── PO breakdown bar ── */
+  .po-bar {
+    display: flex;
+    border-radius: 4px;
+    overflow: hidden;
+    height: 6px;
+    margin: 8px 0 6px;
+    gap: 2px;
+  }
+  .po-bar span { border-radius: 3px; }
+  .po-pills {
+    display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px;
+  }
+  .pill {
+    display: flex; align-items: center; gap: 4px;
+    font-size: 10px; color: var(--muted);
+  }
+  .pill b { color: var(--text); font-size: 11px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── Skeleton loading ── */
+  .skeleton {
+    background: linear-gradient(90deg, var(--surface) 25%, var(--border) 50%, var(--surface) 75%);
+    background-size: 400% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 4px;
+    color: transparent;
+    user-select: none;
+  }
+  @keyframes shimmer {
+    0%   { background-position: 100% 50%; }
+    100% { background-position: 0%   50%; }
+  }
+
+  /* ── Error banner ── */
+  .error-bar {
+    background: #2d1519;
+    border: 1px solid var(--red);
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    color: var(--red);
+    font-size: 12px;
+    margin-bottom: 12px;
+    display: none;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    margin-top: 12px;
+    text-align: center;
+    font-size: 10px;
+    color: var(--muted);
+  }
+  .footer a { color: var(--muted); text-decoration: none; }
+  .footer a:hover { color: var(--text); }
+
+  @media (max-width: 480px) {
+    .card-wide { grid-column: span 1; }
+    .card-value { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo">G</div>
+    <div>
+      <h1>Gingersnaps WMS</h1>
+      <p>Live Dashboard</p>
+    </div>
+    <div class="pulse-dot" id="dot"></div>
+  </div>
+  <div class="timestamp" id="ts">Loading…</div>
+</div>
+
+<div class="error-bar" id="err"></div>
+
+<div class="grid" id="grid">
+  <!-- Skeletons while loading -->
+  <div class="card"><div class="card-label skeleton">Purchase Orders</div><div class="card-value skeleton">0000</div><div class="card-sub skeleton">—</div></div>
+  <div class="card card-wide"><div class="card-label skeleton">PO Status</div><div class="card-value skeleton">——</div></div>
+  <div class="card"><div class="card-label skeleton">Gatepasses</div><div class="card-value skeleton">0000</div></div>
+  <div class="card"><div class="card-label skeleton">GRN</div><div class="card-value skeleton">0000</div></div>
+  <div class="card"><div class="card-label skeleton">Stock</div><div class="card-value skeleton">0000</div></div>
+  <div class="card"><div class="card-label skeleton">QC Pending</div><div class="card-value skeleton">000</div></div>
+  <div class="card"><div class="card-label skeleton">Subcons</div><div class="card-value skeleton">000</div></div>
+  <div class="card"><div class="card-label skeleton">SKUs</div><div class="card-value skeleton">0000</div></div>
+  <div class="card"><div class="card-label skeleton">Tickets</div><div class="card-value skeleton">000</div></div>
+</div>
+
+<div class="footer">
+  <a href="https://asmrcctvtechnologies.com/warehouse/" target="_blank">Open WMS ↗</a>
+  &nbsp;·&nbsp; Refreshes every 60s
+</div>
+
+<script>
+// ── Config ────────────────────────────────────────────────────────────────
+const API_URL = 'https://asmrcctvtechnologies.com/warehouse/api_stats.php';
+const TOKEN   = 'gs_widget_2026';
+const REFRESH = 60_000; // ms
+
+// ── Helpers ───────────────────────────────────────────────────────────────
+const fmt = n => Number(n ?? 0).toLocaleString();
+
+function card({ label, value, sub = '', accent = 'var(--accent)', wide = false }) {
+  return `
+    <div class="card${wide ? ' card-wide' : ''}">
+      <div class="card-accent" style="background:${accent}"></div>
+      <div class="card-label">${label}</div>
+      <div class="card-value" style="color:${accent}">${value}</div>
+      ${sub ? `<div class="card-sub">${sub}</div>` : ''}
+    </div>`;
+}
+
+function poBar(po) {
+  const t = po.total || 1;
+  const pct = s => ((po[s] / t) * 100).toFixed(1) + '%';
+  return `
+    <div class="po-bar">
+      <span style="flex:${po.NEW};background:var(--blue)" title="NEW ${po.NEW}"></span>
+      <span style="flex:${po.WIP};background:var(--orange)" title="WIP ${po.WIP}"></span>
+      <span style="flex:${po.COMPLETED};background:var(--green)" title="COMPLETED ${po.COMPLETED}"></span>
+      <span style="flex:${po.CANCELLED};background:var(--red);opacity:.5" title="CANCELLED ${po.CANCELLED}"></span>
+    </div>
+    <div class="po-pills">
+      <span class="pill"><span class="dot" style="background:var(--blue)"></span><b>${fmt(po.NEW)}</b> New</span>
+      <span class="pill"><span class="dot" style="background:var(--orange)"></span><b>${fmt(po.WIP)}</b> WIP</span>
+      <span class="pill"><span class="dot" style="background:var(--green)"></span><b>${fmt(po.COMPLETED)}</b> Done</span>
+      <span class="pill"><span class="dot" style="background:var(--red);opacity:.6"></span><b>${fmt(po.CANCELLED)}</b> Cancelled</span>
+    </div>`;
+}
+
+// ── Render ────────────────────────────────────────────────────────────────
+function render(d) {
+  const po = d.purchase_orders;
+  const grn = d.grn;
+  const gp = d.gatepasses;
+
+  document.getElementById('grid').innerHTML =
+    card({ label: 'Purchase Orders', value: fmt(po.total), sub: `<b>${fmt(po.WIP)}</b> active WIP`, accent: 'var(--accent)' }) +
+    `<div class="card card-wide">
+       <div class="card-accent" style="background:var(--accent)"></div>
+       <div class="card-label">PO Status Breakdown</div>
+       ${poBar(po)}
+     </div>` +
+    card({ label: 'Open Gatepasses', value: fmt(gp.open), sub: `${fmt(gp.total)} total`, accent: 'var(--orange)' }) +
+    card({ label: 'GRN Received', value: fmt(grn.total), sub: `<b>${fmt(grn.today)}</b> today &nbsp;·&nbsp; <b>${fmt(grn.this_month)}</b> this month`, accent: 'var(--blue)' }) +
+    card({ label: 'Stock (Cartons)', value: fmt(d.stock_cartons), accent: 'var(--green)' }) +
+    card({ label: 'QC Pending', value: fmt(d.qc_pending), accent: d.qc_pending > 0 ? 'var(--orange)' : 'var(--green)' }) +
+    card({ label: 'Active Subcons', value: fmt(d.subcons_active), accent: 'var(--blue)' }) +
+    card({ label: 'SKUs', value: fmt(d.skus), accent: 'var(--muted)' }) +
+    card({ label: 'Open Tickets', value: fmt(d.tickets_open), accent: d.tickets_open > 0 ? 'var(--red)' : 'var(--green)' });
+
+  const ts = new Date(d.generated_at);
+  document.getElementById('ts').textContent = 'Updated ' + ts.toLocaleTimeString();
+  document.getElementById('err').style.display = 'none';
+  document.getElementById('dot').style.background = 'var(--green)';
+}
+
+// ── Fetch ─────────────────────────────────────────────────────────────────
+async function load() {
+  document.getElementById('dot').style.background = 'var(--accent)';
+  try {
+    const res = await fetch(`${API_URL}?token=${TOKEN}`, { cache: 'no-store' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    render(data);
+  } catch (e) {
+    const errEl = document.getElementById('err');
+    errEl.textContent = '⚠ Could not load stats: ' + e.message;
+    errEl.style.display = 'block';
+    document.getElementById('dot').style.background = 'var(--red)';
+    document.getElementById('ts').textContent = 'Failed ' + new Date().toLocaleTimeString();
+  }
+}
+
+load();
+setInterval(load, REFRESH);
+</script>
+</body>
+</html>
