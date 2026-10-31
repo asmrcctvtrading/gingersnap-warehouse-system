@@ -1,0 +1,82 @@
+<?php
+// Tagalog. Keys missing here fall back to English (see app/lib/i18n.php).
+return [
+    'nav.home' => 'Home', 'nav.search' => 'Maghanap', 'nav.map' => 'Mapa', 'nav.categories' => 'Mga Kategorya',
+    'nav.services' => 'Mahahalagang serbisyo', 'nav.about' => 'Tungkol dito', 'nav.report' => 'Magmungkahi ng pagwawasto',
+    'nav.admin' => 'Login ng staff', 'nav.skip' => 'Lumaktaw sa nilalaman', 'lang.switch' => 'English',
+
+    'home.title' => 'Hanapin ang mga lugar at serbisyo sa inyong barangay',
+    'home.search_ph' => 'Maghanap ayon sa pangalan, serbisyo, kalye o landmark',
+    'home.search_btn' => 'Hanapin',
+    'home.essential' => 'Mahahalagang serbisyo',
+    'home.browse' => 'Mag-browse ayon sa kategorya',
+    'home.near' => 'Ipakita ang mga lugar malapit sa akin',
+    'home.emergency' => 'Mga pasilidad para sa emerhensiya',
+
+    'search.title' => 'Resulta ng paghahanap',
+    'search.filters' => 'Mga filter',
+    'search.all_categories' => 'Lahat ng kategorya',
+    'search.all_zones' => 'Lahat ng zone',
+    'search.any_type' => 'Publiko o pribado',
+    'search.public' => 'Publiko', 'search.private' => 'Pribado',
+    'search.results' => '{n} resulta',
+    'search.none' => 'Walang nahanap na lugar. Subukan ang mas kaunting salita o ibang kategorya.',
+    'search.error' => 'May problema sa pag-load ng resulta. Pakisubukang muli.',
+    'search.prev' => 'Nakaraan', 'search.next' => 'Susunod',
+
+    'est.address' => 'Address', 'est.landmark' => 'Landmark', 'est.zone' => 'Zone / Purok',
+    'est.category' => 'Kategorya', 'est.contact' => 'Contact', 'est.hours' => 'Oras ng bukas',
+    'est.hours_none' => 'Wala pang nakatalang oras ng bukas.',
+    'est.services' => 'Mga serbisyong inaalok',
+    'est.no_coords' => 'Hindi pa naitatala ang eksaktong lokasyon ng lugar na ito kaya hindi ito makikita sa mapa.',
+    'est.unverified_coords' => 'Hindi pa nasusuri ng staff ang posisyon nito sa mapa.',
+    'est.view_map' => 'Tingnan sa mapa', 'est.details' => 'Mga detalye', 'est.directions' => 'Kumuha ng direksyon',
+    'est.how_to_get_there' => 'Paano pumunta',
+    'est.how_to_note' => 'Isinulat ng mga kawani ng barangay. Mangyaring kumpirmahin sa lugar kung iba ang daan.',
+    'est.report' => 'I-report ang maling impormasyon',
+    'est.last_verified' => 'Huling na-verify',
+    'est.never_verified' => 'Hindi pa na-verify ng staff ng barangay',
+    'est.not_found' => 'Hindi nahanap ang lugar na ito o hindi na ito nakalista.',
+    'est.emergency_badge' => 'Pasilidad para sa emerhensiya',
+
+    'status.verified' => 'Na-verify', 'status.pending_verification' => 'Naghihintay ng verification',
+    'status.needs_review' => 'Kailangang suriin', 'status.inactive' => 'Hindi aktibo',
+
+    'day.0' => 'Linggo', 'day.1' => 'Lunes', 'day.2' => 'Martes', 'day.3' => 'Miyerkules',
+    'day.4' => 'Huwebes', 'day.5' => 'Biyernes', 'day.6' => 'Sabado',
+    'hours.closed' => 'Sarado', 'hours.24h' => 'Bukas 24 oras',
+
+    'map.title' => 'Mapa', 'map.list_view' => 'Listahan', 'map.map_view' => 'Mapa',
+    'map.loading' => 'Nilo-load ang mapa…',
+    'map.no_points' => 'Walang lugar na may nasuring posisyon sa mapa na tumutugma sa mga filter.',
+    'map.locate' => 'Gamitin ang aking lokasyon',
+    'map.locate_denied' => 'Hindi ibinahagi ang lokasyon. Maaari mo pa ring tingnan ang buong mapa.',
+    'map.locate_unavailable' => 'Hindi makuha ng iyong device ang lokasyon.',
+    'map.straight_line' => 'tuwid na distansya, hindi ruta ng paglalakad o pagmamaneho',
+
+    'dir.title' => 'Direksyon',
+    'dir.external' => 'Buksan ang turn-by-turn na direksyon sa map app',
+    'dir.straight' => 'Tuwid na distansya: {m} m (HINDI ito distansya ng ruta)',
+
+    'svc.title' => 'Mahahalagang serbisyo',
+    'svc.emergency_none' => 'Wala pang na-verify na pasilidad para sa emerhensiya.',
+    'svc.emergency_note' => 'Ang mga pasilidad na na-verify lamang ng staff bilang pang-emerhensiya ang nakalista rito.',
+    'cat.title' => 'Mga Kategorya',
+
+    'report.title' => 'Magmungkahi ng bagong lugar o pagwawasto',
+    'report.intro' => 'Ipapadala ang mungkahi mo sa staff ng barangay para suriin. Walang ilalathala hangga’t hindi ito nasusuri.',
+    'report.type' => 'Ano ang nais mong gawin?',
+    'report.type_new' => 'Magmungkahi ng bagong lugar', 'report.type_correction' => 'Itama ang impormasyon', 'report.type_incorrect' => 'I-report na mali o sarado',
+    'report.name' => 'Pangalan ng lugar', 'report.category' => 'Kategorya', 'report.address' => 'Address',
+    'report.landmark' => 'Landmark', 'report.zone' => 'Zone / Purok', 'report.phone' => 'Telepono',
+    'report.message' => 'Mga detalye', 'report.your_name' => 'Pangalan mo (opsyonal)', 'report.your_contact' => 'Contact mo (opsyonal)',
+    'report.submit' => 'Ipadala para suriin', 'report.sending' => 'Ipinapadala…',
+    'report.barangay' => 'Barangay',
+
+    'about.title' => 'Tungkol sa direktoryong ito',
+    'about.body' => 'Ang direktoryong ito ay pinapanatili ng staff ng barangay. Ang mga talang may markang “Na-verify” ay sinuri ng staff; ang iba ay may label hanggang masuri. Ipinapakita lamang ang posisyon sa mapa kapag naitala na ito. Ang mga distansyang ipinapakita ay tuwid na distansya, hindi ruta.',
+
+    'sample.banner' => 'DEMONSTRATION DATA — kathang-isip lamang ang mga lugar dito, hindi totoong establisyimento.',
+    'kiosk.touch' => 'Hawakan ang screen para magsimula', 'kiosk.exit' => 'Lumabas sa kiosk mode',
+    'common.back' => 'Bumalik', 'common.close' => 'Isara', 'common.loading' => 'Nilo-load…',
+];

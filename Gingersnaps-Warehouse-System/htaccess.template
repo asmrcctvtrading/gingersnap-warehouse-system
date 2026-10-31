@@ -1,0 +1,262 @@
+# WPMS Apache Configuration (.htaccess)
+#
+# Installation Instructions:
+# 1. Copy this file to public_html/warehouse-productivity/.htaccess
+# 2. Ensure Apache has mod_rewrite and mod_headers enabled
+# 3. Test with: https://asmrcctvtechnologies.com/warehouse-productivity/
+#
+# Purpose:
+# - Protect sensitive directories (config, src, storage)
+# - Enable clean URLs via URL rewriting
+# - Disable directory listing
+# - Add security headers
+# - Prevent access to sensitive file types
+#
+# Generated: October 24, 2026
+# Version: 1.0
+
+################################################################################
+# ERROR HANDLING
+################################################################################
+
+# Handle missing directories gracefully
+ErrorDocument 404 index.php
+
+################################################################################
+# MOD_REWRITE - CLEAN URLS
+################################################################################
+
+# Enable mod_rewrite engine
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /warehouse-productivity/
+
+    # ==================== PROTECT SENSITIVE DIRECTORIES ====================
+
+    # Block direct access to config directory
+    RewriteRule ^config/ - [F,L]
+
+    # Block direct access to src directory
+    RewriteRule ^src/ - [F,L]
+
+    # Block direct access to storage directory (uploads, logs, backups)
+    RewriteRule ^storage/ - [F,L]
+
+    # Block direct access to vendor directory (if using Composer)
+    RewriteRule ^vendor/ - [F,L]
+
+    # ==================== ROUTE TO INDEX.PHP ====================
+
+    # Don't rewrite if the request is for an actual file
+    RewriteCond %{REQUEST_FILENAME} !-f
+
+    # Don't rewrite if the request is for an actual directory
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Don't rewrite if it's the index.php file
+    RewriteCond %{REQUEST_URI} !^/warehouse-productivity/index\.php$
+
+    # Rewrite all other requests to index.php with query string preserved
+    # This enables clean URLs: /warehouse-productivity/login instead of /warehouse-productivity/index.php?page=login
+    RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+
+</IfModule>
+
+################################################################################
+# DIRECTORY LISTING - SECURITY
+################################################################################
+
+# Disable directory listing - prevents users from browsing directory contents
+<IfModule mod_autoindex.c>
+    Options -Indexes
+</IfModule>
+
+################################################################################
+# SECURITY HEADERS
+################################################################################
+
+<IfModule mod_headers.c>
+    # Prevent browsers from MIME-sniffing a response away from the declared Content-Type
+    # This mitigates attacks where uploaded files are executed as scripts
+    Header set X-Content-Type-Options "nosniff"
+
+    # Prevent page from being displayed in a frame/iframe
+    # This mitigates clickjacking attacks
+    Header set X-Frame-Options "SAMEORIGIN"
+
+    # Enable browser XSS protection (older browsers)
+    # Modern browsers ignore this but it's good for defense-in-depth
+    Header set X-XSS-Protection "1; mode=block"
+
+    # Referrer policy - controls how much referrer information is shared
+    # strict-origin-when-cross-origin: send referrer only for same-origin requests
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+
+    # Content Security Policy - restricts what resources can be loaded
+    # This is basic; customize based on your actual resources
+    # Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';"
+
+    # Strict Transport Security - force HTTPS (optional, requires valid SSL)
+    # Uncomment after verifying SSL certificate is valid and permanent
+    # Header set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+</IfModule>
+
+################################################################################
+# PROTECT SENSITIVE FILES FROM WEB ACCESS
+################################################################################
+
+# Protect configuration files
+<FilesMatch "\.(env|env\..*|config|json)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Protect database files
+<FilesMatch "\.(sql|sql\.gz|backup)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Protect log files
+<FilesMatch "\.log$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Protect system files
+<FilesMatch "(web\.config|\.git|\.gitignore|\.htaccess|README\.md)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Protect backup files
+<FilesMatch "\.bak$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Protect XML files (may contain configuration)
+<FilesMatch "\.xml$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+################################################################################
+# REDIRECT HTTP TO HTTPS
+################################################################################
+
+# Redirect all HTTP requests to HTTPS (requires SSL certificate)
+# This ensures secure communication for sensitive warehouse data
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/ [NC]
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+################################################################################
+# PERFORMANCE & COMPRESSION
+################################################################################
+
+# Enable GZIP compression for text-based files
+# Reduces bandwidth and improves performance
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
+
+    # Exclude certain file types from compression
+    SetEnvIfNoCase Request_URI "\.(?:gif|jpe?g|png|ico|pdf|zip|gz|tar)$" no-gzip
+</IfModule>
+
+# Set cache expiration for static resources
+# Browsers will cache these files locally instead of re-requesting them
+<IfModule mod_expires.c>
+    ExpiresActive On
+
+    # Default expiration: 24 hours
+    ExpiresDefault "access plus 24 hours"
+
+    # CSS and JavaScript: 30 days (safe to cache long)
+    ExpiresByType text/css "access plus 30 days"
+    ExpiresByType application/javascript "access plus 30 days"
+    ExpiresByType text/javascript "access plus 30 days"
+
+    # Images: 30 days
+    ExpiresByType image/jpeg "access plus 30 days"
+    ExpiresByType image/gif "access plus 30 days"
+    ExpiresByType image/png "access plus 30 days"
+    ExpiresByType image/x-icon "access plus 30 days"
+
+    # HTML: 1 hour (must check for updates frequently)
+    ExpiresByType text/html "access plus 1 hour"
+
+    # JSON data: 1 hour
+    ExpiresByType application/json "access plus 1 hour"
+</IfModule>
+
+################################################################################
+# FILE UPLOAD RESTRICTIONS
+################################################################################
+
+# Prevent direct execution of PHP in upload directories
+# (storage/uploads directory is not web-accessible, but this is defense-in-depth)
+<IfModule mod_php.c>
+    php_flag engine off
+</IfModule>
+
+# If mod_php isn't available, try with FilesMatch
+<FilesMatch "\.php$">
+    Order deny,allow
+    Deny from all
+</FilesMatch>
+
+################################################################################
+# ADDITIONAL SECURITY
+################################################################################
+
+# Prevent access to files starting with dot (hidden files)
+<FilesMatch "^\.|^#.*#">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Disable script execution in certain directories
+# This is redundant with above but provides defense-in-depth
+<Directory "/public_html/warehouse-productivity/storage">
+    <IfModule mod_php.c>
+        php_flag engine off
+    </IfModule>
+    AddHandler cgi-script .php .phtml .php3 .php4 .php5 .php6 .php7 .phtml .pht .phps
+    RemoveHandler .php .phtml .php3 .php4 .php5 .php6 .php7 .phtml .pht .phps
+    SetHandler none
+</Directory>
+
+################################################################################
+# NOTES & TROUBLESHOOTING
+################################################################################
+
+# If mod_rewrite not working:
+# 1. Check that Apache module is enabled: a2enmod rewrite
+# 2. Check AllowOverride is set to All in Apache config
+# 3. Test with: curl -I https://asmrcctvtechnologies.com/warehouse-productivity/
+#
+# If .htaccess causing 500 errors:
+# 1. Check Apache error log: /var/log/apache2/error.log
+# 2. Verify syntax: htaccess -f /path/to/.htaccess
+# 3. Test with simpler rules first
+#
+# If CSS/JS not loading:
+# 1. Check RewriteBase path is correct
+# 2. Verify files exist in correct directory
+# 3. Check file permissions: chmod 644 for files, 755 for directories
+#
+# For performance issues:
+# 1. Monitor cache hit rate
+# 2. Test compression with: curl -I -H "Accept-Encoding: gzip" https://...
+# 3. Analyze with: https://www.gtmetrix.com/
+
+################################################################################
+# GENERATED: October 24, 2026
+# AGENT 6: Deployment and Documentation
+################################################################################
+

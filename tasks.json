@@ -1,0 +1,146 @@
+[
+  {
+    "id": "omniroute-oauth",
+    "category": "OmniRoute",
+    "title": "Fix Claude OAuth Integration",
+    "description": "Restore OAuth connection to Claude API",
+    "status": "pending",
+    "priority": "high"
+  },
+  {
+    "id": "omniroute-providers",
+    "category": "OmniRoute",
+    "title": "Verify 4 Working Providers",
+    "description": "Test Anthropic, Google, OpenAI, and Ollama connections",
+    "status": "completed",
+    "priority": "high"
+  },
+  {
+    "id": "warehouse-schema",
+    "category": "Warehouse System",
+    "title": "Database Schema Design",
+    "description": "Design production/subcontractor/warehouse management schema",
+    "status": "in-progress",
+    "priority": "high"
+  },
+  {
+    "id": "warehouse-ui",
+    "category": "Warehouse System",
+    "title": "Create Web Interface",
+    "description": "Build PHP/MySQL UI to replace Google Sheets",
+    "status": "pending",
+    "priority": "medium"
+  },
+  {
+    "id": "ponytail-install",
+    "category": "Ponytail Setup",
+    "title": "Install Ponytail Plugin",
+    "description": "Configure for VS Code and project workspace",
+    "status": "pending",
+    "priority": "medium"
+  },
+  {
+    "id": "ponytail-config",
+    "category": "Ponytail Setup",
+    "title": "Set Intensity Level",
+    "description": "Configure to 'full' or 'ultra' mode for agents",
+    "status": "pending",
+    "priority": "medium"
+  },
+  {
+    "id": "claude-token-optimization",
+    "category": "Claude Optimization",
+    "title": "Token Usage Audit",
+    "description": "Review and optimize Claude Code token consumption",
+    "status": "pending",
+    "priority": "low"
+  },
+  {
+    "id": "claude-output-format",
+    "category": "Claude Optimization",
+    "title": "Standardize Output Format",
+    "description": "Concise, direct responses per user preferences",
+    "status": "completed",
+    "priority": "low"
+  },
+  {
+    "id": "cpanel-cleanup-mail",
+    "category": "cPanel Cleanup",
+    "title": "Email Account Cleanup",
+    "description": "Archive old accounts on chefsecretinc.com",
+    "status": "pending",
+    "priority": "medium"
+  },
+  {
+    "id": "cpanel-ssl-renewal",
+    "category": "cPanel Cleanup",
+    "title": "SSL Certificate Renewal",
+    "description": "Check and renew SSL on Web.com.ph cPanel",
+    "status": "pending",
+    "priority": "medium"
+  },
+  {
+    "id": "gsm-baliwag-validate",
+    "category": "GSM Baliwag",
+    "title": "Data Validation",
+    "description": "Verify GSM Baliwag outlet records",
+    "status": "in-progress",
+    "priority": "medium"
+  },
+  {
+    "id": "uniommerce-extract",
+    "category": "Uniommerce",
+    "title": "Data Extraction",
+    "description": "Extract transaction and inventory data",
+    "status": "warning",
+    "priority": "high"
+  },
+  {
+    "id": "personal-fb-audit",
+    "category": "Personal & Admin",
+    "title": "Personal FB Account Audit",
+    "description": "Review security and privacy settings",
+    "status": "pending",
+    "priority": "low"
+  },
+  {
+    "id": "personal-gift-certificates",
+    "category": "Personal & Admin",
+    "title": "Gift Certificate Transactions",
+    "description": "Track and reconcile gift card usage",
+    "status": "pending",
+    "priority": "medium"
+  },
+  {
+    "id": "gingersnaps-inventory",
+    "category": "Gingersnaps Items",
+    "title": "Inventory Adjustments",
+    "description": "Update stock counts for G and JG outlets",
+    "status": "pending",
+    "priority": "medium"
+  },
+  {
+    "id": "gingersnaps-reports",
+    "category": "Gingersnaps Items",
+    "title": "Weekly Sales Reports",
+    "description": "Compile weekly metrics from both locations",
+    "status": "in-progress",
+    "priority": "medium"
+  },
+  {
+    "id": "it-reports-weekly",
+    "category": "IT Reports",
+    "title": "Weekly IT Status Report",
+    "description": "Report on Gingersnaps IT infrastructure",
+    "status": "pending",
+    "priority": "low"
+  },
+  {
+    "id": "it-reports-monthly",
+    "category": "IT Reports",
+    "title": "Monthly Chefsecretinc Report",
+    "description": "Email/hosting admin status for chefsecretinc.com",
+    "status": "pending",
+    "priority": "low"
+  }
+]

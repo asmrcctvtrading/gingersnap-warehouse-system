@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gingersnaps Warehouse System — Sprint Plan</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    :root {
+      --navy: #1e293b;
+      --navy-light: #263347;
+      --navy-border: #334155;
+      --accent: #38bdf8;
+      --accent-muted: #0ea5e9;
+    }
+
+    body {
+      background-color: #f1f5f9;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      color: #1e293b;
+    }
+
+    .site-header {
+      background: var(--navy);
+      color: #fff;
+      padding: 2rem 0 1.5rem;
+      border-bottom: 3px solid var(--accent);
+    }
+
+    .site-header h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .site-header .subtitle {
+      color: #94a3b8;
+      font-size: 0.95rem;
+    }
+
+    .meta-pill {
+      background: var(--navy-light);
+      border: 1px solid var(--navy-border);
+      color: #cbd5e1;
+      font-size: 0.8rem;
+      padding: 0.2rem 0.7rem;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--navy);
+      border-left: 4px solid var(--accent);
+      padding-left: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Sprint cards */
+    .sprint-card {
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+
+    .sprint-card .card-header {
+      background: var(--navy);
+      color: #fff;
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .sprint-card .card-header .sprint-badge {
+      background: var(--accent);
+      color: var(--navy);
+      font-weight: 700;
+      font-size: 0.8rem;
+      padding: 0.2rem 0.65rem;
+      border-radius: 6px;
+    }
+
+    .sprint-card .card-header h5 {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .sprint-card .card-header .duration-badge {
+      margin-left: auto;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #e2e8f0;
+      font-size: 0.78rem;
+      padding: 0.15rem 0.6rem;
+      border-radius: 20px;
+    }
+
+    /* Priority badges */
+    .badge-p1 { background-color: #dc3545; color: #fff; }
+    .badge-p2 { background-color: #fd7e14; color: #fff; }
+    .badge-p3 { background-color: #0d6efd; color: #fff; }
+
+    /* Item table */
+    .item-table th {
+      background: #f8fafc;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #64748b;
+    }
+
+    .item-table td {
+      font-size: 0.875rem;
+      vertical-align: top;
+    }
+
+    .item-table tr:hover td {
+      background: #f8fafc;
+    }
+
+    .dev-id {
+      font-family: 'Courier New', monospace;
+      font-weight: 700;
+      font-size: 0.8rem;
+      color: var(--navy);
+      white-space: nowrap;
+    }
+
+    .ac-list {
+      margin: 0;
+      padding-left: 1rem;
+      font-size: 0.82rem;
+      color: #475569;
+    }
+
+    .ac-list li { margin-bottom: 0.15rem; }
+
+    .dep-badge {
+      font-family: monospace;
+      font-size: 0.75rem;
+      background: #e2e8f0;
+      color: #475569;
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+      margin: 1px;
+      display: inline-block;
+    }
+
+    .role-badge {
+      font-size: 0.75rem;
+      border-radius: 6px;
+    }
+
+    .enables-box {
+      background: #ecfdf5;
+      border-left: 3px solid #10b981;
+      padding: 0.6rem 1rem;
+      border-radius: 0 6px 6px 0;
+      font-size: 0.85rem;
+      color: #064e3b;
+    }
+
+    .sprint-goal-box {
+      background: #eff6ff;
+      border-left: 3px solid #3b82f6;
+      padding: 0.6rem 1rem;
+      border-radius: 0 6px 6px 0;
+      font-size: 0.875rem;
+      color: #1e3a8a;
+      margin-bottom: 1rem;
+    }
+
+    /* Overview table */
+    .overview-table th { background: var(--navy); color: #fff; }
+    .overview-table tbody tr:hover td { background: #f0f9ff; }
+
+    /* Dependency tree */
+    .dep-tree {
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
+      background: var(--navy);
+      color: #e2e8f0;
+      border-radius: 10px;
+      padding: 1.5rem;
+      line-height: 1.8;
+      white-space: pre;
+      overflow-x: auto;
+    }
+
+    .dep-tree .tree-root { color: var(--accent); font-weight: bold; }
+    .dep-tree .tree-block { color: #f97316; }
+    .dep-tree .tree-note { color: #94a3b8; }
+
+    /* Risk register */
+    .risk-row-high td { border-left: 4px solid #dc3545; }
+    .risk-row-med td { border-left: 4px solid #fd7e14; }
+    .risk-row-low td { border-left: 4px solid #0d6efd; }
+
+    /* DoD */
+    .dod-card {
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .dod-card .dod-header {
+      background: var(--navy);
+      color: #fff;
+      border-radius: 9px 9px 0 0;
+      padding: 0.6rem 1rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      padding: 0.3rem 0;
+      font-size: 0.875rem;
+    }
+
+    .checklist-item i { color: #10b981; margin-top: 2px; flex-shrink: 0; }
+
+    /* Go-Live */
+    .golive-item {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .golive-item .gl-num {
+      background: var(--navy);
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 0.75rem;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    footer {
+      background: var(--navy);
+      color: #64748b;
+      font-size: 0.8rem;
+      padding: 1rem 0;
+      text-align: center;
+    }
+
+    .pts-badge {
+      background: #dbeafe;
+      color: #1e40af;
+      font-size: 0.75rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+
+    @media print {
+      .sprint-card { break-inside: avoid; }
+      body { background: #fff; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="container">
+    <div class="d-flex align-items-start justify-content-between flex-wrap gap-2">
+      <div>
+        <div class="d-flex align-items-center gap-2 mb-1">
+          <i class="bi bi-boxes fs-4" style="color:var(--accent)"></i>
+          <h1 class="mb-0">Gingersnaps Warehouse System</h1>
+        </div>
+        <div class="subtitle mb-3">Sprint Plan — Backlog v1.0 &nbsp;|&nbsp; Retire Google Sheets Roadmap</div>
+        <div class="d-flex flex-wrap gap-2">
+          <span class="meta-pill"><i class="bi bi-calendar3"></i> Generated: October 19, 2026</span>
+          <span class="meta-pill"><i class="bi bi-person-gear"></i> 1 Developer + 1 DBA (or 1 full-stack)</span>
+          <span class="meta-pill"><i class="bi bi-speedometer2"></i> 70% capacity per sprint</span>
+          <span class="meta-pill"><i class="bi bi-clock-history"></i> 2-week sprints</span>
+          <span class="meta-pill"><i class="bi bi-list-check"></i> 20 backlog items · 5 phases</span>
+        </div>
+      </div>
+      <div class="text-end">
+        <div style="color:#94a3b8; font-size:0.8rem;">Target</div>
+        <div style="color:var(--accent); font-size:1.2rem; font-weight:700;">Go-Live: Sprint 8</div>
+        <div style="color:#64748b; font-size:0.75rem;">~16 weeks</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container py-4">
+
+  <!-- LEGEND -->
+  <div class="d-flex flex-wrap gap-2 mb-4">
+    <span class="badge badge-p1 rounded-pill px-3 py-2"><i class="bi bi-exclamation-triangle-fill me-1"></i>P1 Critical</span>
+    <span class="badge badge-p2 rounded-pill px-3 py-2"><i class="bi bi-info-circle-fill me-1"></i>P2 Important</span>
+    <span class="badge badge-p3 rounded-pill px-3 py-2"><i class="bi bi-star-fill me-1"></i>P3 Nice-to-have</span>
+    <span class="badge bg-secondary rounded-pill px-3 py-2"><i class="bi bi-database-fill me-1"></i>DBA</span>
+    <span class="badge bg-success rounded-pill px-3 py-2"><i class="bi bi-code-slash me-1"></i>Developer</span>
+    <span class="badge bg-primary rounded-pill px-3 py-2"><i class="bi bi-people-fill me-1"></i>Both</span>
+  </div>
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!--  SPRINT OVERVIEW TABLE                        -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div class="mb-5">
+    <div class="section-title"><i class="bi bi-table me-2"></i>Sprint Overview</div>
+    <div class="table-responsive">
+      <table class="table table-bordered overview-table align-middle mb-0">
+        <thead>
+          <tr>
+            <th class="text-center" style="width:80px">Sprint</th>
+            <th>Duration</th>
+            <th>Focus</th>
+            <th>Items</th>
+            <th class="text-center">Story Pts</th>
+            <th>Key Deliverable</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-center fw-bold">S1</td>
+            <td>Wk 1–2</td>
+            <td><span class="badge badge-p1 me-1">P1</span> Production Stability</td>
+            <td><code>DEV-001, 002, 003, 008</code></td>
+            <td class="text-center"><span class="pts-badge">7</span></td>
+            <td>Production DB fixed · WIP report no longer crashes · Stock Ledger accessible</td>
+          </tr>
+          <tr>
+            <td class="text-center fw-bold">S2</td>
+            <td>Wk 3–4</td>
+            <td><span class="badge badge-p1 me-1">P1</span> GRN Foundation</td>
+            <td><code>DEV-004</code> (Part 1)</td>
+            <td class="text-center"><span class="pts-badge">10</span></td>
+            <td>GRN tables created · GRN list + form pages live with basic RBAC</td>
+          </tr>
+          <tr>
+            <td class="text-center fw-bold">S3</td>
+            <td>Wk 5–6</td>
+            <td><span class="badge badge-p1 me-1">P1</span> GRN Complete + PO Link</td>
+            <td><code>DEV-004</code> (Part 2) + <code>DEV-007</code></td>
+            <td class="text-center"><span class="pts-badge">10</span></td>
+            <td>GRN view + print · PO receive.php creates GRN record as first step</td>
+          </tr>
+          <tr>
+            <td class="text-center fw-bold">S4</td>
+            <td>Wk 7–8</td>
+            <td><span class="badge badge-p1 me-1">P1</span> QC Inspection + Putaway</td>
+            <td><code>DEV-005, DEV-006</code></td>
+            <td class="text-center"><span class="pts-badge">12</span></td>
+            <td>QC Inspection module live · Putaway Orders module live · Full P1 workflow complete</td>
+          </tr>
+          <tr>
+            <td class="text-center fw-bold">S5</td>
+            <td>Wk 9–10</td>
+            <td><span class="badge badge-p1 me-1">P1</span> Historical Data Migration</td>
+            <td><code>DEV-009, DEV-010, DEV-017</code></td>
+            <td class="text-center"><span class="pts-badge">12</span></td>
+            <td>grn.csv + putaway.csv + po.csv imported · Historical records visible in PHP</td>
+          </tr>
+          <tr>
+            <td class="text-center fw-bold">S6</td>
+            <td>Wk 11–12</td>
+            <td><span class="badge badge-p2 me-1">P2</span> Tickets + Gatepass Expansion</td>
+            <td><code>DEV-011, DEV-012, DEV-013</code></td>
+            <td class="text-center"><span class="pts-badge">12</span></td>
+            <td>Tickets schema expanded · CTRL-XXXXXX auto-number working · Gatepass items enriched</td>
+          </tr>
+          <tr>
+            <td class="text-center fw-bold">S7</td>
+            <td>Wk 13–14</td>
+            <td><span class="badge badge-p2 me-1">P2</span> Reports + QC Migration</td>
+            <td><code>DEV-014, DEV-015, DEV-016</code></td>
+            <td class="text-center"><span class="pts-badge">13</span></td>
+            <td>Dispatching Priority report · GS OUTPUT equivalent · output.csv migrated to DB</td>
+          </tr>
+          <tr>
+            <td class="text-center fw-bold">S8</td>
+            <td>Wk 15–16</td>
+            <td><span class="badge badge-p3 me-1">P3</span> KPI Dashboard + Finalization</td>
+            <td><code>DEV-018, DEV-019, DEV-020</code></td>
+            <td class="text-center"><span class="pts-badge">10</span></td>
+            <td>KPI Dashboard · ALL PENDING report · Tolerance tracking · <strong>Go-Live Ready</strong></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr class="table-light">
+            <td colspan="4" class="text-end fw-semibold text-muted">Total Story Points</td>
+            <td class="text-center"><span class="pts-badge" style="background:#d1fae5;color:#065f46">86</span></td>
+            <td class="fw-semibold">~16 weeks at 70% capacity</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!--  SPRINT 1                                     -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div class="section-title"><i class="bi bi-lightning-charge me-2"></i>Sprint Details</div>
+
+  <div class="card sprint-card">
+    <div class="card-header">
+      <span class="sprint-badge">S1</span>
+      <h5>Production Stability &amp; Quick Wins</h5>
+      <span class="duration-badge"><i class="bi bi-calendar2 me-1"></i>Week 1–2 · 2 weeks</span>
+    </div>
+    <div class="card-body">
+      <div class="sprint-goal-box">
+        <strong><i class="bi bi-bullseye me-1"></i>Sprint Goal:</strong> Apply the pending migration to fix the 403 error and table stubs, so the live site stops crashing and the team can use reports without SQL errors.
+      </div>
+      <div class="table-responsive">
+        <table class="table table-sm table-bordered item-table">
+          <thead>
+            <tr>
+              <th style="width:90px">ID</th>
+              <th>Task</th>
+              <th style="width:80px">Effort</th>
+              <th style="width:100px">Depends</th>
+              <th>Acceptance Criteria</th>
+              <th style="width:90px">Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="dev-id">DEV-001</span><br><span class="badge badge-p1 mt-1">P1</span></td>
+              <td><strong>Apply migration6.sql to production</strong><br><small class="text-muted">Restores Stock Ledger + Locations tables; fixes 403 error</small></td>
+              <td><i class="bi bi-clock me-1"></i>1 hr</td>
+              <td><span class="text-muted">None</span></td>
+              <td>
+                <ul class="ac-list">
+                  <li>migration6.sql runs without error on production DB</li>
+                  <li>Stock Ledger page loads (no 403)</li>
+                  <li>Locations page loads successfully</li>
+                  <li>Backup taken before migration</li>
+                </ul>
+              </td>
+              <td><span class="badge bg-secondary role-badge">DBA</span></td>
+            </tr>
+            <tr>
+              <td><span class="dev-id">DEV-002</span><br><span class="badge badge-p1 mt-1">P1</span></td>
+              <td><strong>Create <code>receiving</code> table stub</strong><br><small class="text-muted">Minimal schema to prevent wip_status.php crash</small></td>
+              <td><i class="bi bi-clock me-1"></i>2 hrs</td>
+              <td><span class="text-muted">None</span></td>
+              <td>
+                <ul class="ac-list">
+                  <li>Table <code>receiving</code> exists in production DB</li>
+                  <li>Columns match what wip_status.php JOINs on</li>
+                  <li>No data loss to existing tables</li>
+                </ul>
+              </td>
+              <td><span class="badge bg-secondary role-badge">DBA</span></td>
+            </tr>
+            <tr>
+              <td><span class="dev-id">DEV-003</span><br><span class="badge badge-p1 mt-1">P1</span></td>
+              <td><strong>Create <code>qc_inspection</code> table stub</strong><br><small class="text-muted">Minimal schema to prevent wip_status.php crash</small></td>
+              <td><i class="bi bi-clock me-1"></i>2 hrs</td>
+              <td><span class="text-muted">None</span></td>
+              <td>
+                <ul class="ac-list">
+                  <li>Table <code>qc_inspection</code> exists in production DB</li>
+                  <li>Columns include id, grn_id, status, created_at at minimum</li>
+                  <li>Forward-compatible with full DEV-005 schema</li>
+                </ul>
+              </td>
+              <td><span class="badge bg-secondary role-badge">DBA</span></td>
+            </tr>
+            <tr>
+              <td><span class="dev-id">DEV-008</span><br><span class="badge badge-p1 mt-1">P1</span></td>
+              <td><strong>Fix wip_status.php after stubs exist</strong><br><small class="text-muted">Correct SQL to use new table names / columns</small></td>
+              <td><i class="bi bi-clock me-1"></i>2 hrs</td>
+              <td><span class="dep-badge">DEV-002</span><span class="dep-badge">DEV-003</span></td>
+              <td>
+                <ul class="ac-list">
+                  <li>wip_status.php loads without PHP/SQL errors</li>
+                  <li>Report shows correct WIP data (even if 0 QC/receiving rows)</li>
+                  <li>No broken HTML output</li>
+                </ul>
+              </td>
+              <td><span class="badge bg-success role-badge">Developer</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="enables-box mt-3">
+        <strong><i class="bi bi-unlock-fill me-1"></i>Enabled after Sprint 1:</strong>
+        Production site is stable · Stock Ledger and Locations accessible · WIP Status report works · Team can use the live system daily while new modules are built
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!--  SPRINT 2                                     -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div class="card sprint-card">
+    <div class="card-header">
+      <span class="sprint-badge">S2</span>
+      <h5>GRN Module — Foundation (Part 1)</h5>
+      <span class="duration-badge"><i class="bi bi-calendar2 me-1"></i>Week 3–4 · 2 weeks</span>
+    </div>
+    <div class="card-body">
+      <div class="sprint-goal-box">
+        <strong><i class="bi bi-bullseye me-1"></i>Sprint Goal:</strong> Create the full GRN database schema and deliver working list + form pages so goods received can be recorded in PHP instead of a spreadsheet.
+      </div>
+      <div class="table-responsive">
+        <table class="table table-sm table-bordered item-table">
+          <thead>
+            <tr>
+              <th style="width:90px">ID</th>
+              <th>Task</th>
+              <th style="width:80px">Effort</th>
+              <th style="width:100px">Depends</th>
+              <th>Acceptance Criteria</th>
+              <th style="width:90px">Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="dev-id">DEV-004</span><br><small>(Part 1)</small><br><span class="badge badge-p1 mt-1">P1</span></td>
+              <td>
+                <strong>Build GRN Module — Schema + List + Form</strong><br>
+                <small class="text-muted">Tables: <code>grn</code>, <code>grn_items</code>. Pages: list.php, form.php</small>
+              </td>
+              <td><i class="bi bi-clock me-1"></i>~10 days</td>
+              <td><span class="text-muted">None</span></td>
+              <td>
+                <ul class="ac-list">
+                  <li><code>grn</code> table: id, grn_no (auto), po_id, received_date, received_by, status, notes</li>
+                  <li><code>grn_items</code> table: id, grn_id, item_id, qty_ordered, qty_received, unit, remarks</li>
+                  <li>GRN list page shows all GRNs with PO ref and status</li>
+                  <li>GRN form creates header + line items in a single transaction</li>
+                  <li>RBAC: Warehouse role can create; Manager can view all</li>
+                  <li>GRN number format: GRN-YYYYMMDD-XXXX</li>
+                </ul>
+              </td>
+              <td><span class="badge bg-primary role-badge">Both</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="enables-box mt-3">
+        <strong><i class="bi bi-unlock-fill me-1"></i>Enabled after Sprint 2:</strong>
+        Goods received can be logged in PHP · GRN list provides audit trail · Foundation for QC and Putaway modules is ready
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!--  SPRINT 3                                     -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div class="card sprint-card">
+    <div class="card-header">
+      <span class="sprint-badge">S3</span>
+      <h5>GRN Module — Complete + PO Integration (Part 2)</h5>
+      <span class="duration-badge"><i class="bi bi-calendar2 me-1"></i>Week 5–6 · 2 weeks</span>
+    </div>
+    <div class="card-body">
+      <div class="sprint-goal-box">
+        <strong><i class="bi bi-bullseye me-1"></i>Sprint Goal:</strong> Complete the GRN module with view/print, and wire it into the Purchase Orders receive flow so that every PO receipt automatically creates a GRN.
+      </div>
+      <div class="table-responsive">
+        <table class="table table-sm table-bordered item-table">
+          <thead>
+            <tr>
+              <th style="width:90px">ID</th>
+              <th>Task</th>
+              <th style="width:80px">Effort</th>
+              <th style="width:100px">Depends</th>
+              <th>Acceptance Criteria</th>
+              <th style="width:90px">Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="dev-id">DEV-004</span><br><small>(Part 2)</small><br><span class="badge badge-p1 mt-1">P1</span></td>
+              <td>
+                <strong>GRN Module — View + Print Pages</strong><br>
+                <small class="text-muted">view.php (GRN detail) + printable GRN document</small>
+              </td>
+              <td><i class="bi bi-clock me-1"></i>~5 days</td>
+              <td><span class="dep-badge">S2/DEV-004</span></td>
+              <td>
+                <ul class="ac-list">
+                  <li>GRN view page shows header info + all line items</li>
+                  <li>Status transitions: Draft → Confirmed → Closed</li>
+                  <li>Printable version renders cleanly (no nav/sidebar)</li>
+                  <li>Confirmed GRN cannot be edited (only Manager can override)</li>
+                </ul>
+              </td>
+              <td><span class="badge bg-success role-badge">Developer</span></td>
+            </tr>
+            <tr>
+              <td><span class="dev-id">DEV-007</span><br><span class="badge badge-p1 mt-1">P1</span></td>
+              <td>
+                <strong>Refactor receive.php → creates GRN first</strong><br>
+                <small class="text-muted">PO receive flow must generate a GRN record as Step 1</small>
+              </td>
+              <td><i class="bi bi-clock me-1"></i>1 day</td>
+              <td><span class="dep-badge">DEV-004</span></td>
+              <td>
+                <ul class="ac-list">
+                  <li>Submitting receive.php creates a GRN row linked to the PO</li>
+                  <li>GRN ID stored back on the receiving record</li>
+                  <li>Existing PO status update still works</li>
+                  <li>No orphan GRNs on failed transactions (use DB transaction)</li>
+                </ul>
+              </td>
+              <td><span class="badge bg-success role-badge">Developer</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="enables-box mt-3">
+        <strong><i class="bi bi-unlock-fill me-1"></i>Enabled after Sprint 3:</strong>
+        Full receiving workflow in PHP · Every PO receipt has a traceable GRN · QC Inspection and Putaway modules can now be built on top
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!--  SPRINT 4                                     -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div class="card sprint-card">
+    <div class="card-header">
+      <span class="sprint-badge">S4</span>
+      <h5>QC Inspection + Putaway Modules</h5>
+      <span class="duration-badge"><i class="bi bi-calendar2 me-1"></i>Week 7–8 · 2 weeks</span>
+    </div>
+    <div class="card-body">
+      <div class="sprint-goal-box">
+        <strong><i class="bi bi-bullseye me-1"></i>Sprint Goal:</strong> Deliver the full QC Inspection and Putaway modules, completing the entire P1 warehouse inbound workflow end-to-end in PHP.
+      </div>
+      <div class="table-responsive">
+        <table class="table table-sm table-bordered item-table">
+          <thead>
+            <tr>
+              <th style="width:90px">ID</th>
+              <th>Task</th>
+              <th style="width:80px">Effort</th>
+              <th style="width:100px">Depends</th>
+              <th>Acceptance Criteria</th>
+              <th style="width:90px">Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="dev-id">DEV-005</span><br><span class="badge badge-p1 mt-1">P1</span></td>
+              <td>
+                <strong>Build QC Inspection Module</strong><br>
+                <small class="text-muted">Full <code>qc_inspection</code> schema (replaces stub) + list/form/view PHP + RBAC</small>
+              </td>
+              <td><i class="bi bi-clock me-1"></i>5–7 days</td>
+              <td><span class="dep-badge">DEV-004</span><span class="dep-badge">DEV-003</span></td>
+              <td>
+                <ul class="ac-list">
+                  <li>qc_inspection table: id, grn_id, inspector_id, inspection_date, result (Pass/Fail/Partial), reject_qty, notes</li>
+                  <li>QC form links to a GRN and records per-item results</li>
+                  <li>QC list shows pending / passed / failed GRNs</li>
+                  <li>Failed items update stock_positions as quarantine</li>
+                  <li>RBAC: QC Inspector role can submit; Supervisor can approve</li>
+                </ul>
+              </td>
+              <td><span class="badge bg-primary role-badge">Both</span></td>
+            </tr>
+            <tr>
+              <td><span class="dev-id">DEV-006</span><br><span class="badge badge-p1 mt-1">P1</span></td>
+              <td>
+                <strong>Build Putaway Module</strong><br>
+                <small class="text-muted">Tables: <code>putaway_orders</code>, <code>putaway_items</code> + PHP pages + RBAC</small>
+              </td>
+              <td><i class="bi bi-clock me-1"></i>5–7 days</td>
+              <td><span class="dep-badge">DEV-004</span></td>
+              <td>
+                <ul class="ac-list">
+                  <li>putaway_orders: id, grn_id, assigned_to, putaway_date, status</li>
+                  <li>putaway_items: id, order_id, grn_item_id, location_id, qty_putaway</li>
+                  <li>Putaway form shows GRN items and target locations dropdown</li>
+                  <li>On confirm, stock_positions updated with new location</li>
+                  <li>Putaway list shows pending assignments with GRN reference</li>
+                </ul>
+              </td>
+              <td><span class="badge bg-primary role-badge">Both</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="enables-box mt-3">
+        <strong><i class="bi bi-unlock-fill me-1"></i>Enabled after Sprint 4:</strong>
+        Complete P1 inbound workflow: PO → GRN → QC → Putaway · All critical modules live · Historical CSV imports can now proceed safely
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!--  SPRINT 5                                     -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div class="card sprint-card">
+    <div class="card-header">
+      <span class="sprint-badge">S5</span>
+      <h5>Historical Data Migration</h5>
+      <span class="duration-badge"><i class="bi bi-calendar2 me-1"></i>Week 9–10 · 2 weeks</span>
+    </div>
+    <div class="card-body">
+      <div class="sprint-goal-box">
+        <strong><i class="bi bi-bullseye me-1"></i>Sprint Goal:</strong> Import all historical CSV data (GRN, Putaway, PO line items) so the PHP system has full history and Google Sheets is no longer needed as a reference.
+      </div>
+      <div class="table-responsive">
+        <table class="table table-sm table-bordered item-table">
+          <thead>
+            <tr>
+              <th style="width:90px">ID</th>
+              <th>Task</th>
+              <th style="width:80px">Effort</th>
+              <th style="width:100px">Depends</th>
+              <th>Acceptance Criteria</th>
+              <th style="width:90px">Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="dev-id">DEV-009</span><br><span class="badge badge-p1 mt-1">P1</span></td>
+              <td>
+                <strong>Migrate grn.csv → grn / grn_items</strong><br>
+                <small class="text-muted">Source: data_import/grn.csv (~3.4 MB)</small>
+              </td>
+              <td><i class="bi bi-clock me-1"></i>3–5 days</td>
+              <td><span class="dep-badge">DEV-004</span></td>
+              <td>
+                <ul class="ac-list">
+                  <li>All GRN header rows imported into <code>grn</code> table</li>
+                  <li>All GRN line items imported into <code>grn_items</code></li>
+                  <li>GRN numbers preserved from CSV (no duplicates)</li>
+                  <li>Row count reconciliation: CSV rows = DB rows ± 0</li>
+                  <li>Import script is idempotent (re-runnable without duplication)</li>
+                </ul>
+              </td>
+              <td><span class="badge bg-secondary role-badge">DBA</span></td>
+            </tr>
+            <tr>
+              <td><span class="dev-id">DEV-010</span><br><span class="badge badge-p1 mt-1">P1</span></td>
+              <td>
+                <strong>Migrate putaway.csv → putaway tables</strong><br>
+                <small class="text-muted">Source: data_import/putaway.csv (~3.4 MB)</small>
+              </td>
+              <td><i class="bi bi-clock me-1"></i>2–3 days</td>
+              <td><span class="dep-badge">DEV-006</span></td>
+              <td>
+                <ul class="ac-list">
+                  <li>putaway_orders rows created from CSV groupings</li>
+                  <li>putaway_items rows linked to correct orders and locations</li>
+                  <li>stock_positions reflects putaway locations post-import</li>
+                  <li>Row count and quantity reconciliation passes</li>
+                </ul>
+              </td>
+              <td><span class="badge bg-secondary role-badge">DBA</span></td>
+            </tr>
+            <tr>
+              <td><span class="dev-id">DEV-017</span><br><span class="badge badge-p2 mt-1">P2</span></td>
+              <td>
+                <strong>Import PO line items from po.csv</strong><br>
+                <small class="text-muted">Source: data_import/po.csv (~2.7 MB)</small>
+              </td>
+              <td><i class="bi bi-clock me-1"></i>2 days</td>
+              <td><span class="text-muted">None</span></td>
+              <td>
+                <ul class="ac-list">
+                  <li>All PO line items imported and linked to existing PO headers</li>
+                  <li>No duplicate PO numbers created</li>
+                  <li>PO view page shows imported line items correctly</li>
+                </ul>
+              </td>
+              <td><span class="badge bg-secondary role-badge">DBA</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="enables-box mt-3">
+        <strong><i class="bi bi-unlock-fill me-1"></i>Enabled after Sprint 5:</strong>
+        PHP system has full historical data · GRN list shows all past receipts · Putaway history visible · PO aging report accurate · Team can stop referencing Google Sheets for P1 data
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!--  SPRINT 6                                     -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div class="card sprint-card">
+    <div class="card-header">
+      <span class="sprint-badge">S6</span>
+      <h5>Tickets Expansion + Gatepass Enrichment</h5>
+      <span class="duration-badge"><i class="bi bi-calendar2 me-1"></i>Week 11–12 · 2 weeks</span>
+    </div>
+    <div class="card-body">
+      <div class="sprint-goal-box">
+        <strong><i class="bi bi-bullseye me-1"></i>Sprint Goal:</strong> Expand the tickets table with market quantities and auto-numbering, and enrich gatepass items with color, size, and loss tracking so data parity with Google Sheets is achieved.
+      </div>
+      <div class="table-responsive">
+        <table class="table table-sm table-bordered item-table">
+          <thead>
+            <tr>
+              <th style="width:90px">ID</th>
+              <th>Task</th>
+              <th style="width:80px">Effort</th>
+              <th style="width:100px">Depends</th>
+              <th>Acceptance Criteria</th>
+              <th style="width:90px">Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="dev-id">DEV-011</span><br><span class="badge badge-p2 mt-1">P2</span></td>
+              <td>
+                <strong>Expand tickets table schema</strong><br>
+                <small class="text-muted">Add: collection_id, style_no, 7 market qty cols, receiving_person, time_in, time_start</small>
+              </td>
+              <td><i class="bi bi-clock me-1"></i>3–5 days</td>
+              <td><span class="text-muted">None</span></td>
+              <td>
+                <ul class="ac-list">
+                  <li>ALTER TABLE runs without data loss on existing ticket rows</li>
+                  <li>New columns: collection_id (FK), style_no, qty_mkt1…qty_mkt7, receiving_person, time_in (DATETIME), time_start (DATETIME)</li>
+                  <li>Tickets form updated with new fields</li>
+                  <li>Existing ticket list and views unbroken</li>
+                </ul>
+              </td>
+              <td><span class="badge bg-primary role-badge">Both</span></td>
+            </tr>
+            <tr>
+              <td><span class="dev-id">DEV-012</span><br><span class="badge badge-p2 mt-1">P2</span></td>
+              <td>
+                <strong>CTRL-XXXXXX auto-numbering for tickets</strong><br>
+                <small class="text-muted">Sequenced ticket numbers in CTRL-000001 format</small>
+              </td>
+              <td><i class="bi bi-clock me-1"></i>2–3 days</td>
+              <td><span class="dep-badge">DEV-011</span></td>
+              <td>
+                <ul class="ac-list">
+                  <li>New tickets auto-assign CTRL-XXXXXX (zero-padded 6 digits)</li>
+                  <li>Sequence is gapless; uses DB sequence or MAX+1 with lock</li>
+                  <li>Duplicate CTRL numbers impossible (UNIQUE constraint)</li>
+                  <li>Existing tickets backfilled with CTRL numbers (script provided)</li>
+                </ul>
+              </td>
+              <td><span class="badge bg-primary role-badge">Both</span></td>
+            </tr>
+            <tr>
+              <td><span class="dev-id">DEV-013</span><br><span class="badge badge-p2 mt-1">P2</span></td>
+              <td>
+                <strong>Add color, size, brand, lost_qty, inventory_type to gatepass_items</strong>
+              </td>
+              <td><i class="bi bi-clock me-1"></i>2 days</td>
+              <td><span class="text-muted">None</span></td>
+              <td>
+                <ul class="ac-list">
+                  <li>New columns added via ALTER TABLE (non-destructive)</li>
+                  <li>Gatepass form shows new fields</li>
+                  <li>Gatepass view/print updated to include new fields</li>
+                  <li>lost_qty defaults to 0; inventory_type is a dropdown (Regular/Sample/Defect)</li>
+                </ul>
+              </td>
+              <td><span class="badge bg-primary role-badge">Both</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="enables-box mt-3">
+        <strong><i class="bi bi-unlock-fill me-1"></i>Enabled after Sprint 6:</strong>
+        Tickets module is feature-complete vs. Google Sheets · Auto-numbering removes manual CTRL assignment · Gatepass items have full data fields for dispatch reports
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!--  SPRINT 7                                     -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div class="card sprint-card">
+    <div class="card-header">
+      <span class="sprint-badge">S7</span>
+      <h5>Priority Reports + QC Data Migration</h5>
+      <span class="duration-badge"><i class="bi bi-calendar2 me-1"></i>Week 13–14 · 2 weeks</span>
+    </div>
+    <div class="card-body">
+      <div class="sprint-goal-box">
+        <strong><i class="bi bi-bullseye me-1"></i>Sprint Goal:</strong> Build the two most-used operational reports (Dispatching Priority and Inspection Priority) and migrate historical QC output data, making the PHP system the single source of truth for daily operations.
+      </div>
+      <div class="table-responsive">
+        <table class="table table-sm table-bordered item-table">
+          <thead>
+            <tr>
+              <th style="width:90px">ID</th>
+              <th>Task</th>
+              <th style="width:80px">Effort</th>
+              <th style="width:100px">Depends</th>
+              <th>Acceptance Criteria</th>
+              <th style="width:90px">Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="dev-id">DEV-014</span><br><span class="badge badge-p2 mt-1">P2</span></td>
+              <td>
+                <strong>Build Dispatching Priority Report</strong><br>
+                <small class="text-muted">Equivalent to GS Dispatch Priority sheet</small>
+              </td>
+              <td><i class="bi bi-clock me-1"></i>3–5 days</td>
+              <td><span class="dep-badge">DEV-011</span><span class="dep-badge">DEV-013</span></td>
+              <td>
+                <ul class="ac-list">
+                  <li>Report lists pending gatepasses ordered by dispatch priority</li>
+                  <li>Shows: CTRL no, item, qty, destination, days pending</li>
+                  <li>Filter by date range, subcontractor, status</li>
+                  <li>Exportable to CSV</li>
+                  <li>Numbers match equivalent GS data within ±5% (manual spot check)</li>
+                </ul>
+              </td>
+              <td><span class="badge bg-success role-badge">Developer</span></td>
+            </tr>
+            <tr>
+              <td><span class="dev-id">DEV-015</span><br><span class="badge badge-p2 mt-1">P2</span></td>
+              <td>
+                <strong>Build Inspection Priority List Report</strong><br>
+                <small class="text-muted">GS OUTPUT sheet equivalent</small>
+              </td>
+              <td><i class="bi bi-clock me-1"></i>3–5 days</td>
+              <td><span class="dep-badge">DEV-005</span></td>
+              <td>
+                <ul class="ac-list">
+                  <li>Report lists QC inspections by priority (oldest unresolved first)</li>
+                  <li>Shows: GRN ref, item, qty received, qty passed/failed, inspector</li>
+                  <li>Color-coded by status (Pass/Fail/Pending)</li>
+                  <li>Exportable to CSV</li>
+                </ul>
+              </td>
+              <td><span class="badge bg-success role-badge">Developer</span></td>
+            </tr>
+            <tr>
+              <td><span class="dev-id">DEV-016</span><br><span class="badge badge-p2 mt-1">P2</span></td>
+              <td>
+                <strong>Migrate output.csv → qc_inspection</strong><br>
+                <small class="text-muted">Source: data_import/output.csv (~7 KB)</small>
+              </td>
+              <td><i class="bi bi-clock me-1"></i>2 days</td>
+              <td><span class="dep-badge">DEV-005</span></td>
+              <td>
+                <ul class="ac-list">
+                  <li>All rows from output.csv imported into qc_inspection</li>
+                  <li>GRN links resolved (lookup by GRN number)</li>
+                  <li>Unmatched GRNs logged in import error report</li>
+                  <li>Inspection Priority report shows historical data post-import</li>
+                </ul>
+              </td>
+              <td><span class="badge bg-secondary role-badge">DBA</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="enables-box mt-3">
+        <strong><i class="bi bi-unlock-fill me-1"></i>Enabled after Sprint 7:</strong>
+        Daily dispatch and inspection decisions driven by PHP · QC history complete · Operational managers can run the business from the PHP system alone
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!--  SPRINT 8                                     -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div class="card sprint-card">
+    <div class="card-header">
+      <span class="sprint-badge" style="background:#10b981;color:#fff">S8</span>
+      <h5>KPI Dashboard + Finalization — Go-Live Sprint</h5>
+      <span class="duration-badge"><i class="bi bi-calendar2 me-1"></i>Week 15–16 · 2 weeks</span>
+    </div>
+    <div class="card-body">
+      <div class="sprint-goal-box" style="background:#ecfdf5;border-color:#10b981;color:#064e3b">
+        <strong><i class="bi bi-trophy-fill me-1"></i>Sprint Goal:</strong> Deliver the KPI dashboard, ALL PENDING report, and tolerance tracking, then perform final UAT and retire Google Sheets.
+      </div>
+      <div class="table-responsive">
+        <table class="table table-sm table-bordered item-table">
+          <thead>
+            <tr>
+              <th style="width:90px">ID</th>
+              <th>Task</th>
+              <th style="width:80px">Effort</th>
+              <th style="width:100px">Depends</th>
+              <th>Acceptance Criteria</th>
+              <th style="width:90px">Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="dev-id">DEV-018</span><br><span class="badge badge-p3 mt-1">P3</span></td>
+              <td>
+                <strong>Full KPI Dashboard</strong><br>
+                <small class="text-muted">Equivalent to GS DASHBOARD sheet with live DB data</small>
+              </td>
+              <td><i class="bi bi-clock me-1"></i>3–5 days</td>
+              <td><span class="text-muted">S7 complete</span></td>
+              <td>
+                <ul class="ac-list">
+                  <li>KPIs shown: total POs, GRNs this month, QC pass rate, pending putaway, open gatepasses</li>
+                  <li>Trend charts (30-day) for receiving and dispatch volume</li>
+                  <li>Refreshes on page load (no stale data)</li>
+                  <li>Mobile-responsive layout</li>
+                </ul>
+              </td>
+              <td><span class="badge bg-success role-badge">Developer</span></td>
+            </tr>
+            <tr>
+              <td><span class="dev-id">DEV-019</span><br><span class="badge badge-p3 mt-1">P3</span></td>
+              <td>
+                <strong>ALL PENDING Report</strong><br>
+                <small class="text-muted">Consolidated view of all pending items across all modules</small>
+              </td>
+              <td><i class="bi bi-clock me-1"></i>2 days</td>
+              <td><span class="text-muted">S7 complete</span></td>
+              <td>
+                <ul class="ac-list">
+                  <li>Report shows: pending GRNs, pending QC, pending putaway, pending gatepasses</li>
+                  <li>Each section shows item count and oldest pending date</li>
+                  <li>Links through to the relevant module</li>
+                </ul>
+              </td>
+              <td><span class="badge bg-success role-badge">Developer</span></td>
+            </tr>
+            <tr>
+              <td><span class="dev-id">DEV-020</span><br><span class="badge badge-p3 mt-1">P3</span></td>
+              <td>
+                <strong>Add tolerance/rejection tracking to purchase_orders</strong>
+              </td>
+              <td><i class="bi bi-clock me-1"></i>1 day</td>
+              <td><span class="text-muted">None</span></td>
+              <td>
+                <ul class="ac-list">
+                  <li>PO table gains tolerance_pct and rejection_qty columns</li>
+                  <li>PO form allows setting tolerance %</li>
+                  <li>PO aging report flags items exceeding tolerance</li>
+                </ul>
+              </td>
+              <td><span class="badge bg-primary role-badge">Both</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="enables-box mt-3" style="background:#ecfdf5;border-color:#10b981;color:#064e3b">
+        <strong><i class="bi bi-rocket-takeoff-fill me-1"></i>Enabled after Sprint 8:</strong>
+        <strong>Google Sheets can be fully retired.</strong> All data, workflows, reports, and KPIs live in PHP. Warehouse team operates entirely from the web system.
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!--  DEPENDENCY GRAPH                             -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div class="mb-5">
+    <div class="section-title"><i class="bi bi-diagram-3 me-2"></i>Dependency Graph</div>
+    <div class="dep-tree"><span class="tree-root">DEPENDENCY TREE — Gingersnaps Warehouse Backlog</span>
+<span class="tree-note">═══════════════════════════════════════════════════════════</span>
+
+<span class="tree-root">S1 — STANDALONE (no deps)</span>
+├── DEV-001  Apply migration6.sql
+├── DEV-002  Create receiving table stub
+├── DEV-003  Create qc_inspection table stub
+└── DEV-008  Fix wip_status.php ← needs DEV-002 + DEV-003
+
+<span class="tree-root">S2/S3/S4 — GRN CHAIN (core dependency chain)</span>
+    DEV-004 (GRN Module) ───────────────────────────────────────┐
+    │                                                            │
+    ├── DEV-007  Refactor receive.php (depends on DEV-004)       │
+    │                                                            │
+    ├── DEV-005  QC Inspection (depends on DEV-004 + DEV-003)    │
+    │   └── DEV-016  Migrate output.csv (depends on DEV-005)     │
+    │                                                            │
+    ├── DEV-006  Putaway Module (depends on DEV-004)             │
+    │   └── DEV-010  Migrate putaway.csv (depends on DEV-006)    │
+    │                                                            │
+    └── DEV-009  Migrate grn.csv (depends on DEV-004) ──────────┘
+
+<span class="tree-root">S5 — DATA MIGRATION</span>
+├── DEV-009  grn.csv → grn/grn_items     ← DEV-004
+├── DEV-010  putaway.csv → putaway tables ← DEV-006
+└── DEV-017  po.csv → PO line items       (standalone)
+
+<span class="tree-root">S6 — TICKETS + GATEPASS (semi-independent)</span>
+├── DEV-011  Expand tickets table          (standalone)
+├── DEV-012  CTRL auto-numbering          ← DEV-011
+└── DEV-013  Enrich gatepass_items        (standalone)
+
+<span class="tree-root">S7 — REPORTS</span>
+├── DEV-014  Dispatching Priority         ← DEV-011 + DEV-013
+├── DEV-015  Inspection Priority          ← DEV-005
+└── DEV-016  Migrate output.csv           ← DEV-005
+
+<span class="tree-root">S8 — FINALIZATION (depends on S7 complete)</span>
+├── DEV-018  KPI Dashboard                ← S7 complete
+├── DEV-019  ALL PENDING Report           ← S7 complete
+└── DEV-020  Tolerance tracking           (standalone)
+
+<span class="tree-note">───────────────────────────────────────────────────────────
+CRITICAL PATH:  DEV-004 → DEV-005/006 → DEV-009/010/016
+                Any delay to DEV-004 delays ALL downstream work
+═══════════════════════════════════════════════════════════</span></div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!--  RISK REGISTER                                -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div class="mb-5">
+    <div class="section-title"><i class="bi bi-shield-exclamation me-2"></i>Risk Register</div>
+    <div class="table-responsive">
+      <table class="table table-bordered align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th style="width:30px">#</th>
+            <th>Risk</th>
+            <th style="width:100px">Likelihood</th>
+            <th style="width:100px">Impact</th>
+            <th>Mitigation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="risk-row-high">
+            <td class="fw-bold text-danger">R1</td>
+            <td>
+              <strong>DEV-004 (GRN) takes longer than 2 sprints</strong><br>
+              <small class="text-muted">GRN is the most complex module and gates all downstream P1 work. Schema design decisions may require rework.</small>
+            </td>
+            <td><span class="badge bg-danger">High</span></td>
+            <td><span class="badge bg-danger">High</span></td>
+            <td>
+              <ul class="ac-list">
+                <li>Split into explicit Part 1 (schema + list + form) and Part 2 (view + print) across two sprints</li>
+                <li>Lock schema design in the first 2 days of S2 — no scope creep after Day 2</li>
+                <li>DEV-002/003 stubs protect S1 delivery from GRN delays</li>
+              </ul>
+            </td>
+          </tr>
+          <tr class="risk-row-high">
+            <td class="fw-bold text-danger">R2</td>
+            <td>
+              <strong>CSV migration data quality issues</strong><br>
+              <small class="text-muted">grn.csv (3.4 MB) and putaway.csv (3.4 MB) likely have inconsistent references, NULL values, or encoding issues that break automated import.</small>
+            </td>
+            <td><span class="badge bg-danger">High</span></td>
+            <td><span class="badge bg-warning text-dark">Medium</span></td>
+            <td>
+              <ul class="ac-list">
+                <li>Run data profiling (column types, NULL %, distinct values) before S5 begins</li>
+                <li>Build import scripts with dry-run mode that reports errors without committing</li>
+                <li>Allocate buffer days (S5 has +1 day buffer built into estimates)</li>
+                <li>Keep original CSVs archived permanently</li>
+              </ul>
+            </td>
+          </tr>
+          <tr class="risk-row-med">
+            <td class="fw-bold text-warning">R3</td>
+            <td>
+              <strong>Single-person bottleneck</strong><br>
+              <small class="text-muted">If the same person is both Developer and DBA, context-switching adds overhead and illness/unavailability stalls the entire project.</small>
+            </td>
+            <td><span class="badge bg-warning text-dark">Medium</span></td>
+            <td><span class="badge bg-danger">High</span></td>
+            <td>
+              <ul class="ac-list">
+                <li>Maintain written sprint notes so work can resume after gaps</li>
+                <li>DB schema changes documented in migration SQL files (already established)</li>
+                <li>Sprint 1 buffer (only 7 pts) gives slack for the heavier sprints ahead</li>
+              </ul>
+            </td>
+          </tr>
+          <tr class="risk-row-med">
+            <td class="fw-bold text-warning">R4</td>
+            <td>
+              <strong>Production DB changes break live data</strong><br>
+              <small class="text-muted">ALTER TABLE operations in S6 (tickets, gatepass_items) run against tables with existing production data.</small>
+            </td>
+            <td><span class="badge bg-warning text-dark">Medium</span></td>
+            <td><span class="badge bg-danger">High</span></td>
+            <td>
+              <ul class="ac-list">
+                <li>Full DB backup before every ALTER TABLE (mandatory, automated)</li>
+                <li>Test all migrations on a staging clone first</li>
+                <li>All new columns use NULL or DEFAULT — never NOT NULL without default</li>
+                <li>Schedule maintenance window (off-peak hours) for S6 DB changes</li>
+              </ul>
+            </td>
+          </tr>
+          <tr class="risk-row-low">
+            <td class="fw-bold text-primary">R5</td>
+            <td>
+              <strong>Scope creep from stakeholder feedback post-S4</strong><br>
+              <small class="text-muted">Once the P1 workflow is live, end users will request changes that could delay S5–S8.</small>
+            </td>
+            <td><span class="badge bg-primary">Low</span></td>
+            <td><span class="badge bg-warning text-dark">Medium</span></td>
+            <td>
+              <ul class="ac-list">
+                <li>New requests go to a backlog (DEV-021+) — nothing enters current sprint without explicit reprioritization</li>
+                <li>S8 has a natural buffer week built in for UAT feedback fixes</li>
+                <li>Communicate the go-live plan to stakeholders before S5 begins</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!--  DEFINITION OF DONE                           -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div class="mb-5">
+    <div class="section-title"><i class="bi bi-patch-check me-2"></i>Definition of Done</div>
+    <div class="row g-3">
+      <div class="col-md-6 col-lg-4">
+        <div class="dod-card h-100">
+          <div class="dod-header"><i class="bi bi-database me-2"></i>Database Migration / Schema Change</div>
+          <div class="p-3">
+            <div class="checklist-item"><i class="bi bi-check-circle-fill"></i><span>Migration SQL file created and committed to repo</span></div>
+            <div class="checklist-item"><i class="bi bi-check-circle-fill"></i><span>Tested on staging DB with real data snapshot</span></div>
+            <div class="checklist-item"><i class="bi bi-check-circle-fill"></i><span>Full DB backup taken before production run</span></div>
+            <div class="checklist-item"><i class="bi bi-check-circle-fill"></i><span>Applied to production without errors</span></div>
+            <div class="checklist-item"><i class="bi bi-check-circle-fill"></i><span>Rollback SQL documented (or backup is the rollback)</span></div>
+            <div class="checklist-item"><i class="bi bi-check-circle-fill"></i><span>Existing pages still load correctly post-migration</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="dod-card h-100">
+          <div class="dod-header"><i class="bi bi-window me-2"></i>PHP Module (list/form/view)</div>
+          <div class="p-3">
+            <div class="checklist-item"><i class="bi bi-check-circle-fill"></i><span>List page loads, paginates, and filters correctly</span></div>
+            <div class="checklist-item"><i class="bi bi-check-circle-fill"></i><span>Form validates all required fields server-side</span></div>
+            <div class="checklist-item"><i class="bi bi-check-circle-fill"></i><span>All SQL uses PDO prepared statements (no raw interpolation)</span></div>
+            <div class="checklist-item"><i class="bi bi-check-circle-fill"></i><span>RBAC enforced — wrong roles get 403, not blank page</span></div>
+            <div class="checklist-item"><i class="bi bi-check-circle-fill"></i><span>Mobile-responsive (tested at 375px width)</span></div>
+            <div class="checklist-item"><i class="bi bi-check-circle-fill"></i><span>Confirmed working on the live production URL</span></div>
+            <div class="checklist-item"><i class="bi bi-check-circle-fill"></i><span>Nav menu link added and accessible</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="dod-card h-100">
+          <div class="dod-header"><i class="bi bi-file-earmark-spreadsheet me-2"></i>Data Migration (CSV Import)</div>
+          <div class="p-3">
+            <div class="checklist-item"><i class="bi bi-check-circle-fill"></i><span>Import script is idempotent (safe to re-run)</span></div>
+            <div class="checklist-item"><i class="bi bi-check-circle-fill"></i><span>Row count before vs. after reconciled to 0 difference</span></div>
+            <div class="checklist-item"><i class="bi bi-check-circle-fill"></i><span>All FKs resolved; orphan rows logged and handled</span></div>
+            <div class="checklist-item"><i class="bi bi-check-circle-fill"></i><span>Import errors written to a log file, reviewed</span></div>
+            <div class="checklist-item"><i class="bi bi-check-circle-fill"></i><span>Sample of 10 records spot-checked manually</span></div>
+            <div class="checklist-item"><i class="bi bi-check-circle-fill"></i><span>Original CSV archived (not deleted)</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="dod-card h-100">
+          <div class="dod-header"><i class="bi bi-bar-chart me-2"></i>Report Page</div>
+          <div class="p-3">
+            <div class="checklist-item"><i class="bi bi-check-circle-fill"></i><span>Numbers match Google Sheets equivalent within ±5% (spot check)</span></div>
+            <div class="checklist-item"><i class="bi bi-check-circle-fill"></i><span>Date range filter works correctly</span></div>
+            <div class="checklist-item"><i class="bi bi-check-circle-fill"></i><span>Export to CSV produces clean, openable file</span></div>
+            <div class="checklist-item"><i class="bi bi-check-circle-fill"></i><span>Page loads in under 5 seconds on full dataset</span></div>
+            <div class="checklist-item"><i class="bi bi-check-circle-fill"></i><span>SQL query reviewed — no N+1 queries</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="dod-card h-100">
+          <div class="dod-header"><i class="bi bi-patch-check-fill me-2"></i>Sprint Done</div>
+          <div class="p-3">
+            <div class="checklist-item"><i class="bi bi-check-circle-fill"></i><span>All sprint items meet their individual DoD</span></div>
+            <div class="checklist-item"><i class="bi bi-check-circle-fill"></i><span>No P1 bugs open at sprint close</span></div>
+            <div class="checklist-item"><i class="bi bi-check-circle-fill"></i><span>Code committed to version control</span></div>
+            <div class="checklist-item"><i class="bi bi-check-circle-fill"></i><span>Live URL tested by a second person (or the owner)</span></div>
+            <div class="checklist-item"><i class="bi bi-check-circle-fill"></i><span>Sprint notes updated with any decisions made</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!--  GO-LIVE CHECKLIST                            -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div class="mb-5">
+    <div class="section-title"><i class="bi bi-rocket-takeoff me-2"></i>Go-Live Checklist — Conditions to Retire Google Sheets</div>
+    <p class="text-muted mb-3">All of the following must be true before Google Sheets is archived as read-only:</p>
+
+    <div class="golive-item">
+      <div class="gl-num">1</div>
+      <div>
+        <strong>All P1 modules are live and tested in production</strong><br>
+        <small class="text-muted">GRN, QC Inspection, and Putaway modules all accessible, working, and confirmed by the warehouse team (not just the developer).</small>
+      </div>
+    </div>
+    <div class="golive-item">
+      <div class="gl-num">2</div>
+      <div>
+        <strong>All historical CSVs have been imported and reconciled</strong><br>
+        <small class="text-muted">grn.csv, putaway.csv, po.csv, and output.csv fully migrated. Row counts match. No unresolved import errors.</small>
+      </div>
+    </div>
+    <div class="golive-item">
+      <div class="gl-num">3</div>
+      <div>
+        <strong>Tickets module has CTRL auto-numbering and all required columns</strong><br>
+        <small class="text-muted">DEV-011 and DEV-012 complete. Existing tickets backfilled with CTRL numbers. No new tickets created in Sheets.</small>
+      </div>
+    </div>
+    <div class="golive-item">
+      <div class="gl-num">4</div>
+      <div>
+        <strong>Dispatching Priority and Inspection Priority reports match GS output</strong><br>
+        <small class="text-muted">A side-by-side comparison of both systems for the same date range shows &lt;5% variance on all key figures.</small>
+      </div>
+    </div>
+    <div class="golive-item">
+      <div class="gl-num">5</div>
+      <div>
+        <strong>WIP Status and all existing reports load without errors</strong><br>
+        <small class="text-muted">DEV-008 confirmed. All reports tested with real production data. No blank pages, no PHP warnings visible.</small>
+      </div>
+    </div>
+    <div class="golive-item">
+      <div class="gl-num">6</div>
+      <div>
+        <strong>At least 1 full week of parallel operations completed</strong><br>
+        <small class="text-muted">For 5 business days, all transactions entered in both PHP and Google Sheets simultaneously. End-of-week reconciliation confirms data parity.</small>
+      </div>
+    </div>
+    <div class="golive-item">
+      <div class="gl-num">7</div>
+      <div>
+        <strong>All user roles are set up and tested in production</strong><br>
+        <small class="text-muted">Admin, Warehouse, QC Inspector, Supervisor, and Manager roles all have the correct access. No user can accidentally access a module above their permission level.</small>
+      </div>
+    </div>
+    <div class="golive-item">
+      <div class="gl-num">8</div>
+      <div>
+        <strong>Database backup schedule is active</strong><br>
+        <small class="text-muted">Automated daily backup confirmed running on the production server. Most recent backup is &lt;24 hours old and restore has been tested at least once.</small>
+      </div>
+    </div>
+    <div class="golive-item">
+      <div class="gl-num">9</div>
+      <div>
+        <strong>Go-Live sign-off from the warehouse manager / owner</strong><br>
+        <small class="text-muted">The person accountable for warehouse operations has reviewed the system, tested key workflows, and formally agreed the PHP system meets operational needs.</small>
+      </div>
+    </div>
+    <div class="golive-item">
+      <div class="gl-num">10</div>
+      <div>
+        <strong>Google Sheets archived (not deleted) with a clear "READ-ONLY — Retired [Date]" notice</strong><br>
+        <small class="text-muted">Sheets are not deleted. They are moved to an archive folder and marked read-only. Access is retained for at least 6 months as an emergency reference.</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER NOTE -->
+  <div class="alert alert-info border-0 d-flex gap-3 align-items-start">
+    <i class="bi bi-info-circle-fill fs-5 text-primary mt-1"></i>
+    <div>
+      <strong>Capacity note:</strong> Sprint point estimates assume 70% developer capacity per 2-week sprint (~7 productive days). Story points are calibrated as: 1 pt ≈ 1 hour of focused work for small tasks, 1 pt ≈ 0.5 days for module-level work. The 86-point total across 8 sprints is achievable for a 1–2 person team over 16 weeks at this capacity. If velocity is higher in early sprints, S7 and S8 items can be pulled forward.
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<footer>
+  <div class="container">
+    Gingersnaps Warehouse System &mdash; Sprint Plan v1.0 &mdash; Generated October 19, 2026 &mdash; asmrcctvandpc@gmail.com
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

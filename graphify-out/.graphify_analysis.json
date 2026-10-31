@@ -1,0 +1,212 @@
+{
+  "communities": {
+    "0": [
+      "export_filter_batch",
+      "export_filter_date_created",
+      "export_filter_date_updated",
+      "export_filter_picklist_no",
+      "export_filter_sku",
+      "export_filter_status",
+      "export_filter_user",
+      "picklist_export",
+      "role_based_access",
+      "tasks_export_page",
+      "timestamp_updated_date"
+    ],
+    "1": [
+      "ean_barcode",
+      "fulfillment_dispatch_page",
+      "picklist",
+      "picklist_status_workflow",
+      "task_type_batch",
+      "task_type_cycle_count",
+      "task_type_standard",
+      "timestamp_completed_date",
+      "timestamp_created_date"
+    ],
+    "2": [
+      "batch_code",
+      "item_status_workflow",
+      "order_item",
+      "putaway_process",
+      "sku",
+      "task_type_putaway",
+      "warehouse_location"
+    ],
+    "3": [
+      "admin_users_page",
+      "created_by_field",
+      "order",
+      "picked_by_field",
+      "picking_process",
+      "user_picker"
+    ],
+    "4": [
+      "packing_batch",
+      "packing_consolidated",
+      "packing_shelf",
+      "packing_single_item",
+      "shipping_package"
+    ],
+    "5": [
+      "dispatch_process",
+      "fulfillment_tat",
+      "shipment",
+      "shipment_status_workflow"
+    ]
+  },
+  "cohesion": {
+    "0": 0.18181818181818182,
+    "1": 0.25,
+    "2": 0.2857142857142857,
+    "3": 0.3333333333333333,
+    "4": 0.4,
+    "5": 0.5
+  },
+  "gods": [
+    {
+      "id": "picklist",
+      "label": "Picklist / Task",
+      "degree": 14
+    },
+    {
+      "id": "picklist_export",
+      "label": "Picklist Export Configuration",
+      "degree": 11
+    },
+    {
+      "id": "order_item",
+      "label": "Order Item / Line Item",
+      "degree": 8
+    },
+    {
+      "id": "shipment",
+      "label": "Shipment",
+      "degree": 6
+    },
+    {
+      "id": "user_picker",
+      "label": "User / Picker",
+      "degree": 5
+    },
+    {
+      "id": "shipping_package",
+      "label": "Shipping Package",
+      "degree": 5
+    },
+    {
+      "id": "order",
+      "label": "Sale Order / Order",
+      "degree": 3
+    },
+    {
+      "id": "picking_process",
+      "label": "Picking Process",
+      "degree": 3
+    },
+    {
+      "id": "warehouse_location",
+      "label": "Warehouse Location / Shelf",
+      "degree": 2
+    },
+    {
+      "id": "picklist_status_workflow",
+      "label": "Picklist Status Workflow",
+      "degree": 2
+    }
+  ],
+  "surprises": [
+    {
+      "source": "Picklist / Task",
+      "target": "EAN / Barcode",
+      "source_files": [
+        "unicommerce-data-extraction.md",
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ],
+      "confidence": "INFERRED",
+      "relation": "includes",
+      "why": "inferred connection - not explicitly stated in source; peripheral node `EAN / Barcode` unexpectedly reaches hub `Picklist / Task`"
+    },
+    {
+      "source": "Picklist / Task",
+      "target": "Task Type: Batch Picking",
+      "source_files": [
+        "unicommerce-data-extraction.md",
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ],
+      "confidence": "INFERRED",
+      "relation": "can_be",
+      "why": "inferred connection - not explicitly stated in source; peripheral node `Task Type: Batch Picking` unexpectedly reaches hub `Picklist / Task`"
+    },
+    {
+      "source": "Picklist / Task",
+      "target": "Task Type: Cycle Count",
+      "source_files": [
+        "unicommerce-data-extraction.md",
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ],
+      "confidence": "INFERRED",
+      "relation": "can_be",
+      "why": "inferred connection - not explicitly stated in source; peripheral node `Task Type: Cycle Count` unexpectedly reaches hub `Picklist / Task`"
+    },
+    {
+      "source": "Picklist / Task",
+      "target": "Task Type: Standard Picking",
+      "source_files": [
+        "unicommerce-data-extraction.md",
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ],
+      "confidence": "INFERRED",
+      "relation": "can_be",
+      "why": "inferred connection - not explicitly stated in source; peripheral node `Task Type: Standard Picking` unexpectedly reaches hub `Picklist / Task`"
+    },
+    {
+      "source": "Picklist Export Configuration",
+      "target": "Picklist / Task",
+      "source_files": [
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md",
+        "unicommerce-data-extraction.md"
+      ],
+      "confidence": "INFERRED",
+      "relation": "exports",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `Picklist / Task` connect `Unicommerce Exports` to `Unicommerce Workflows`, `Unicommerce Setup`, `Unicommerce References`, `Unicommerce References`?",
+      "why": "High betweenness centrality (0.759) - this node is a cross-community bridge."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 14 inferred relationships involving `Picklist / Task` (e.g. with `Fulfillment Dispatch Page` and `Picking Process`) actually correct?",
+      "why": "`Picklist / Task` has 14 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "isolated_nodes",
+      "question": "What connects `SKU / Product`, `Batch Code / Lot`, `Item Status Workflow` to the rest of the system?",
+      "why": "29 weakly-connected nodes found - possible documentation gaps or missing edges."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `Picklist Export Configuration` connect `Unicommerce Workflows` to `Unicommerce Exports`?",
+      "why": "High betweenness centrality (0.433) - this node is a cross-community bridge."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 11 inferred relationships involving `Picklist Export Configuration` (e.g. with `Export Filter: Batch Code Contains` and `Export Filter: In Date Range`) actually correct?",
+      "why": "`Picklist Export Configuration` has 11 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `Order Item / Line Item` connect `Unicommerce Setup` to `Unicommerce Exports`, `Unicommerce References`, `Unicommerce References`, `Unicommerce References`?",
+      "why": "High betweenness centrality (0.393) - this node is a cross-community bridge."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 8 inferred relationships involving `Order Item / Line Item` (e.g. with `Sale Order / Order` and `Batch Code / Lot`) actually correct?",
+      "why": "`Order Item / Line Item` has 8 INFERRED edges - model-reasoned connections that need verification."
+    }
+  ]
+}

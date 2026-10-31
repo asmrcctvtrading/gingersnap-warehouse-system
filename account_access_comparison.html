@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Access Level Comparison</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .header-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .account-card {
+            border: 2px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+        .account-card h2 {
+            margin: 0 0 10px 0;
+            font-size: 18px;
+            color: #333;
+        }
+        .account-info {
+            font-size: 14px;
+            margin: 5px 0;
+            color: #666;
+        }
+        .account-info strong {
+            color: #333;
+        }
+        .modules {
+            margin-top: 20px;
+        }
+        .module {
+            margin: 20px 0;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .module-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 15px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .module-header:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+        .module-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 15px;
+        }
+        .submenu-column h4 {
+            margin: 0 0 10px 0;
+            color: #333;
+            font-size: 14px;
+        }
+        .submenu-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .submenu-item {
+            padding: 8px 12px;
+            background: #f9f9f9;
+            margin: 5px 0;
+            border-left: 3px solid #667eea;
+            border-radius: 3px;
+            font-size: 13px;
+            color: #555;
+            display: flex;
+            align-items: center;
+        }
+        .submenu-item.access-yes::before {
+            content: "✓";
+            color: #4caf50;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        .match {
+            background: #e8f5e9;
+            border-left-color: #4caf50;
+        }
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+            font-size: 13px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Barter RMS Account Access Level Comparison</h1>
+
+        <div class="header-info">
+            <div class="account-card">
+                <h2>Reniel Erick Dadulla</h2>
+                <div class="account-info"><strong>Username:</strong> redadulla</div>
+                <div class="account-info"><strong>Account:</strong> ilcbcorp</div>
+                <div class="account-info"><strong>Tier:</strong> SME Premium</div>
+                <div class="account-info"><strong>Server:</strong> HO SERVER - G HEADOFFICE</div>
+                <div class="account-info"><strong>Status:</strong> Active</div>
+            </div>
+            <div class="account-card">
+                <h2>Odyssey Jan Pascual</h2>
+                <div class="account-info"><strong>Username:</strong> odyssey.pascual</div>
+                <div class="account-info"><strong>Account:</strong> ilcbcorp</div>
+                <div class="account-info"><strong>Tier:</strong> SME Premium</div>
+                <div class="account-info"><strong>Server:</strong> HO SERVER - Default Site</div>
+                <div class="account-info"><strong>Status:</strong> Active</div>
+            </div>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <span style="color: #4caf50; font-weight: bold;">✓</span>
+                <span>Access Granted</span>
+            </div>
+            <div class="legend-item">
+                <span style="background: #e8f5e9; padding: 2px 6px; border-radius: 3px;">Match</span>
+                <span>Both have access</span>
+            </div>
+        </div>
+
+        <div class="modules">
+            <!-- DASHBOARD -->
+            <div class="module">
+                <div class="module-header">📊 DASHBOARD</div>
+                <div class="module-content">
+                    <div class="submenu-column">
+                        <h4>Reniel (redadulla)</h4>
+                        <ul class="submenu-list">
+                            <li class="submenu-item access-yes match">Sales Dashboard</li>
+                            <li class="submenu-item access-yes match">Support Dashboard</li>
+                        </ul>
+                    </div>
+                    <div class="submenu-column">
+                        <h4>Odyssey (odyssey.pascual)</h4>
+                        <ul class="submenu-list">
+                            <li class="submenu-item access-yes match">Sales Dashboard</li>
+                            <li class="submenu-item access-yes match">Support Dashboard</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ORDER MANAGEMENT -->
+            <div class="module">
+                <div class="module-header">📋 ORDER MANAGEMENT</div>
+                <div class="module-content">
+                    <div class="submenu-column">
+                        <h4>Reniel (redadulla)</h4>
+                        <ul class="submenu-list">
+                            <li class="submenu-item access-yes match">Sales Order</li>
+                            <li class="submenu-item access-yes match">Delivery Document</li>
+                            <li class="submenu-item access-yes match">Sales Invoice</li>
+                            <li class="submenu-item access-yes match">Customer Return</li>
+                            <li class="submenu-item access-yes match">Sales Channel Management</li>
+                        </ul>
+                    </div>
+                    <div class="submenu-column">
+                        <h4>Odyssey (odyssey.pascual)</h4>
+                        <ul class="submenu-list">
+                            <li class="submenu-item access-yes match">Sales Order</li>
+                            <li class="submenu-item access-yes match">Delivery Document</li>
+                            <li class="submenu-item access-yes match">Sales Invoice</li>
+                            <li class="submenu-item access-yes match">Customer Return</li>
+                            <li class="submenu-item access-yes match">Sales Channel Management</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PURCHASE TO PAYMENT -->
+            <div class="module">
+                <div class="module-header">💳 PURCHASE TO PAYMENT</div>
+                <div class="module-content">
+                    <div class="submenu-column">
+                        <h4>Reniel (redadulla)</h4>
+                        <ul class="submenu-list">
+                            <li class="submenu-item access-yes match">Purchase Order</li>
+                            <li class="submenu-item access-yes match">Receiving Report</li>
+                            <li class="submenu-item access-yes match">Purchase Return</li>
+                            <li class="submenu-item access-yes match">Purchase Request</li>
+                        </ul>
+                    </div>
+                    <div class="submenu-column">
+                        <h4>Odyssey (odyssey.pascual)</h4>
+                        <ul class="submenu-list">
+                            <li class="submenu-item access-yes match">Purchase Order</li>
+                            <li class="submenu-item access-yes match">Receiving Report</li>
+                            <li class="submenu-item access-yes match">Purchase Return</li>
+                            <li class="submenu-item access-yes match">Purchase Request</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- INVENTORY MANAGEMENT -->
+            <div class="module">
+                <div class="module-header">📦 INVENTORY MANAGEMENT</div>
+                <div class="module-content">
+                    <div class="submenu-column">
+                        <h4>Reniel (redadulla)</h4>
+                        <ul class="submenu-list">
+                            <li class="submenu-item access-yes match">Stock Request On Order</li>
+                            <li class="submenu-item access-yes match">Stock Transfer In</li>
+                            <li class="submenu-item access-yes match">Stock Transfer Out</li>
+                            <li class="submenu-item access-yes match">Stock Request For Serving</li>
+                            <li class="submenu-item access-yes match">Adjustment In</li>
+                            <li class="submenu-item access-yes match">Adjustment Out</li>
+                            <li class="submenu-item access-yes match">Assemble</li>
+                            <li class="submenu-item access-yes match">Disassemble</li>
+                            <li class="submenu-item access-yes match">Physical Count</li>
+                        </ul>
+                    </div>
+                    <div class="submenu-column">
+                        <h4>Odyssey (odyssey.pascual)</h4>
+                        <ul class="submenu-list">
+                            <li class="submenu-item access-yes match">Stock Request On Order</li>
+                            <li class="submenu-item access-yes match">Stock Transfer In</li>
+                            <li class="submenu-item access-yes match">Stock Transfer Out</li>
+                            <li class="submenu-item access-yes match">Stock Request For Serving</li>
+                            <li class="submenu-item access-yes match">Adjustment In</li>
+                            <li class="submenu-item access-yes match">Adjustment Out</li>
+                            <li class="submenu-item access-yes match">Assemble</li>
+                            <li class="submenu-item access-yes match">Disassemble</li>
+                            <li class="submenu-item access-yes match">Physical Count</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MASTER DATA MANAGEMENT -->
+            <div class="module">
+                <div class="module-header">⚙️ MASTER DATA MANAGEMENT</div>
+                <div class="module-content">
+                    <div class="submenu-column">
+                        <h4>Reniel (redadulla)</h4>
+                        <ul class="submenu-list">
+                            <li class="submenu-item access-yes match">Product Management</li>
+                            <li class="submenu-item access-yes match">Supplier Management</li>
+                            <li class="submenu-item access-yes match">Customer Management</li>
+                            <li class="submenu-item access-yes match">Promotions Management</li>
+                            <li class="submenu-item access-yes match">Gift Certificate Management</li>
+                            <li class="submenu-item access-yes match">Promotion Management V2</li>
+                        </ul>
+                    </div>
+                    <div class="submenu-column">
+                        <h4>Odyssey (odyssey.pascual)</h4>
+                        <ul class="submenu-list">
+                            <li class="submenu-item access-yes match">Product Management</li>
+                            <li class="submenu-item access-yes match">Supplier Management</li>
+                            <li class="submenu-item access-yes match">Customer Management</li>
+                            <li class="submenu-item access-yes match">Promotions Management</li>
+                            <li class="submenu-item access-yes match">Gift Certificate Management</li>
+                            <li class="submenu-item access-yes match">Promotion Management V2</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REPORTS -->
+            <div class="module">
+                <div class="module-header">📈 REPORTS</div>
+                <div class="module-content">
+                    <div class="submenu-column">
+                        <h4>Reniel (redadulla)</h4>
+                        <ul class="submenu-list">
+                            <li class="submenu-item access-yes match">Basic CLP Reports</li>
+                            <li class="submenu-item access-yes match">Basic Sales Reports</li>
+                            <li class="submenu-item access-yes match">Basic Inventory Reports</li>
+                            <li class="submenu-item access-yes match">Basic Operations Reports</li>
+                            <li class="submenu-item access-yes match">Purchase To Payment Operations</li>
+                            <li class="submenu-item access-yes match">Inventory Transfer Operations</li>
+                            <li class="submenu-item access-yes match">Inventory Adjustment Operations</li>
+                            <li class="submenu-item access-yes match">BIR Reports</li>
+                        </ul>
+                    </div>
+                    <div class="submenu-column">
+                        <h4>Odyssey (odyssey.pascual)</h4>
+                        <ul class="submenu-list">
+                            <li class="submenu-item access-yes match">Basic CLP Reports</li>
+                            <li class="submenu-item access-yes match">Basic Sales Reports</li>
+                            <li class="submenu-item access-yes match">Basic Inventory Reports</li>
+                            <li class="submenu-item access-yes match">Basic Operations Reports</li>
+                            <li class="submenu-item access-yes match">Purchase To Payment Operations</li>
+                            <li class="submenu-item access-yes match">Inventory Transfer Operations</li>
+                            <li class="submenu-item access-yes match">Inventory Adjustment Operations</li>
+                            <li class="submenu-item access-yes match">BIR Reports</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- POS SETTINGS -->
+            <div class="module">
+                <div class="module-header">🛒 POS SETTINGS</div>
+                <div class="module-content">
+                    <div class="submenu-column">
+                        <h4>Reniel (redadulla)</h4>
+                        <ul class="submenu-list">
+                            <li class="submenu-item access-yes match">POS Configuration Settings</li>
+                            <li class="submenu-item access-yes match">POS Admin Tools</li>
+                            <li class="submenu-item access-yes match">POS Documents</li>
+                            <li class="submenu-item access-yes match">POS Readings</li>
+                        </ul>
+                    </div>
+                    <div class="submenu-column">
+                        <h4>Odyssey (odyssey.pascual)</h4>
+                        <ul class="submenu-list">
+                            <li class="submenu-item access-yes match">POS Configuration Settings</li>
+                            <li class="submenu-item access-yes match">POS Admin Tools</li>
+                            <li class="submenu-item access-yes match">POS Documents</li>
+                            <li class="submenu-item access-yes match">POS Readings</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- USER MANAGEMENT -->
+            <div class="module">
+                <div class="module-header">👥 USER MANAGEMENT</div>
+                <div class="module-content">
+                    <div class="submenu-column">
+                        <h4>Reniel (redadulla)</h4>
+                        <ul class="submenu-list">
+                            <li class="submenu-item access-yes match">User</li>
+                            <li class="submenu-item access-yes match">User Group</li>
+                        </ul>
+                    </div>
+                    <div class="submenu-column">
+                        <h4>Odyssey (odyssey.pascual)</h4>
+                        <ul class="submenu-list">
+                            <li class="submenu-item access-yes match">User</li>
+                            <li class="submenu-item access-yes match">User Group</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MMS CONFIGURATION SETTINGS -->
+            <div class="module">
+                <div class="module-header">⚙️ MMS CONFIGURATION SETTINGS</div>
+                <div class="module-content">
+                    <div class="submenu-column">
+                        <h4>Reniel (redadulla)</h4>
+                        <ul class="submenu-list">
+                            <li class="submenu-item access-yes match">Product Attributes</li>
+                            <li class="submenu-item access-yes match">Customer Attributes</li>
+                            <li class="submenu-item access-yes match">Supplier Attributes</li>
+                            <li class="submenu-item access-yes match">Document Attributes</li>
+                            <li class="submenu-item access-yes match">Company Attributes</li>
+                        </ul>
+                    </div>
+                    <div class="submenu-column">
+                        <h4>Odyssey (odyssey.pascual)</h4>
+                        <ul class="submenu-list">
+                            <li class="submenu-item access-yes match">Product Attributes</li>
+                            <li class="submenu-item access-yes match">Customer Attributes</li>
+                            <li class="submenu-item access-yes match">Supplier Attributes</li>
+                            <li class="submenu-item access-yes match">Document Attributes</li>
+                            <li class="submenu-item access-yes match">Company Attributes</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MY APPS -->
+            <div class="module">
+                <div class="module-header">📱 MY APPS</div>
+                <div class="module-content">
+                    <div class="submenu-column">
+                        <h4>Reniel (redadulla)</h4>
+                        <ul class="submenu-list">
+                            <li class="submenu-item access-yes match">Devices</li>
+                            <li class="submenu-item access-yes match">BXI Apps</li>
+                        </ul>
+                    </div>
+                    <div class="submenu-column">
+                        <h4>Odyssey (odyssey.pascual)</h4>
+                        <ul class="submenu-list">
+                            <li class="submenu-item access-yes match">Devices</li>
+                            <li class="submenu-item access-yes match">BXI Apps</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRODUCT SUPPORT -->
+            <div class="module">
+                <div class="module-header">📚 PRODUCT SUPPORT</div>
+                <div class="module-content">
+                    <div class="submenu-column">
+                        <h4>Reniel (redadulla)</h4>
+                        <ul class="submenu-list">
+                            <li class="submenu-item access-yes match">What's New</li>
+                            <li class="submenu-item access-yes match">BXI RMS Docs</li>
+                            <li class="submenu-item access-yes match">BXI C# POS Docs</li>
+                        </ul>
+                    </div>
+                    <div class="submenu-column">
+                        <h4>Odyssey (odyssey.pascual)</h4>
+                        <ul class="submenu-list">
+                            <li class="submenu-item access-yes match">What's New</li>
+                            <li class="submenu-item access-yes match">BXI RMS Docs</li>
+                            <li class="submenu-item access-yes match">BXI C# POS Docs</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 30px; padding: 15px; background: #e8f5e9; border-radius: 8px; text-align: center;">
+            <strong>✓ RESULT: Both accounts have IDENTICAL access levels and permissions</strong>
+            <p style="margin: 10px 0 0 0; color: #666; font-size: 13px;">Only difference: Server type (G HEADOFFICE vs Default Site)</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,7 @@
+Picklist_Code,Sale_Order_Code,Sale_Order_Item_Code,Item_SkuCode,Item_Type_Name,Shipping_Package_Code,Shelf_Code,Batch_Code,Picklist_Status,Item_Status,Picklist_Created_By,Created_Date,Updated_Date,EAN,Picked_By,Operations
+
+PT-SAMPLE-001,SO-112191,SO-112191-001,SKU-ASMR-001,Surveillance Camera,"PKG-001","SHELF-A1","BATCH-2026-001",IN_PROGRESS,In Progress,allocator01@gingersnaps.com,2026-09-01T08:30:00Z,2026-09-01T10:15:00Z,8901234567890,allocator01,Update/Complete
+
+PT-SAMPLE-002,SO-112192,SO-112192-001,SKU-ASMR-002,NVR System,"PKG-002","SHELF-B2","BATCH-2026-002",PENDING,In Progress,allocator02@gingersnaps.com,2026-09-02T09:00:00Z,2026-09-02T09:00:00Z,8901234567891,,View/Assign
+
+PT-SAMPLE-003,SO-112193,SO-112193-001,SKU-ASMR-003,Network Switch,"PKG-003","SHELF-C3","BATCH-2026-003",COMPLETED,Dispatched,allocator03@gingersnaps.com,2026-08-31T14:45:00Z,2026-09-01T16:20:00Z,8901234567892,allocator01,View/Reopen

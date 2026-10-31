@@ -1,0 +1,16 @@
+# Known issues / open questions
+
+1. Everything is unexecuted draft (see TEST_RESULTS.md).
+2. Hosting facts. PHP version **8.4.27 (stated by the user, not independently verified)**. Still unverified: enabled extensions (need pdo_mysql, mbstring, fileinfo), upload_max_filesize, post_max_size, memory_limit, max_execution_time, document root, and availability of `public_html/warehouse-productivity/`. Code must be 8.4-clean: no implicit nullable parameter types (`?T $x = null`, never `T $x = null`), no deprecated `E_STRICT`/`session.*` ini hacks, explicit `$escape` argument in `fputcsv`/`fgetcsv`/`str_getcsv` (the default is deprecated from 8.4).
+3. CHECK constraints are enforced on MariaDB 10.2+/MySQL 8.0.16+ but silently ignored on older MySQL; the application also validates these rules.
+4. Import template columns are a proposal; the real Uniware export format has not been seen. Scope decided: outbound order picking + packing only (putaway excluded). The Uniware type values for outbound picking/packing, and the packing data structure, are unknown until a real export is provided.
+5. No pause/resume or shift data: durations are wall-clock and utilisation is not calculable (see METRICS.md).
+6. Excel import deliberately excluded from release 1; CCTV is schema placeholder only.
+8. Bootstrap 5 is not vendored (no download was made). Pages use `assets/css/app.css`; drop Bootstrap into `assets/vendor/bootstrap/bootstrap.min.css` and the layout loads it automatically. CSP is same-origin only, so no CDN.
+9. No per-IP login throttling yet, only per-account lockout (5 failures -> 15 min). Failed logins for unknown usernames are audited. Consider cPanel/host-level rate limiting.
+10. Installer: DDL auto-commits in MySQL/MariaDB, so a failure part-way leaves a partial schema; retry needs a fresh empty database (the installer refuses a non-empty one by design, and never drops anything). It also refuses any database name containing "gingersnaps".
+14. Sample file `unicommerce_picklist_export_structure.csv` (24 Oct 2026) is a structure sketch with placeholder values, not a verified export. It has no picklist Type column, no quantity column, no packing data and no warehouse column; dates are ISO 8601 `Z` (UTC) and `Updated_Date` is only an approximate completion time. The provisional mapping is in ARCHITECTURE.md. The importer (milestone 5) stays NOT STARTED until a real export is checked. `parse_datetime` in `app/lib/validate.php` does not accept `T`/`Z` yet. `schema.sql` gained `task_items.sale_order_item_code/shelf_code/batch_code/ean` (still unexecuted draft).
+11. `import_max_bytes` (2 MB) and `import_max_rows` (5000) are conservative placeholders until the real upload limits are known. `import_allowed_types` is empty on purpose, which blocks imports until set.
+12. Session cookie is scoped to the app's base path, so it does not collide with the Warehouse Inventory System session. HSTS is intentionally not sent by the app (it is host-wide); enable "Force HTTPS" in cPanel instead.
+13. User/employee/warehouse admin screens do not exist yet, so there is no UI to create supervisors or employee accounts; only the installer-created admin exists.
+7. Sub-agent dispatch was unavailable in this session (classifier outage), so the architect wrote these files directly; no independent review has happened yet.

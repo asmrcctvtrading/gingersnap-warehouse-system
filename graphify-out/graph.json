@@ -1,0 +1,990 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "id": "role_based_access",
+      "label": "Role-Based Access Control",
+      "community": 0,
+      "confidence": 0.88,
+      "description": "Access control requiring Admin or Allocator role to view picklist data. User role determines permissions.",
+      "file_type": "concept",
+      "node_type": "concept",
+      "norm_label": "role-based access control",
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md",
+      "source_files": [
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "export_filter_batch",
+      "label": "Export Filter: Batch Code Contains",
+      "community": 0,
+      "confidence": 0.88,
+      "description": "Filter export by batch code pattern matching.",
+      "file_type": "concept",
+      "node_type": "concept",
+      "norm_label": "export filter: batch code contains",
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md",
+      "source_files": [
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "export_filter_date_created",
+      "label": "Export Filter: In Date Range",
+      "community": 0,
+      "confidence": 0.88,
+      "description": "Filter export by creation date range.",
+      "file_type": "concept",
+      "node_type": "concept",
+      "norm_label": "export filter: in date range",
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md",
+      "source_files": [
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "export_filter_date_updated",
+      "label": "Export Filter: Updated In Date Range",
+      "community": 0,
+      "confidence": 0.88,
+      "description": "Filter export by modification date range.",
+      "file_type": "concept",
+      "node_type": "concept",
+      "norm_label": "export filter: updated in date range",
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md",
+      "source_files": [
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "export_filter_user",
+      "label": "Export Filter: User Name Contains",
+      "community": 0,
+      "confidence": 0.88,
+      "description": "Filter export by picker/user name pattern matching.",
+      "file_type": "concept",
+      "node_type": "concept",
+      "norm_label": "export filter: user name contains",
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md",
+      "source_files": [
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "export_filter_picklist_no",
+      "label": "Export Filter: Picklist No.",
+      "community": 0,
+      "confidence": 0.88,
+      "description": "Filter export by picklist code pattern matching.",
+      "file_type": "concept",
+      "node_type": "concept",
+      "norm_label": "export filter: picklist no.",
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md",
+      "source_files": [
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "export_filter_status",
+      "label": "Export Filter: Status",
+      "community": 0,
+      "confidence": 0.88,
+      "description": "Filter export by picklist status (CREATED/PENDING/IN_PROGRESS/COMPLETED).",
+      "file_type": "concept",
+      "node_type": "concept",
+      "norm_label": "export filter: status",
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md",
+      "source_files": [
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "export_filter_sku",
+      "label": "Export Filter: Item Type SkuCode",
+      "community": 0,
+      "confidence": 0.88,
+      "description": "Filter export by product SKU code.",
+      "file_type": "concept",
+      "node_type": "concept",
+      "norm_label": "export filter: item type skucode",
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md",
+      "source_files": [
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "picklist_export",
+      "label": "Picklist Export Configuration",
+      "community": 0,
+      "confidence": 0.9,
+      "description": "Export feature at Tasks > Export Configurations > Picklist Export. Supports CSV/Excel/JSON formats with configurable columns.",
+      "file_type": "concept",
+      "node_type": "procedure",
+      "norm_label": "picklist export configuration",
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md",
+      "source_files": [
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "tasks_export_page",
+      "label": "Tasks Export Configuration Page",
+      "community": 0,
+      "confidence": 0.9,
+      "description": "Navigation path: Tasks > Export Configurations > Picklist Export. Export configuration and scheduling interface.",
+      "file_type": "concept",
+      "node_type": "navigation",
+      "norm_label": "tasks export configuration page",
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md",
+      "source_files": [
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "timestamp_updated_date",
+      "label": "Updated Date Timestamp",
+      "community": 0,
+      "confidence": 0.92,
+      "description": "DateTime field recording last modification to picklist record.",
+      "file_type": "concept",
+      "node_type": "entity",
+      "norm_label": "updated date timestamp",
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md",
+      "source_files": [
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "ean_barcode",
+      "label": "EAN / Barcode",
+      "community": 1,
+      "confidence": 0.8,
+      "description": "European Article Number barcode for product identification in export data.",
+      "file_type": "concept",
+      "node_type": "entity",
+      "norm_label": "ean / barcode",
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md",
+      "source_files": [
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "task_type_cycle_count",
+      "label": "Task Type: Cycle Count",
+      "community": 1,
+      "confidence": 0.8,
+      "description": "Inventory cycle count task for stock verification operations.",
+      "file_type": "concept",
+      "node_type": "concept",
+      "norm_label": "task type: cycle count",
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md",
+      "source_files": [
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "task_type_batch",
+      "label": "Task Type: Batch Picking",
+      "community": 1,
+      "confidence": 0.8,
+      "description": "Multi-order batch picking for high-volume operations.",
+      "file_type": "concept",
+      "node_type": "concept",
+      "norm_label": "task type: batch picking",
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md",
+      "source_files": [
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "task_type_standard",
+      "label": "Task Type: Standard Picking",
+      "community": 1,
+      "confidence": 0.8,
+      "description": "Regular outbound picking task for order fulfillment.",
+      "file_type": "concept",
+      "node_type": "concept",
+      "norm_label": "task type: standard picking",
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md",
+      "source_files": [
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "timestamp_completed_date",
+      "label": "Completed Date Timestamp",
+      "community": 1,
+      "confidence": 0.88,
+      "description": "DateTime field recording when picklist was completed. Inferred from status change to COMPLETED.",
+      "file_type": "concept",
+      "node_type": "entity",
+      "norm_label": "completed date timestamp",
+      "source_file": "unicommerce-data-extraction.md",
+      "source_files": [
+        "unicommerce-data-extraction.md"
+      ]
+    },
+    {
+      "id": "fulfillment_dispatch_page",
+      "label": "Fulfillment Dispatch Page",
+      "community": 1,
+      "confidence": 0.9,
+      "description": "Navigation path: Fulfillment > Dispatch > Picklists (/picklists). Primary interface for picklist management.",
+      "file_type": "concept",
+      "node_type": "navigation",
+      "norm_label": "fulfillment dispatch page",
+      "source_file": "unicommerce-data-extraction.md",
+      "source_files": [
+        "unicommerce-data-extraction.md"
+      ]
+    },
+    {
+      "id": "timestamp_created_date",
+      "label": "Created Date Timestamp",
+      "community": 1,
+      "confidence": 0.92,
+      "description": "DateTime field recording when picklist was created/generated.",
+      "file_type": "concept",
+      "node_type": "entity",
+      "norm_label": "created date timestamp",
+      "source_file": "unicommerce-data-extraction.md",
+      "source_files": [
+        "unicommerce-data-extraction.md",
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "picklist",
+      "label": "Picklist / Task",
+      "community": 1,
+      "confidence": 0.95,
+      "description": "Picking task with unique picklist code (PT-prefixed). Has status (CREATED/PENDING/IN_PROGRESS/COMPLETED) and tracks assigned picker.",
+      "file_type": "concept",
+      "node_type": "concept",
+      "norm_label": "picklist / task",
+      "source_file": "unicommerce-data-extraction.md",
+      "source_files": [
+        "unicommerce-data-extraction.md",
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "picklist_status_workflow",
+      "label": "Picklist Status Workflow",
+      "community": 1,
+      "confidence": 0.95,
+      "description": "State machine: CREATED \u2192 PENDING \u2192 IN_PROGRESS \u2192 COMPLETED. Tracks picklist/task progression.",
+      "file_type": "concept",
+      "node_type": "workflow",
+      "norm_label": "picklist status workflow",
+      "source_file": "unicommerce-data-extraction.md",
+      "source_files": [
+        "unicommerce-data-extraction.md",
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "task_type_putaway",
+      "label": "Task Type: Putaway Gatepass Item",
+      "community": 2,
+      "confidence": 0.85,
+      "description": "Inbound picking task type for gatepass items during receiving/putaway operations.",
+      "file_type": "concept",
+      "node_type": "concept",
+      "norm_label": "task type: putaway gatepass item",
+      "source_file": "unicommerce-data-extraction.md",
+      "source_files": [
+        "unicommerce-data-extraction.md",
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "putaway_process",
+      "label": "Putaway / Inbound Process",
+      "community": 2,
+      "confidence": 0.88,
+      "description": "Inbound task workflow using PUTAWAY_GATEPASS_ITEM task type. Gatepass items received and placed in warehouse locations.",
+      "file_type": "concept",
+      "node_type": "procedure",
+      "norm_label": "putaway / inbound process",
+      "source_file": "unicommerce-data-extraction.md",
+      "source_files": [
+        "unicommerce-data-extraction.md",
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "batch_code",
+      "label": "Batch Code / Lot",
+      "community": 2,
+      "confidence": 0.88,
+      "description": "Inventory batch/lot identifier linking items to production batches.",
+      "file_type": "concept",
+      "node_type": "entity",
+      "norm_label": "batch code / lot",
+      "source_file": "unicommerce-data-extraction.md",
+      "source_files": [
+        "unicommerce-data-extraction.md",
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "warehouse_location",
+      "label": "Warehouse Location / Shelf",
+      "community": 2,
+      "confidence": 0.9,
+      "description": "Physical warehouse location where items are stored (e.g., SHELF-A1, SHELF-B2). Local Warehouse 20 identified for Gingersnaps.",
+      "file_type": "concept",
+      "node_type": "entity",
+      "norm_label": "warehouse location / shelf",
+      "source_file": "unicommerce-data-extraction.md",
+      "source_files": [
+        "unicommerce-data-extraction.md",
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "sku",
+      "label": "SKU / Product",
+      "community": 2,
+      "confidence": 0.9,
+      "description": "Product identifier (SKU code), links to item type name and category information.",
+      "file_type": "concept",
+      "node_type": "entity",
+      "norm_label": "sku / product",
+      "source_file": "unicommerce-data-extraction.md",
+      "source_files": [
+        "unicommerce-data-extraction.md",
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "order_item",
+      "label": "Order Item / Line Item",
+      "community": 2,
+      "confidence": 0.93,
+      "description": "Individual item line in an order with SKU, quantity, location, and status tracking.",
+      "file_type": "concept",
+      "node_type": "entity",
+      "norm_label": "order item / line item",
+      "source_file": "unicommerce-data-extraction.md",
+      "source_files": [
+        "unicommerce-data-extraction.md",
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "item_status_workflow",
+      "label": "Item Status Workflow",
+      "community": 2,
+      "confidence": 0.93,
+      "description": "Item state progression: In Progress \u2192 Dispatched, with branching to Cancelled/Returned/Replaced/Reshipped.",
+      "file_type": "concept",
+      "node_type": "workflow",
+      "norm_label": "item status workflow",
+      "source_file": "unicommerce-data-extraction.md",
+      "source_files": [
+        "unicommerce-data-extraction.md",
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "admin_users_page",
+      "label": "Admin Users Page",
+      "community": 3,
+      "confidence": 0.9,
+      "description": "Navigation path: Admin > Users (/admin/system/users). Central location for user/picker management.",
+      "file_type": "concept",
+      "node_type": "navigation",
+      "norm_label": "admin users page",
+      "source_file": "unicommerce-data-extraction.md",
+      "source_files": [
+        "unicommerce-data-extraction.md"
+      ]
+    },
+    {
+      "id": "picked_by_field",
+      "label": "Picked By / Assigned To",
+      "community": 3,
+      "confidence": 0.9,
+      "description": "User field tracking which picker is assigned to complete the picklist. Foreign key to User table.",
+      "file_type": "concept",
+      "node_type": "entity",
+      "norm_label": "picked by / assigned to",
+      "source_file": "unicommerce-data-extraction.md",
+      "source_files": [
+        "unicommerce-data-extraction.md",
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "created_by_field",
+      "label": "Created By / Generated By",
+      "community": 3,
+      "confidence": 0.9,
+      "description": "User field tracking who created/generated the picklist. Foreign key to User table.",
+      "file_type": "concept",
+      "node_type": "entity",
+      "norm_label": "created by / generated by",
+      "source_file": "unicommerce-data-extraction.md",
+      "source_files": [
+        "unicommerce-data-extraction.md",
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "picking_process",
+      "label": "Picking Process",
+      "community": 3,
+      "confidence": 0.93,
+      "description": "Outbound picking workflow: Order received \u2192 Picklist created \u2192 Picker assigned \u2192 Items picked \u2192 Status updated to COMPLETED.",
+      "file_type": "concept",
+      "node_type": "procedure",
+      "norm_label": "picking process",
+      "source_file": "unicommerce-data-extraction.md",
+      "source_files": [
+        "unicommerce-data-extraction.md",
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "order",
+      "label": "Sale Order / Order",
+      "community": 3,
+      "confidence": 0.93,
+      "description": "Purchase/sale order with order code (SO-prefixed), contains multiple order items and shipments.",
+      "file_type": "concept",
+      "node_type": "entity",
+      "norm_label": "sale order / order",
+      "source_file": "unicommerce-data-extraction.md",
+      "source_files": [
+        "unicommerce-data-extraction.md",
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "user_picker",
+      "label": "User / Picker",
+      "community": 3,
+      "confidence": 0.95,
+      "description": "System user with email, phone, name, role (Admin/User/Picker/Allocator). Unique identifier via username or email.",
+      "file_type": "concept",
+      "node_type": "entity",
+      "norm_label": "user / picker",
+      "source_file": "unicommerce-data-extraction.md",
+      "source_files": [
+        "unicommerce-data-extraction.md",
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "packing_shelf",
+      "label": "Packing Method: Shelf-Based Pack",
+      "community": 4,
+      "confidence": 0.75,
+      "description": "All items from one shelf location packing method.",
+      "file_type": "concept",
+      "node_type": "concept",
+      "norm_label": "packing method: shelf-based pack",
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md",
+      "source_files": [
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "packing_batch",
+      "label": "Packing Method: Batch Pack",
+      "community": 4,
+      "confidence": 0.75,
+      "description": "Items from same batch grouped together packing method.",
+      "file_type": "concept",
+      "node_type": "concept",
+      "norm_label": "packing method: batch pack",
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md",
+      "source_files": [
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "packing_consolidated",
+      "label": "Packing Method: Consolidated Pack",
+      "community": 4,
+      "confidence": 0.75,
+      "description": "Multiple items in one package packing method.",
+      "file_type": "concept",
+      "node_type": "concept",
+      "norm_label": "packing method: consolidated pack",
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md",
+      "source_files": [
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "packing_single_item",
+      "label": "Packing Method: Single Item Pack",
+      "community": 4,
+      "confidence": 0.75,
+      "description": "One product per package packing method.",
+      "file_type": "concept",
+      "node_type": "concept",
+      "norm_label": "packing method: single item pack",
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md",
+      "source_files": [
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "shipping_package",
+      "label": "Shipping Package",
+      "community": 4,
+      "confidence": 0.88,
+      "description": "Packaging unit grouping items for shipment, can contain single or multiple SKUs.",
+      "file_type": "concept",
+      "node_type": "entity",
+      "norm_label": "shipping package",
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md",
+      "source_files": [
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    },
+    {
+      "id": "fulfillment_tat",
+      "label": "Fulfillment TAT / SLA",
+      "community": 5,
+      "confidence": 0.85,
+      "description": "Fulfillment target completion date for order/shipment SLA tracking.",
+      "file_type": "concept",
+      "node_type": "concept",
+      "norm_label": "fulfillment tat / sla",
+      "source_file": "unicommerce-data-extraction.md",
+      "source_files": [
+        "unicommerce-data-extraction.md"
+      ]
+    },
+    {
+      "id": "dispatch_process",
+      "label": "Dispatch Process",
+      "community": 5,
+      "confidence": 0.88,
+      "description": "Final shipment stage: Items picked \u2192 Shipment status changes to DISPATCHED \u2192 Ready for shipping.",
+      "file_type": "concept",
+      "node_type": "procedure",
+      "norm_label": "dispatch process",
+      "source_file": "unicommerce-data-extraction.md",
+      "source_files": [
+        "unicommerce-data-extraction.md"
+      ]
+    },
+    {
+      "id": "shipment_status_workflow",
+      "label": "Shipment Status Workflow",
+      "community": 5,
+      "confidence": 0.9,
+      "description": "Shipment-level states: PICKING \u2192 PICKED \u2192 DISPATCHED, with error state LOCATION_NOT_SERVICEABLE.",
+      "file_type": "concept",
+      "node_type": "workflow",
+      "norm_label": "shipment status workflow",
+      "source_file": "unicommerce-data-extraction.md",
+      "source_files": [
+        "unicommerce-data-extraction.md"
+      ]
+    },
+    {
+      "id": "shipment",
+      "label": "Shipment",
+      "community": 5,
+      "confidence": 0.95,
+      "description": "Shipment unit with code (LOCA-prefixed), status (PICKING/PICKED/DISPATCHED), linked to orders and items.",
+      "file_type": "concept",
+      "node_type": "entity",
+      "norm_label": "shipment",
+      "source_file": "unicommerce-data-extraction.md",
+      "source_files": [
+        "unicommerce-data-extraction.md",
+        "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+      ]
+    }
+  ],
+  "links": [
+    {
+      "source": "shipping_package",
+      "target": "packing_batch",
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+    },
+    {
+      "source": "shipping_package",
+      "target": "packing_consolidated",
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+    },
+    {
+      "source": "shipping_package",
+      "target": "packing_shelf",
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+    },
+    {
+      "source": "shipping_package",
+      "target": "packing_single_item",
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+    },
+    {
+      "source": "picklist",
+      "target": "task_type_batch",
+      "relation": "can_be",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+    },
+    {
+      "source": "picklist",
+      "target": "task_type_cycle_count",
+      "relation": "can_be",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+    },
+    {
+      "source": "picklist",
+      "target": "task_type_standard",
+      "relation": "can_be",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+    },
+    {
+      "source": "picklist",
+      "target": "ean_barcode",
+      "relation": "includes",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+    },
+    {
+      "source": "picklist",
+      "target": "task_type_putaway",
+      "relation": "can_be",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+    },
+    {
+      "source": "picklist_status_workflow",
+      "target": "fulfillment_dispatch_page",
+      "relation": "managed_at",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "unicommerce-data-extraction.md"
+    },
+    {
+      "source": "fulfillment_tat",
+      "target": "shipment",
+      "relation": "sets_deadline_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "unicommerce-data-extraction.md"
+    },
+    {
+      "source": "order_item",
+      "target": "batch_code",
+      "relation": "belongs_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.88,
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+    },
+    {
+      "source": "dispatch_process",
+      "target": "shipment",
+      "relation": "finalizes",
+      "confidence": "INFERRED",
+      "confidence_score": 0.88,
+      "source_file": "unicommerce-data-extraction.md"
+    },
+    {
+      "source": "shipping_package",
+      "target": "order_item",
+      "relation": "groups",
+      "confidence": "INFERRED",
+      "confidence_score": 0.88,
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+    },
+    {
+      "source": "picklist",
+      "target": "timestamp_completed_date",
+      "relation": "has",
+      "confidence": "INFERRED",
+      "confidence_score": 0.88,
+      "source_file": "unicommerce-data-extraction.md"
+    },
+    {
+      "source": "putaway_process",
+      "target": "warehouse_location",
+      "relation": "places_items_in",
+      "confidence": "INFERRED",
+      "confidence_score": 0.88,
+      "source_file": "unicommerce-data-extraction.md"
+    },
+    {
+      "source": "picklist_export",
+      "target": "role_based_access",
+      "relation": "requires",
+      "confidence": "INFERRED",
+      "confidence_score": 0.88,
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+    },
+    {
+      "source": "picklist_export",
+      "target": "export_filter_batch",
+      "relation": "supports",
+      "confidence": "INFERRED",
+      "confidence_score": 0.88,
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+    },
+    {
+      "source": "picklist_export",
+      "target": "export_filter_date_created",
+      "relation": "supports",
+      "confidence": "INFERRED",
+      "confidence_score": 0.88,
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+    },
+    {
+      "source": "picklist_export",
+      "target": "export_filter_date_updated",
+      "relation": "supports",
+      "confidence": "INFERRED",
+      "confidence_score": 0.88,
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+    },
+    {
+      "source": "picklist_export",
+      "target": "export_filter_picklist_no",
+      "relation": "supports",
+      "confidence": "INFERRED",
+      "confidence_score": 0.88,
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+    },
+    {
+      "source": "picklist_export",
+      "target": "export_filter_sku",
+      "relation": "supports",
+      "confidence": "INFERRED",
+      "confidence_score": 0.88,
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+    },
+    {
+      "source": "picklist_export",
+      "target": "export_filter_status",
+      "relation": "supports",
+      "confidence": "INFERRED",
+      "confidence_score": 0.88,
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+    },
+    {
+      "source": "picklist_export",
+      "target": "export_filter_user",
+      "relation": "supports",
+      "confidence": "INFERRED",
+      "confidence_score": 0.88,
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+    },
+    {
+      "source": "picklist_export",
+      "target": "timestamp_updated_date",
+      "relation": "tracks",
+      "confidence": "INFERRED",
+      "confidence_score": 0.88,
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+    },
+    {
+      "source": "putaway_process",
+      "target": "task_type_putaway",
+      "relation": "uses",
+      "confidence": "INFERRED",
+      "confidence_score": 0.88,
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+    },
+    {
+      "source": "admin_users_page",
+      "target": "user_picker",
+      "relation": "accessed_via",
+      "confidence": "INFERRED",
+      "confidence_score": 0.9,
+      "source_file": "unicommerce-data-extraction.md"
+    },
+    {
+      "source": "fulfillment_dispatch_page",
+      "target": "picklist",
+      "relation": "accessed_via",
+      "confidence": "INFERRED",
+      "confidence_score": 0.9,
+      "source_file": "unicommerce-data-extraction.md"
+    },
+    {
+      "source": "tasks_export_page",
+      "target": "picklist_export",
+      "relation": "accessed_via",
+      "confidence": "INFERRED",
+      "confidence_score": 0.9,
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+    },
+    {
+      "source": "picklist_export",
+      "target": "picklist",
+      "relation": "exports",
+      "confidence": "INFERRED",
+      "confidence_score": 0.9,
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+    },
+    {
+      "source": "shipment",
+      "target": "shipment_status_workflow",
+      "relation": "follows",
+      "confidence": "INFERRED",
+      "confidence_score": 0.9,
+      "source_file": "unicommerce-data-extraction.md"
+    },
+    {
+      "source": "created_by_field",
+      "target": "user_picker",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.9,
+      "source_file": "unicommerce-data-extraction.md"
+    },
+    {
+      "source": "picked_by_field",
+      "target": "user_picker",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.9,
+      "source_file": "unicommerce-data-extraction.md"
+    },
+    {
+      "source": "picking_process",
+      "target": "user_picker",
+      "relation": "assigns_task_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.92,
+      "source_file": "unicommerce-data-extraction.md"
+    },
+    {
+      "source": "picklist",
+      "target": "timestamp_created_date",
+      "relation": "has",
+      "confidence": "INFERRED",
+      "confidence_score": 0.92,
+      "source_file": "unicommerce-data-extraction.md"
+    },
+    {
+      "source": "picking_process",
+      "target": "order",
+      "relation": "fulfills",
+      "confidence": "INFERRED",
+      "confidence_score": 0.93,
+      "source_file": "unicommerce-data-extraction.md"
+    },
+    {
+      "source": "order",
+      "target": "shipment",
+      "relation": "generates",
+      "confidence": "INFERRED",
+      "confidence_score": 0.93,
+      "source_file": "unicommerce-data-extraction.md"
+    },
+    {
+      "source": "picking_process",
+      "target": "picklist",
+      "relation": "involves",
+      "confidence": "INFERRED",
+      "confidence_score": 0.93,
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+    },
+    {
+      "source": "picklist",
+      "target": "order_item",
+      "relation": "picks",
+      "confidence": "INFERRED",
+      "confidence_score": 0.93,
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+    },
+    {
+      "source": "order_item",
+      "target": "warehouse_location",
+      "relation": "stored_at",
+      "confidence": "INFERRED",
+      "confidence_score": 0.93,
+      "source_file": "unicommerce-data-extraction.md"
+    },
+    {
+      "source": "order_item",
+      "target": "item_status_workflow",
+      "relation": "transitions_through",
+      "confidence": "INFERRED",
+      "confidence_score": 0.93,
+      "source_file": "unicommerce-data-extraction.md"
+    },
+    {
+      "source": "order",
+      "target": "order_item",
+      "relation": "contains",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "unicommerce-data-extraction.md"
+    },
+    {
+      "source": "user_picker",
+      "target": "picklist",
+      "relation": "creates",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "unicommerce-data-extraction.md"
+    },
+    {
+      "source": "picklist",
+      "target": "picklist_status_workflow",
+      "relation": "follows",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "unicommerce-data-extraction.md"
+    },
+    {
+      "source": "shipment",
+      "target": "order_item",
+      "relation": "includes",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "unicommerce-data-extraction.md"
+    },
+    {
+      "source": "picklist",
+      "target": "shipment",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "unicommerce-data-extraction.md"
+    },
+    {
+      "source": "order_item",
+      "target": "sku",
+      "relation": "uses",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "UNICOMMERCE_PICKLIST_EXPORT_GUIDE.md"
+    }
+  ],
+  "hyperedges": []
+}

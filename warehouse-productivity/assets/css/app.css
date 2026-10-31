@@ -1,0 +1,32 @@
+/* Self-contained base styles (CSP is same-origin only, so no inline styles/CDNs). Bootstrap, when vendored, loads first. */
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;font:16px/1.5 system-ui,"Segoe UI",Arial,sans-serif;color:#0f172a;background:#f1f5f9}
+.topbar{display:flex;flex-wrap:wrap;align-items:center;gap:.75rem 1.25rem;padding:.6rem 1rem;background:#0f172a;color:#fff}
+.topbar a{color:#e2e8f0;text-decoration:none}
+.topbar .brand{font-weight:700;font-size:1.15rem;color:#fff}
+.topbar .nav{display:flex;gap:1rem;flex:1}
+.topbar .nav a.active{color:#fff;border-bottom:2px solid #38bdf8}
+.userbox{display:flex;align-items:center;gap:.5rem;margin:0}
+.userbox small{color:#94a3b8}
+.container{max-width:960px;margin:1.25rem auto;padding:0 1rem}
+.card{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:1.25rem;margin-bottom:1rem}
+.card-narrow{max-width:420px;margin:2rem auto}
+h1{font-size:1.5rem;margin:0 0 1rem}
+label{display:block;margin:.8rem 0 .25rem;font-weight:600}
+.form-control{width:100%;padding:.6rem;border:1px solid #94a3b8;border-radius:6px;font-size:1rem}
+.form-control:focus{outline:2px solid #38bdf8;outline-offset:1px}
+.btn{display:inline-block;padding:.65rem 1.2rem;font-size:1rem;border:0;border-radius:6px;cursor:pointer;background:#1d4ed8;color:#fff}
+.btn:hover{background:#1e40af}
+.btn-link{background:none;color:#7dd3fc;padding:.25rem .5rem}
+.btn-link:hover{background:none;text-decoration:underline}
+.mt{margin-top:1rem}
+.alert{padding:.7rem 1rem;border-radius:6px;margin:0 0 1rem;border:1px solid}
+.alert-danger{background:#fee2e2;border-color:#fca5a5;color:#7f1d1d}
+.alert-success{background:#dcfce7;border-color:#86efac;color:#14532d}
+.alert-warning{background:#fef9c3;border-color:#fde047;color:#713f12}
+.alert-info{background:#e0f2fe;border-color:#7dd3fc;color:#0c4a6e}
+.table{width:100%;border-collapse:collapse;background:#fff}
+.table th,.table td{padding:.5rem .6rem;border-bottom:1px solid #e2e8f0;text-align:left}
+.muted{color:#475569}
+.footer{text-align:center;padding:1rem;color:#64748b}
+@media (max-width:600px){.topbar .nav{flex-basis:100%;order:3}}

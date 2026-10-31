@@ -1,0 +1,27 @@
+﻿{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Show Odyssey Tasks",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/show-tasks.ps1"
+      ],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "problemMatcher": [],
+      "runOptions": {
+        "runOn": "default"
+      }
+    }
+  ]
+}

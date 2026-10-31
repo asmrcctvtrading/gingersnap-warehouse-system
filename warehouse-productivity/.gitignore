@@ -1,0 +1,8 @@
+app/config.local.php
+storage/installed.lock
+storage/imports/
+storage/logs/
+storage/backups/
+*.bak
+*.log
+.env

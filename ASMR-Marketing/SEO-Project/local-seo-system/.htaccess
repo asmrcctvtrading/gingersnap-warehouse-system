@@ -1,0 +1,128 @@
+# Local SEO .htaccess Configuration - ASMR CCTV Trading
+# Apache configuration for performance, security, and SEO optimization
+# Last Updated: 2026-10-28
+
+# Enable mod_rewrite
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteBase /
+
+	# Force HTTPS
+	RewriteCond %{HTTPS} off
+	RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+	# Remove trailing slashes (except for directories)
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^(.+)/$ /$1 [L,R=301]
+
+	# Handle service pages clean URLs (optional)
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^services/([a-z\-]+)/?$ services/$1.php [QSA,L]
+
+	# Prevent access to config and sensitive files
+	RewriteRule ^local-seo-config\.php$ - [F,L]
+	RewriteRule ^local-seo-functions\.php$ - [F,L]
+	RewriteRule ^review-request\.php$ - [F,L]
+	RewriteRule ^\.env$ - [F,L]
+</IfModule>
+
+# Gzip compression
+<IfModule mod_deflate.c>
+	AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
+	AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# Browser caching
+<IfModule mod_expires.c>
+	ExpiresActive On
+
+	# HTML pages (1 hour)
+	ExpiresByType text/html "access plus 1 hour"
+
+	# CSS and JavaScript (1 month)
+	ExpiresByType text/css "access plus 1 month"
+	ExpiresByType application/javascript "access plus 1 month"
+	ExpiresByType text/javascript "access plus 1 month"
+
+	# Images (1 month)
+	ExpiresByType image/jpeg "access plus 1 month"
+	ExpiresByType image/gif "access plus 1 month"
+	ExpiresByType image/png "access plus 1 month"
+	ExpiresByType image/webp "access plus 1 month"
+	ExpiresByType image/svg+xml "access plus 1 month"
+	ExpiresByType image/x-icon "access plus 1 month"
+
+	# Fonts (1 year)
+	ExpiresByType font/ttf "access plus 1 year"
+	ExpiresByType font/otf "access plus 1 year"
+	ExpiresByType font/woff "access plus 1 year"
+	ExpiresByType font/woff2 "access plus 1 year"
+
+	# JSON-LD (1 day)
+	ExpiresByType application/ld+json "access plus 1 day"
+</IfModule>
+
+# Cache Control headers
+<IfModule mod_headers.c>
+	# HTML - don't cache
+	<FilesMatch "\.(html|php)$">
+		Header set Cache-Control "max-age=3600, must-revalidate"
+	</FilesMatch>
+
+	# CSS and JavaScript
+	<FilesMatch "\.(css|js)$">
+		Header set Cache-Control "max-age=2592000, public"
+	</FilesMatch>
+
+	# Images
+	<FilesMatch "\.(jpg|jpeg|gif|png|webp|svg|ico)$">
+		Header set Cache-Control "max-age=2592000, public"
+	</FilesMatch>
+
+	# Fonts
+	<FilesMatch "\.(ttf|otf|woff|woff2)$">
+		Header set Cache-Control "max-age=31536000, public"
+	</FilesMatch>
+
+	# Remove server info header for security
+	Header unset Server
+	Header always unset X-Powered-By
+
+	# Add security headers
+	Header set X-Content-Type-Options "nosniff"
+	Header set X-Frame-Options "SAMEORIGIN"
+	Header set X-XSS-Protection "1; mode=block"
+	Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Prevent access to sensitive files
+<FilesMatch "^\.">
+	<IfModule mod_authz_core.c>
+		Require all denied
+	</IfModule>
+	<IfModule !mod_authz_core.c>
+		Order allow,deny
+		Deny from all
+	</IfModule>
+</FilesMatch>
+
+# Disable directory listing
+Options -Indexes
+
+# Disable PHP execution in upload directories (if applicable)
+<Directory /uploads>
+	<IfModule mod_php7.c>
+		php_flag engine off
+	</IfModule>
+	<IfModule mod_php8.c>
+		php_flag engine off
+	</IfModule>
+</Directory>
+
+# JSON-LD schema content type
+AddType application/ld+json .jsonld
+
+# Proper MIME types
+AddType image/webp .webp
+AddType application/wasm .wasm

@@ -1,0 +1,76 @@
+<?php
+/**
+ * WPMS Configuration File (Sample)
+ *
+ * Copy this file to config/config.php and update with your environment-specific values.
+ * NEVER commit config.php to version control.
+ */
+
+// Environment
+define('ENVIRONMENT', 'production'); // 'development', 'staging', 'production'
+define('DEBUG_MODE', false);
+
+// Application
+define('APP_NAME', 'WPMS - Warehouse Productivity Monitoring System');
+define('APP_VERSION', '1.0.0');
+define('APP_URL', 'https://asmrcctvtechnologies.com/warehouse-productivity/');
+define('APP_ROOT', dirname(dirname(__FILE__)));
+
+// Database Configuration
+define('DB_HOST', 'localhost');
+define('DB_NAME', 'wpms_prod');
+define('DB_USER', 'wpms_user');
+define('DB_PASS', 'your_secure_password_here');
+define('DB_PORT', 3306);
+
+// Session Configuration
+define('SESSION_TIMEOUT', 1800); // 30 minutes in seconds
+define('SESSION_COOKIE_LIFETIME', 0); // 0 = until browser closes
+define('SESSION_COOKIE_SECURE', true); // true for HTTPS only
+define('SESSION_COOKIE_HTTPONLY', true); // Prevent JavaScript access
+define('SESSION_COOKIE_SAMESITE', 'Strict'); // CSRF protection
+
+// Security Configuration
+define('PASSWORD_HASH_ALGO', PASSWORD_BCRYPT);
+define('PASSWORD_HASH_OPTIONS', ['cost' => 12]);
+define('CSRF_TOKEN_LENGTH', 32);
+define('LOGIN_ATTEMPT_LIMIT', 5); // Max failed attempts before lockout
+define('LOGIN_ATTEMPT_WINDOW', 900); // 15 minutes
+
+// File Upload Configuration
+define('MAX_FILE_SIZE', 10 * 1024 * 1024); // 10MB
+define('ALLOWED_FILE_TYPES', ['csv', 'xlsx', 'xls']);
+define('UPLOAD_DIR', APP_ROOT . '/uploads');
+
+// Audit Logging
+define('AUDIT_LOG_RETENTION', 7776000); // 90 days in seconds
+define('LOG_AUTHENTICATION', true);
+define('LOG_DATA_CHANGES', true);
+
+// Email Configuration (for password reset)
+define('MAIL_HOST', 'your_smtp_host');
+define('MAIL_PORT', 587);
+define('MAIL_USER', 'your_email@example.com');
+define('MAIL_PASS', 'your_email_password');
+define('MAIL_FROM', 'noreply@asmrcctvtechnologies.com');
+
+// Timezone
+date_default_timezone_set('Asia/Manila');
+
+// Error Reporting (development only)
+if (ENVIRONMENT === 'development') {
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+} else {
+    error_reporting(E_ALL);
+    ini_set('display_errors', 0);
+}
+
+// Logging
+define('LOG_DIR', APP_ROOT . '/logs');
+if (!is_dir(LOG_DIR)) {
+    mkdir(LOG_DIR, 0750, true);
+}
+
+// Include database connection bootstrap
+require_once APP_ROOT . '/config/database.php';

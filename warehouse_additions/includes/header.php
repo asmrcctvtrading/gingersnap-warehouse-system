@@ -1,0 +1,198 @@
+<?php
+if (!function_exists('navActive')) {
+    function navActive($dir, $script, $currentDir, $currentScript) {
+        // Only check directory match for sidebar highlighting
+        return ($dir === $currentDir) ? 'active' : '';
+    }
+}
+
+$pageTitle = $pageTitle ?? 'Dashboard';
+$companyName = setting('company_name', 'Your Company');
+$currentScript = basename($_SERVER['SCRIPT_NAME']);
+$currentDir = basename(dirname($_SERVER['SCRIPT_NAME']));
+
+$canOperations = can('priorities','view') || can('purchase_orders','view') || can('receiving','view') || can('grn','view') || can('qc','view') || can('putaway','view') || can('gatepass','view') || can('rss','view') || can('subcons','view') || can('tickets','view') || can('output','view') || can('fob_shipment','view') || can('locations','view') || can('stock','view') || can('smart_buys','view') || can('dc_receiving','view') || can('dc_putaway','view') || can('dbased','view') || can('wip','view') || can('dispatching_priority','view');
+$canCatalog = can('items','view') || can('parties','view');
+$canAdministration = can('users','view') || can('roles','view') || can('alerts','view') || can('backup','view') || can('performance','edit') || can('api','manage') || can('subcontractors','view') || can('audit','view');
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><?= h($pageTitle) ?> &middot; <?= h($companyName) ?></title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<style>
+body { background: #f1f5f9; font-family: -apple-system, "Segoe UI", Roboto, sans-serif; }
+.app-wrapper { min-height: 100vh; }
+.icon-sidebar { width: 64px; background: #1e293b; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; padding: 12px 0; position: relative; z-index: 1000; }
+.icon-sidebar .brand-icon { color: #fff; font-size: 24px; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid #334155; width: 48px; text-align: center; }
+.nav-icon-wrap { position: relative; width: 100%; }
+.nav-icon { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; margin: 2px auto; border-radius: 10px; color: #94a3b8; font-size: 20px; text-decoration: none; }
+.nav-icon:hover, .nav-icon.active { background: #334155; color: #fff; }
+.flyout { display: none; position: absolute; left: 64px; top: 0; min-width: 220px; background: #1e293b; color: #e2e8f0; border-radius: 0 10px 10px 0; box-shadow: 4px 0 18px rgba(0,0,0,0.25); padding: 16px 0; z-index: 1001; }
+.nav-icon-wrap:hover .flyout { display: flex; }
+.flyout-title { color: #fff; font-weight: 700; font-size: 15px; padding: 0 20px 12px; margin-bottom: 4px; border-bottom: 1px solid #334155; width: 100%; }
+.flyout-cols { display: flex; width: 100%; }
+.flyout-col { min-width: 200px; padding: 4px 0; }
+.flyout a { display: block; color: #cbd5e1; text-decoration: none; padding: 8px 20px; font-size: 14px; white-space: nowrap; }
+.flyout a:hover { background: #334155; color: #fff; }
+.flyout a.active { color: #fff; font-weight: 600; }
+.app-main { flex: 1; min-width: 0; }
+.topbar { background: #fff; border-bottom: 1px solid #e2e8f0; padding: 10px 20px; }
+.kpi-card { background: #fff; border-radius: 10px; padding: 16px; border-left: 4px solid #1e3a5f; }
+.kpi-card .kpi-label { font-size: 11px; text-transform: uppercase; color: #64748b; }
+.kpi-card .kpi-value { font-size: 26px; font-weight: bold; }
+</style>
+</head>
+<body>
+<div class="app-wrapper d-flex">
+<nav class="icon-sidebar">
+<div class="brand-icon" title="<?= h($companyName) ?>"><i class="bi bi-box-seam"></i></div>
+
+<?php if (can('dashboard', 'view')): ?>
+<div class="nav-icon-wrap">
+<a href="<?= BASE_URL ?>/" class="nav-icon <?= $currentDir==='dashboard'?'active':'' ?>" title="Dashboard"><i class="bi bi-speedometer2"></i></a>
+</div>
+<?php endif; ?>
+
+<?php if ($canOperations): ?>
+<div class="nav-icon-wrap">
+<a href="#" class="nav-icon <?= $currentDir==='priorities'||$currentDir==='po'||$currentDir==='purchase_orders'||$currentDir==='grn'||$currentDir==='receiving'||$currentDir==='qc'||$currentDir==='putaway'||$currentDir==='gatepass'||$currentDir==='rss'||$currentDir==='subcon'||$currentDir==='subcons'||$currentDir==='tickets'||$currentDir==='output'||$currentDir==='fob'||$currentDir==='locations'||$currentDir==='stock'||$currentDir==='dispatching_priority'?'active':'' ?>" title="Operations"><i class="bi bi-gear-wide-connected"></i></a>
+<div class="flyout">
+<div class="flyout-title">Operations</div>
+<div class="flyout-cols">
+<div class="flyout-col">
+<?php if (can('purchase_orders','view')): ?><a href="<?= BASE_URL ?>/modules/purchase_orders/list.php" class="<?= navActive('purchase_orders','list.php',$currentDir,$currentScript) ?>"><i class="bi bi-bag-check me-2"></i>Purchase Orders</a><?php endif; ?>
+<?php if (can('grn','view')): ?><a href="<?= BASE_URL ?>/modules/grn/list.php" class="<?= navActive('grn','list.php',$currentDir,$currentScript) ?>"><i class="bi bi-box-arrow-in-down me-2"></i>GRN / Receiving</a><?php endif; ?>
+<?php if (can('qc','view')): ?><a href="<?= BASE_URL ?>/modules/qc/list.php" class="<?= navActive('qc','list.php',$currentDir,$currentScript) ?>"><i class="bi bi-clipboard-check me-2"></i>QC Inspection</a><?php endif; ?>
+</div>
+<div class="flyout-col">
+<?php /* PUTAWAY MODULE NOT YET BUILT - Uncomment when ready
+if (can('putaway','view')): ?><a href="<?= BASE_URL ?>/modules/putaway/list.php" class="<?= navActive('putaway','list.php',$currentDir,$currentScript) ?>"><i class="bi bi-box-seam me-2"></i>Putaway</a><?php endif; */ ?>
+<?php if (can('gatepass','view')): ?><a href="<?= BASE_URL ?>/modules/gatepass/list.php" class="<?= navActive('gatepass','list.php',$currentDir,$currentScript) ?>"><i class="bi bi-truck me-2"></i>Gatepass</a><?php endif; ?>
+<?php if (can('dc_receiving','view')): ?>
+<a href="<?= BASE_URL ?>/modules/dc_receiving/list.php" class="<?= navActive('dc_receiving','list.php',$currentDir,$currentScript) ?>">
+    <i class="bi bi-building-check me-2"></i>DC Receiving
+</a>
+<?php endif; ?>
+<?php if (can('dc_putaway','view')): ?>
+<a href="<?= BASE_URL ?>/modules/dc_putaway/list.php" class="<?= navActive('dc_putaway','list.php',$currentDir,$currentScript) ?>">
+    <i class="bi bi-box-seam me-2"></i>DC Putaway
+</a>
+<?php endif; ?>
+<?php if (can('dbased','view')): ?>
+<a href="<?= BASE_URL ?>/modules/dbased/list.php" class="<?= navActive('dbased','list.php',$currentDir,$currentScript) ?>">
+    <i class="bi bi-table me-2"></i>DBASED
+</a>
+<?php endif; ?>
+<?php if (can('rss','view')): ?><a href="<?= BASE_URL ?>/modules/rss/list.php" class="<?= navActive('rss','list.php',$currentDir,$currentScript) ?>"><i class="bi bi-arrow-repeat me-2"></i>RSS / Other-Process</a><?php endif; ?>
+<?php if (can('subcons','view')): ?><a href="<?= BASE_URL ?>/modules/subcons/list.php" class="<?= navActive('subcons','list.php',$currentDir,$currentScript) ?>"><i class="bi bi-buildings me-2"></i>Subcontractors</a><?php endif; ?>
+</div>
+<div class="flyout-col">
+<?php if (can('tickets','view')): ?><a href="<?= BASE_URL ?>/modules/tickets/list.php" class="<?= navActive('tickets','list.php',$currentDir,$currentScript) ?>"><i class="bi bi-ticket-perforated me-2"></i>Tickets</a><?php endif; ?>
+<?php if (can('smart_buys','view')): ?><a href="<?= BASE_URL ?>/modules/smart_buys/list.php" class="<?= navActive('smart_buys','list.php',$currentDir,$currentScript) ?>"><i class="bi bi-tags me-2"></i>SMART Buys</a><?php endif; ?>
+<?php if (can('wip','view')): ?><a href="<?= BASE_URL ?>/modules/wip/list.php" class="<?= navActive('wip','list.php',$currentDir,$currentScript) ?>"><i class="bi bi-bar-chart-steps me-2"></i>WIP Matrix</a><?php endif; ?>
+<?php if (can('dispatching_priority','view')): ?><a href="<?= BASE_URL ?>/modules/dispatching_priority/list.php" class="<?= navActive('dispatching_priority','list.php',$currentDir,$currentScript) ?>"><i class="bi bi-list-ol me-2"></i>Dispatching Priority</a><?php endif; ?>
+<?php if (can('output','view')): ?><a href="<?= BASE_URL ?>/modules/output/list.php" class="<?= navActive('output','list.php',$currentDir,$currentScript) ?>"><i class="bi bi-check2-circle me-2"></i>Output Records</a><?php endif; ?>
+<?php if (can('fob_shipment','view')): ?><a href="<?= BASE_URL ?>/modules/fob/list.php" class="<?= navActive('fob','list.php',$currentDir,$currentScript) ?>"><i class="bi bi-ship me-2"></i>FOB Shipment</a><?php endif; ?>
+</div>
+<div class="flyout-col">
+<?php if (can('locations','view')): ?><a href="<?= BASE_URL ?>/modules/locations/list.php" class="<?= navActive('locations','list.php',$currentDir,$currentScript) ?>"><i class="bi bi-geo me-2"></i>Locations</a><?php endif; ?>
+<?php if (can('stock','view')): ?><a href="<?= BASE_URL ?>/modules/stock/list.php" class="<?= navActive('stock','list.php',$currentDir,$currentScript) ?>"><i class="bi bi-boxes me-2"></i>Stock Ledger</a><?php endif; ?>
+<?php if (can('stock','view')): ?><a href="<?= BASE_URL ?>/modules/stock/ledger.php" class="<?= navActive('stock','ledger.php',$currentDir,$currentScript) ?>"><i class="bi bi-journal-text me-2"></i>Movement Ledger</a><?php endif; ?>
+<?php if (can('stock','create')): ?><a href="<?= BASE_URL ?>/modules/stock/move.php" class="<?= navActive('stock','move.php',$currentDir,$currentScript) ?>"><i class="bi bi-arrow-left-right me-2"></i>Record Movement</a><?php endif; ?>
+</div>
+</div>
+</div>
+</div>
+<?php endif; ?>
+
+<?php if (can('reports','view')): ?>
+<div class="nav-icon-wrap">
+<a href="<?= BASE_URL ?>/modules/reports/list.php" class="nav-icon <?= $currentDir==='reports'?'active':'' ?>" title="Reports"><i class="bi bi-bar-chart"></i></a>
+<div class="flyout">
+<div class="flyout-title">Reports</div>
+<div class="flyout-cols">
+<div class="flyout-col">
+<a href="<?= BASE_URL ?>/modules/reports/list.php" class="<?= navActive('reports','list.php',$currentDir,$currentScript) ?>"><i class="bi bi-grid me-2"></i>All Reports</a>
+<a href="<?= BASE_URL ?>/modules/reports/wip_status.php" class="<?= navActive('reports','wip_status.php',$currentDir,$currentScript) ?>"><i class="bi bi-diagram-3 me-2"></i>WIP Status</a>
+<a href="<?= BASE_URL ?>/modules/reports/grn_report.php" class="<?= navActive('reports','grn_report.php',$currentDir,$currentScript) ?>"><i class="bi bi-box-arrow-in-down me-2"></i>GRN Report</a>
+<a href="<?= BASE_URL ?>/modules/reports/stock_report.php" class="<?= navActive('reports','stock_report.php',$currentDir,$currentScript) ?>"><i class="bi bi-boxes me-2"></i>Stock Report</a>
+<a href="<?= BASE_URL ?>/modules/reports/stock_summary.php" class="<?= navActive('reports','stock_summary.php',$currentDir,$currentScript) ?>"><i class="bi bi-geo-alt me-2"></i>Stock Summary</a>
+<a href="<?= BASE_URL ?>/modules/reports/po_aging.php" class="<?= navActive('reports','po_aging.php',$currentDir,$currentScript) ?>"><i class="bi bi-hourglass-split me-2"></i>PO Aging</a>
+<a href="<?= BASE_URL ?>/modules/reports/movement_summary.php" class="<?= navActive('reports','movement_summary.php',$currentDir,$currentScript) ?>"><i class="bi bi-arrow-left-right me-2"></i>Movement Summary</a>
+</div>
+</div>
+</div>
+</div>
+<?php endif; ?>
+
+<?php if ($canCatalog): ?>
+<div class="nav-icon-wrap">
+<a href="#" class="nav-icon <?= $currentDir==='items'||$currentDir==='parties'?'active':'' ?>" title="Catalog"><i class="bi bi-tags"></i></a>
+<div class="flyout">
+<div class="flyout-title">Catalog</div>
+<div class="flyout-cols">
+<div class="flyout-col">
+<?php if (can('items','view')): ?><a href="<?= BASE_URL ?>/modules/items/list.php" class="<?= navActive('items','list.php',$currentDir,$currentScript) ?>"><i class="bi bi-tags me-2"></i>Items / SKU Master</a><?php endif; ?>
+<?php /* PARTIES MODULE NOT YET BUILT - Uncomment when ready
+if (can('parties','view')): ?><a href="<?= BASE_URL ?>/modules/parties/list.php" class="<?= navActive('parties','list.php',$currentDir,$currentScript) ?>"><i class="bi bi-geo-alt me-2"></i>Parties / Destinations</a><?php endif; */ ?>
+</div>
+</div>
+</div>
+</div>
+<?php endif; ?>
+
+<?php if ($canAdministration): ?>
+<div class="nav-icon-wrap">
+<a href="#" class="nav-icon <?= $currentDir==='admin'||$currentDir==='alerts'||$currentDir==='users'||$currentDir==='roles'||$currentDir==='audit'?'active':'' ?>" title="Administration"><i class="bi bi-shield-lock"></i></a>
+<div class="flyout">
+<div class="flyout-title">Administration</div>
+<div class="flyout-cols">
+<div class="flyout-col">
+<?php if (can('users','view')): ?><a href="<?= BASE_URL ?>/modules/users/list.php" class="<?= navActive('users','list.php',$currentDir,$currentScript) ?>"><i class="bi bi-people me-2"></i>User Management</a><?php endif; ?>
+<?php if (can('roles','view')): ?><a href="<?= BASE_URL ?>/modules/roles/list.php" class="<?= navActive('roles','list.php',$currentDir,$currentScript) ?>"><i class="bi bi-shield-check me-2"></i>Roles &amp; Permissions</a><?php endif; ?>
+<?php /* ALERTS MODULE NOT YET BUILT - if (can('alerts','view')): ?><a href="<?= BASE_URL ?>/modules/alerts/list.php" class="<?= navActive('alerts','list.php',$currentDir,$currentScript) ?>"><i class="bi bi-bell me-2"></i>Alerts</a><?php endif; */ ?>
+<?php if (can('backup','view')): ?><a href="<?= BASE_URL ?>/modules/admin/backup.php" class="<?= navActive('admin','backup.php',$currentDir,$currentScript) ?>"><i class="bi bi-hdd-network me-2"></i>Backup &amp; Restore</a><?php endif; ?>
+<?php if (can('performance','edit')): ?><a href="<?= BASE_URL ?>/modules/admin/criteria.php" class="<?= navActive('admin','criteria.php',$currentDir,$currentScript) ?>"><i class="bi bi-star me-2"></i>Performance Criteria</a><?php endif; ?>
+<?php if (can('api','manage')): ?><a href="<?= BASE_URL ?>/modules/admin/api_tokens.php" class="<?= navActive('admin','api_tokens.php',$currentDir,$currentScript) ?>"><i class="bi bi-key me-2"></i>API Tokens</a><?php endif; ?>
+<?php if (can('users','view')): ?><a href="<?= BASE_URL ?>/modules/admin/import.php" class="<?= navActive('admin','import.php',$currentDir,$currentScript) ?>"><i class="bi bi-upload me-2"></i>Import CSV</a><?php endif; ?>
+<?php if (can('subcontractors','view')): ?><a href="<?= BASE_URL ?>/modules/subcontractors/list.php" class="<?= navActive('subcontractors','list.php',$currentDir,$currentScript) ?>"><i class="bi bi-people me-2"></i>Subcontractors</a><?php endif; ?>
+<?php if (can('audit','view')): ?><a href="<?= BASE_URL ?>/modules/audit/list.php" class="<?= navActive('audit','list.php',$currentDir,$currentScript) ?>"><i class="bi bi-journal-text me-2"></i>Audit Log</a><?php endif; ?>
+</div>
+</div>
+</div>
+</div>
+<?php endif; ?>
+
+</nav>
+<div class="app-main">
+<div class="topbar d-flex justify-content-between align-items-center">
+<span class="fw-semibold text-muted"><?= h($pageTitle) ?></span>
+<div class="d-flex align-items-center gap-2">
+<?php /* ALERTS MODULE NOT YET BUILT - Uncomment when ready
+if (can('alerts','view')):
+try { $unreadAlertCount = AlertManager::unreadCount(getDB()); } catch (Throwable $e) { $unreadAlertCount = 0; }
+?>
+<a href="<?= BASE_URL ?>/modules/alerts/list.php" class="btn btn-sm btn-light position-relative">
+<i class="bi bi-bell"></i>
+<?php if ($unreadAlertCount > 0): ?><span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:10px;"><?= $unreadAlertCount > 99 ? '99+' : $unreadAlertCount ?></span><?php endif; ?>
+</a>
+<?php endif; */ ?>
+<div class="dropdown">
+<button class="btn btn-sm btn-light dropdown-toggle d-flex align-items-center gap-2" data-bs-toggle="dropdown">
+<i class="bi bi-person-circle"></i>
+<span><?= h($_SESSION['full_name'] ?? '') ?></span>
+<span class="badge bg-secondary"><?= h($_SESSION['role_name'] ?? '') ?></span>
+</button>
+<ul class="dropdown-menu dropdown-menu-end">
+<li><a class="dropdown-item <?= $currentDir==='profile'?'active':'' ?>" href="<?= BASE_URL ?>/modules/profile/index.php"><i class="bi bi-person me-2"></i>My Profile</a></li>
+<li><hr class="dropdown-divider"></li>
+<li><a class="dropdown-item" href="<?= BASE_URL ?>/logout.php"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+</ul>
+</div>
+</div>
+</div>
+<main class="p-3 p-md-4">

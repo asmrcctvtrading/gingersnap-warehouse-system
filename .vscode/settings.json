@@ -1,0 +1,20 @@
+{
+  "description": "OmniRoute VSCode workspace settings - auto-initializes Claude with omniroute",
+  "terminal.integrated.env.windows": {
+    "ANTHROPIC_BASE_URL": "http://localhost:20128",
+    "ANTHROPIC_AUTH_TOKEN": "local",
+    "ANTHROPIC_MODEL": "my-combo",
+    "CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY": "1"
+  },
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
+  "terminal.integrated.profiles.windows": {
+    "PowerShell": {
+      "source": "PowerShell",
+      "args": ["-NoExit", "-Command", "& {Write-Host 'OmniRoute auto-init starting...' -ForegroundColor Cyan; if (-not (Test-Path 'C:\\Users\\Odyssey Jan Pascual\\.omniroute\\server\\.pid')) { Write-Host 'Starting OmniRoute...' -ForegroundColor Yellow; & 'C:\\Users\\Odyssey Jan Pascual\\Desktop\\Omniroute\\Start OmniRoute.bat' | Out-Null; Start-Sleep -Seconds 3; Write-Host 'OmniRoute started. Ready for Claude.' -ForegroundColor Green } else { Write-Host 'OmniRoute is already running.' -ForegroundColor Green } }"]
+    }
+  },
+  "terminal.integrated.enablePersistentSessions": true,
+  "files.exclude": {
+    "**/.omniroute": true
+  }
+}

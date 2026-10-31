@@ -1,0 +1,13 @@
+Options -Indexes
+DirectoryIndex index.php
+
+# Block direct web access to non-public folders (also protected by their own .htaccess).
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^(app|storage|database|tests|docs)(/|$) - [F,L]
+RewriteRule ^(README\.md|\.git) - [F,L]
+</IfModule>
+
+<FilesMatch "\.(sql|log|lock|md|bak|sh)$">
+  Require all denied
+</FilesMatch>

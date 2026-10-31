@@ -1,0 +1,14 @@
+.env
+.env.bak
+*.log
+logs/
+backup_*/
+node_modules/
+__pycache__/
+*.pyc
+*.pyc
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+.claude/projects/
+.claude/settings.local.json

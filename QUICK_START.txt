@@ -1,0 +1,82 @@
+═══════════════════════════════════════════════════════════════════════════════
+  VSCODE + OMNIROUTE AUTO-INIT — QUICK START
+═══════════════════════════════════════════════════════════════════════════════
+
+1. OPEN VSCODE FROM .OMNIROUTE
+
+   PowerShell:
+   code C:\Users\Odyssey\ Jan Pascual\.omniroute
+
+2. OPEN A TERMINAL (Ctrl+`)
+
+   Terminal auto-initializes:
+   ✓ OmniRoute is running (PID 12345, Memory: 45.32 MB)
+   ✓ Environment variables set
+   ✓ Ready for Claude
+
+3. START USING CLAUDE
+
+   claude                           # Uses "my-combo" (default)
+   claude --model auto/best         # Auto-picks best provider
+   claude --model cc/claude-opus-5-5  # Use Opus if available
+
+═══════════════════════════════════════════════════════════════════════════════
+  AVAILABLE VSCODE TASKS (Ctrl+Shift+P → Tasks: Run Task)
+═══════════════════════════════════════════════════════════════════════════════
+
+  ► Start OmniRoute Server
+    Manually start/restart the OmniRoute server if it crashed
+
+  ► Initialize Claude with OmniRoute
+    Set environment variables in a fresh terminal + confirm setup
+
+  ► Check OmniRoute Status
+    Quick health check (PID, memory, URLs)
+
+═══════════════════════════════════════════════════════════════════════════════
+  QUICK COMMANDS (PowerShell terminal)
+═══════════════════════════════════════════════════════════════════════════════
+
+  omniroute status                 # Check server status
+  omniroute restart                # Restart server
+  omniroute logs                   # Show server logs
+  omniroute-help                   # Show OmniRoute commands
+
+═══════════════════════════════════════════════════════════════════════════════
+  DASHBOARDS & URLS
+═══════════════════════════════════════════════════════════════════════════════
+
+  OmniRoute Dashboard:  http://localhost:20128
+  Web UI (Models):      http://localhost:3000
+
+═══════════════════════════════════════════════════════════════════════════════
+  IF SOMETHING GOES WRONG
+═══════════════════════════════════════════════════════════════════════════════
+
+  "Connection refused":
+    → Ctrl+Shift+P → Tasks: Run Task → "Start OmniRoute Server"
+    → Wait 3-5 seconds
+    → Try again: claude
+
+  OmniRoute not auto-starting:
+    → Check: omniroute status
+    → Manual start: & 'C:\Users\Odyssey Jan Pascual\Desktop\Omniroute\Start OmniRoute.bat'
+
+  Terminal doesn't show status:
+    → Make sure you're using PowerShell (not cmd.exe)
+    → Check: echo $PROFILE
+    → Source profile: . $PROFILE
+
+═══════════════════════════════════════════════════════════════════════════════
+  SETUP FILES CREATED
+═══════════════════════════════════════════════════════════════════════════════
+
+  .omniroute/.vscode/settings.json     ← VSCode workspace settings
+  .omniroute/.vscode/tasks.json        ← VSCode tasks
+  .omniroute/VSCODE_SETUP.md           ← Full documentation
+  Documents/PowerShell/profile.ps1     ← PowerShell auto-init (global)
+  .omniroute/QUICK_START.txt           ← This file
+
+═══════════════════════════════════════════════════════════════════════════════
+
+For more details, see: .omniroute/VSCODE_SETUP.md

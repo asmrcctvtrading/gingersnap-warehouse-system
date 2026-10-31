@@ -1,0 +1,13 @@
+form.inline{display:flex;gap:.6rem;align-items:center;margin-left:auto}
+table.data{width:100%;border-collapse:collapse;background:var(--card)}
+table.data th,table.data td{padding:.5rem .6rem;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+table.data th{font-size:.85rem;color:var(--muted)}
+.tablewrap{overflow-x:auto}
+.formgrid{display:grid;gap:.2rem 1rem;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.stat{font-size:2rem;font-weight:700}
+.danger-btn{background:var(--danger);color:#fff}
+.row-actions{display:flex;gap:.4rem;flex-wrap:wrap}
+.row-actions button,.row-actions .btn{min-height:40px;padding:.3rem .8rem}
+fieldset{border:1px solid var(--line);border-radius:var(--r);margin:1rem 0}
+.check{display:flex;gap:.5rem;align-items:center;font-weight:400}
+.check input{width:auto;min-height:0}
