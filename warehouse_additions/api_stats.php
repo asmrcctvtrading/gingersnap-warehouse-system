@@ -62,18 +62,17 @@ try {
     $grnMonth   = (int) scalar("SELECT COUNT(*) FROM grn WHERE created_at >= ?", [$monthStart]);
 
     // Gatepasses
-    $gpOpen     = (int) scalar("SELECT COUNT(*) FROM gatepasses WHERE status NOT IN ('DISPATCHED','CANCELLED')");
+    $gpOpen     = (int) scalar("SELECT COUNT(*) FROM gatepasses WHERE gp_status IN ('OPEN','CREATED')");
     $gpTotal    = (int) scalar("SELECT COUNT(*) FROM gatepasses");
 
     // QC
-    $qcPending  = (int) scalar("SELECT COUNT(*) FROM qc_inspections WHERE status NOT IN ('PASSED','FAILED','CANCELLED')");
+    $qcPending  = (int) scalar("SELECT COUNT(*) FROM qc_inspection WHERE status NOT IN ('PASSED','FAILED','CANCELLED')");
 
     // Stock
-    $stockQty   = (int) scalar("SELECT COALESCE(SUM(qty_cartons),0) FROM stock_ledger WHERE type='in'")
-                - (int) scalar("SELECT COALESCE(SUM(qty_cartons),0) FROM stock_ledger WHERE type='out'");
+    $stockQty   = (int) scalar("SELECT COALESCE(SUM(qty_cartons),0) FROM stock_positions");
 
-    // Subcons active
-    $subconsActive = (int) scalar("SELECT COUNT(*) FROM subcons WHERE status='active'");
+    // Subcons (no status column on this table)
+    $subconsActive = (int) scalar("SELECT COUNT(*) FROM subcons");
 
     // SKUs
     $skus = (int) scalar("SELECT COUNT(*) FROM items");
@@ -81,10 +80,11 @@ try {
     // Tickets open
     $ticketsOpen = (int) scalar("SELECT COUNT(*) FROM tickets WHERE status IN ('OPEN','IN_PROGRESS')");
 
-    // WIP latest snapshot
-    $wip = q("SELECT period_label, qc_wip, dispatching_wip, receiving_wip
-               FROM wip_snapshots ORDER BY snapshot_date DESC, snapshot_id DESC LIMIT 1");
-    $wipRow = $wip[0] ?? null;
+    // WIP latest snapshot per stage
+    $wipRows = q("SELECT stage, ewip_qty FROM wip_period_snapshots
+                  WHERE snapshot_date = (SELECT MAX(snapshot_date) FROM wip_period_snapshots)");
+    $wipRow = [];
+    foreach ($wipRows as $r) { $wipRow[$r['stage']] = (int) $r['ewip_qty']; }
 
     echo json_encode([
         'generated_at' => date('c'),
@@ -99,7 +99,7 @@ try {
             'total' => $gpTotal,
         ],
         'qc_pending'      => $qcPending,
-        'stock_cartons'   => max(0, $stockQty),
+        'stock_cartons'   => $stockQty,
         'subcons_active'  => $subconsActive,
         'skus'            => $skus,
         'tickets_open'    => $ticketsOpen,
