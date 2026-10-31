@@ -552,38 +552,20 @@ include __DIR__ . '/../../includes/header.php';
     <!-- GRN Status Breakdown -->
     <div class="col-md-5">
         <div class="card border-0 shadow-sm h-100">
-            <div class="card-header bg-white fw-semibold py-2">
-                <i class="bi bi-pie-chart text-muted me-2"></i>GRN Status Breakdown
+            <div class="card-header bg-white fw-semibold py-2 d-flex align-items-center gap-2">
+                <i class="bi bi-pie-chart text-muted"></i>GRN Status Breakdown
+                <div class="btn-group btn-group-sm ms-auto" role="group">
+                    <button type="button" class="btn btn-outline-secondary chart-type-btn" data-chart="grn" data-type="doughnut">Donut</button>
+                    <button type="button" class="btn btn-outline-secondary chart-type-btn" data-chart="grn" data-type="pie">Pie</button>
+                    <button type="button" class="btn btn-outline-secondary chart-type-btn" data-chart="grn" data-type="bar">Bar</button>
+                    <button type="button" class="btn btn-outline-secondary chart-type-btn" data-chart="grn" data-type="polarArea">Polar</button>
+                </div>
             </div>
-            <div class="card-body">
+            <div class="card-body d-flex justify-content-center align-items-center" style="min-height: 280px;">
                 <?php if (!$grnStatusRows): ?>
                 <p class="text-muted text-center py-3 mb-0">No GRNs in system yet.</p>
                 <?php else: ?>
-                <?php foreach ($grnStatusRows as $row):
-                    $pct   = $grnTotal > 0 ? round($row['cnt'] / $grnTotal * 100) : 0;
-                    $color = grnStatusBadge($row['status']);
-                ?>
-                <div class="mb-3">
-                    <div class="d-flex justify-content-between align-items-center mb-1">
-                        <span class="small fw-semibold">
-                            <span class="badge bg-<?= $color ?> me-1"><?= h($row['status']) ?></span>
-                        </span>
-                        <span class="small text-muted"><?= number_format($row['cnt']) ?> (<?= $pct ?>%)</span>
-                    </div>
-                    <div class="progress" style="height:10px;">
-                        <div class="progress-bar bg-<?= $color ?>"
-                             role="progressbar"
-                             style="width:<?= $pct ?>%"
-                             aria-valuenow="<?= $pct ?>"
-                             aria-valuemin="0"
-                             aria-valuemax="100">
-                        </div>
-                    </div>
-                </div>
-                <?php endforeach; ?>
-                <div class="text-end small text-muted mt-2">
-                    Total: <?= number_format($grnTotal) ?> GRNs
-                </div>
+                <canvas id="grnChart" style="max-height: 250px;"></canvas>
                 <?php endif; ?>
             </div>
         </div>
@@ -907,8 +889,14 @@ include __DIR__ . '/../../includes/header.php';
     <!-- Destination Breakdown Chart -->
     <div class="col-md-6">
         <div class="card border-0 shadow-sm h-100">
-            <div class="card-header bg-white fw-semibold py-2">
-                <i class="bi bi-pie-chart text-muted me-2"></i>Destination Allocation Quantities
+            <div class="card-header bg-white fw-semibold py-2 d-flex align-items-center gap-2">
+                <i class="bi bi-pie-chart text-muted"></i>Destination Allocation Quantities
+                <div class="btn-group btn-group-sm ms-auto" role="group">
+                    <button type="button" class="btn btn-outline-secondary chart-type-btn" data-chart="dest" data-type="doughnut">Donut</button>
+                    <button type="button" class="btn btn-outline-secondary chart-type-btn" data-chart="dest" data-type="pie">Pie</button>
+                    <button type="button" class="btn btn-outline-secondary chart-type-btn" data-chart="dest" data-type="bar">Bar</button>
+                    <button type="button" class="btn btn-outline-secondary chart-type-btn" data-chart="dest" data-type="polarArea">Polar</button>
+                </div>
             </div>
             <div class="card-body d-flex justify-content-center align-items-center" style="min-height: 280px;">
                 <canvas id="destinationChart" style="max-height: 250px;"></canvas>
@@ -918,8 +906,14 @@ include __DIR__ . '/../../includes/header.php';
     <!-- PO Status Breakdown Chart -->
     <div class="col-md-6">
         <div class="card border-0 shadow-sm h-100">
-            <div class="card-header bg-white fw-semibold py-2">
-                <i class="bi bi-bar-chart text-muted me-2"></i>Purchase Order Status Distribution
+            <div class="card-header bg-white fw-semibold py-2 d-flex align-items-center gap-2">
+                <i class="bi bi-bar-chart text-muted"></i>Purchase Order Status Distribution
+                <div class="btn-group btn-group-sm ms-auto" role="group">
+                    <button type="button" class="btn btn-outline-secondary chart-type-btn" data-chart="po" data-type="doughnut">Donut</button>
+                    <button type="button" class="btn btn-outline-secondary chart-type-btn" data-chart="po" data-type="pie">Pie</button>
+                    <button type="button" class="btn btn-outline-secondary chart-type-btn" data-chart="po" data-type="bar">Bar</button>
+                    <button type="button" class="btn btn-outline-secondary chart-type-btn" data-chart="po" data-type="polarArea">Polar</button>
+                </div>
             </div>
             <div class="card-body d-flex justify-content-center align-items-center" style="min-height: 280px;">
                 <canvas id="poStatusChart" style="max-height: 250px;"></canvas>
@@ -928,64 +922,109 @@ include __DIR__ . '/../../includes/header.php';
     </div>
 </div>
 
+<!-- Chart data from PHP -->
+<script>
+const CHART_DATA = {
+    grn: {
+        labels: <?= json_encode(array_column($grnStatusRows ?: [], 'status')) ?>,
+        values: <?= json_encode(array_map('intval', array_column($grnStatusRows ?: [], 'cnt'))) ?>,
+        colors: <?= json_encode(array_map(function($row) {
+            $map = ['DRAFT'=>'#6c757d','RECEIVED'=>'#0d6efd','QC_IN_PROGRESS'=>'#ffc107',
+                    'QC_COMPLETED'=>'#198754','STORED'=>'#20c997','DISPATCHED'=>'#6f42c1','CANCELLED'=>'#dc3545'];
+            return $map[$row['status']] ?? '#adb5bd';
+        }, $grnStatusRows ?: [])) ?>
+    },
+    dest: {
+        labels: ['Local','SG','Malaysia','Indo','SM Baliwag','Export Full'],
+        values: [<?= (int)($destTotals['Local']??0) ?>,<?= (int)($destTotals['SG']??0) ?>,<?= (int)($destTotals['Malaysia']??0) ?>,<?= (int)($destTotals['Indo']??0) ?>,<?= (int)($destTotals['SM Baliwag']??0) ?>,<?= (int)($destTotals['Export Full']??0) ?>],
+        colors: ['#1e3a5f','#0d6efd','#198754','#ffc107','#dc3545','#6c757d']
+    },
+    po: {
+        labels: ['NEW','WIP','COMPLETED','CANCELLED'],
+        values: [<?= (int)($poStatusCounts['NEW']??0) ?>,<?= (int)($poStatusCounts['WIP']??0) ?>,<?= (int)($poStatusCounts['COMPLETED']??0) ?>,<?= (int)($poStatusCounts['CANCELLED']??0) ?>],
+        colors: ['#6c757d','#ffc107','#198754','#dc3545']
+    }
+};
+</script>
+
 <!-- Chart.js CDN -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Destination Chart
-    const destCtx = document.getElementById('destinationChart').getContext('2d');
-    new Chart(destCtx, {
-        type: 'doughnut',
+const charts = {};
+const STORAGE_KEY = 'gs_chart_types';
+
+function getSavedTypes() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch(e) { return {}; }
+}
+function saveType(key, type) {
+    const saved = getSavedTypes();
+    saved[key] = type;
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(saved)); } catch(e) {}
+}
+
+function buildChartConfig(key, type) {
+    const d = CHART_DATA[key];
+    const isBar = type === 'bar';
+    return {
+        type: type,
         data: {
-            labels: ['Local', 'SG', 'Malaysia', 'Indo', 'SM Baliwag', 'Export Full'],
+            labels: d.labels,
             datasets: [{
-                data: [
-                    <?= (int)$destTotals['Local'] ?>,
-                    <?= (int)$destTotals['SG'] ?>,
-                    <?= (int)$destTotals['Malaysia'] ?>,
-                    <?= (int)$destTotals['Indo'] ?>,
-                    <?= (int)$destTotals['SM Baliwag'] ?>,
-                    <?= (int)$destTotals['Export Full'] ?>
-                ],
-                backgroundColor: ['#1e3a5f', '#0d6efd', '#198754', '#ffc107', '#dc3545', '#6c757d']
+                label: 'Count',
+                data: d.values,
+                backgroundColor: d.colors,
+                borderColor: '#fff',
+                borderWidth: 2
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-                legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } }
-            }
+                legend: {
+                    display: !isBar,
+                    position: 'bottom',
+                    labels: { boxWidth: 12, font: { size: 11 } }
+                }
+            },
+            scales: isBar ? { y: { beginAtZero: true, ticks: { precision: 0 } } } : {}
         }
+    };
+}
+
+function initChart(canvasId, key, type) {
+    const ctx = document.getElementById(canvasId);
+    if (!ctx) return;
+    if (charts[key]) { charts[key].destroy(); }
+    charts[key] = new Chart(ctx.getContext('2d'), buildChartConfig(key, type));
+}
+
+function switchChart(key, newType) {
+    const canvasMap = { grn: 'grnChart', dest: 'destinationChart', po: 'poStatusChart' };
+    initChart(canvasMap[key], key, newType);
+    saveType(key, newType);
+    document.querySelectorAll(`.chart-type-btn[data-chart="${key}"]`).forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.type === newType);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const saved = getSavedTypes();
+    const defaults = { grn: 'doughnut', dest: 'doughnut', po: 'bar' };
+
+    ['grn','dest','po'].forEach(key => {
+        const type = saved[key] || defaults[key];
+        const canvasMap = { grn: 'grnChart', dest: 'destinationChart', po: 'poStatusChart' };
+        initChart(canvasMap[key], key, type);
+        document.querySelectorAll(`.chart-type-btn[data-chart="${key}"]`).forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.type === type);
+        });
     });
 
-    // PO Status Chart
-    const poCtx = document.getElementById('poStatusChart').getContext('2d');
-    new Chart(poCtx, {
-        type: 'bar',
-        data: {
-            labels: ['NEW', 'WIP', 'COMPLETED', 'CANCELLED'],
-            datasets: [{
-                label: 'PO Count',
-                data: [
-                    <?= (int)$poStatusCounts['NEW'] ?>,
-                    <?= (int)$poStatusCounts['WIP'] ?>,
-                    <?= (int)$poStatusCounts['COMPLETED'] ?>,
-                    <?= (int)$poStatusCounts['CANCELLED'] ?>
-                ],
-                backgroundColor: ['#6c757d', '#ffc107', '#198754', '#dc3545']
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: false }
-            },
-            scales: {
-                y: { beginAtZero: true, ticks: { precision: 0 } }
-            }
-        }
+    document.querySelectorAll('.chart-type-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            switchChart(this.dataset.chart, this.dataset.type);
+        });
     });
 });
 </script>
