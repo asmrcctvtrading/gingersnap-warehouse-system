@@ -47,19 +47,29 @@ $kpiSubcons = (int) $db->query(
 )->fetchColumn();
 
 // ── Aged PO Alerts (> 60 days open) ──────────────────────────────────────────
+$agedSubcon = $_GET['aged_subcon'] ?? '';
 $agedPos = [];
 try {
-    $agedPos = $db->query(
+    $agedWhere = "po.status IN ('NEW','WIP') AND DATEDIFF(CURDATE(), po.po_date) > 60";
+    $agedParams = [];
+    if ($agedSubcon !== '') {
+        $agedWhere .= " AND po.subcon_id = ?";
+        $agedParams[] = (int)$agedSubcon;
+    }
+    $agedStmt = $db->prepare(
         "SELECT po.*, sc.subcon_name, DATEDIFF(CURDATE(), po.po_date) AS age_days
          FROM purchase_orders po
          LEFT JOIN subcons sc ON sc.subcon_id = po.subcon_id
-         WHERE po.status IN ('NEW','WIP') AND DATEDIFF(CURDATE(), po.po_date) > 60
+         WHERE $agedWhere
          ORDER BY age_days DESC
          LIMIT 10"
-    )->fetchAll();
+    );
+    $agedStmt->execute($agedParams);
+    $agedPos = $agedStmt->fetchAll();
 } catch (Exception $e) {
     $agedPos = [];
 }
+$allSubcons = $db->query("SELECT subcon_id, subcon_name FROM subcons ORDER BY subcon_name")->fetchAll();
 
 // RSS Shortage Pending: GRNs with shortage_qty > 0 (balance still to arrive from subcon)
 try {
@@ -337,12 +347,28 @@ include __DIR__ . '/../../includes/header.php';
 </div>
 
 <!-- ── Automated PO Aging Alerts (> 60 Days Open) ─────────────────────────── -->
-<?php if (!empty($agedPos)): ?>
+<?php if (!empty($agedPos) || $agedSubcon !== ''): ?>
 <div class="row mb-4">
     <div class="col-12">
         <div class="card border-0 shadow-sm border-start border-danger border-4">
-            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-                <h6 class="mb-0 text-danger fw-bold"><i class="bi bi-exclamation-triangle-fill me-2"></i>Automated PO Aging Alerts (Open > 60 Days)</h6>
+            <div class="card-header bg-white py-3 d-flex flex-wrap align-items-center gap-2">
+                <h6 class="mb-0 text-danger fw-bold me-auto"><i class="bi bi-exclamation-triangle-fill me-2"></i>Automated PO Aging Alerts (Open > 60 Days)</h6>
+                <form method="get" class="d-flex align-items-center gap-2 mb-0">
+                    <?php foreach ($_GET as $k => $v): if ($k === 'aged_subcon') continue; ?>
+                    <input type="hidden" name="<?= h($k) ?>" value="<?= h($v) ?>">
+                    <?php endforeach; ?>
+                    <select name="aged_subcon" class="form-select form-select-sm" style="min-width:160px;" onchange="this.form.submit()">
+                        <option value="">All Subcons</option>
+                        <?php foreach ($allSubcons as $sc): ?>
+                        <option value="<?= (int)$sc['subcon_id'] ?>" <?= $agedSubcon == $sc['subcon_id'] ? 'selected' : '' ?>>
+                            <?= h($sc['subcon_name']) ?>
+                        </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <?php if ($agedSubcon !== ''): ?>
+                    <a href="?<?= http_build_query(array_diff_key($_GET, ['aged_subcon' => ''])) ?>" class="btn btn-sm btn-outline-secondary">×</a>
+                    <?php endif; ?>
+                </form>
                 <span class="badge bg-danger rounded-pill"><?= count($agedPos) ?> Aged Orders</span>
             </div>
             <div class="table-responsive">
