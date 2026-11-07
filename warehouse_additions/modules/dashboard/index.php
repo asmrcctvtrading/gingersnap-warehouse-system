@@ -5,12 +5,6 @@ requirePermission('dashboard', 'view');
 
 $db = getDB();
 
-// ── Date range filter ────────────────────────────────────────────────────────
-$from = getDateParam('from', date('Y-m-01'));  // First day of current month
-$to = getDateParam('to', date('Y-m-d'));
-$fromDT = $from . ' 00:00:00';
-$toDT = $to . ' 23:59:59';
-
 // ── Row 1: KPI Cards ─────────────────────────────────────────────────────────
 
 $kpiOpenPos = (int) $db->query(
@@ -383,34 +377,6 @@ include __DIR__ . '/../../includes/header.php';
     </div>
 </div>
 <?php endif; ?>
-
-<!-- ── Date Filter ────────────────────────────────────────────────────────── -->
-<div class="row mb-4">
-    <div class="col-12">
-        <div class="card border-0 shadow-sm">
-            <div class="card-body">
-                <form method="get" class="d-flex flex-wrap gap-3 align-items-center">
-                    <div>
-                        <label class="form-label fw-semibold mb-1 small">From:</label>
-                        <input type="date" name="from" class="form-control form-control-sm" value="<?= h($from) ?>">
-                    </div>
-                    <div>
-                        <label class="form-label fw-semibold mb-1 small">To:</label>
-                        <input type="date" name="to" class="form-control form-control-sm" value="<?= h($to) ?>">
-                    </div>
-                    <button type="submit" class="btn btn-dark btn-sm">
-                        <i class="bi bi-funnel me-1"></i>Filter
-                    </button>
-                    <?php if ($from !== date('Y-m-01') || $to !== date('Y-m-d')): ?>
-                    <a href="?" class="btn btn-outline-secondary btn-sm">
-                        <i class="bi bi-x-lg me-1"></i>Clear
-                    </a>
-                    <?php endif; ?>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- ── Row 1: KPI Cards ──────────────────────────────────────────────────── -->
 <div class="row g-3 mb-4">
