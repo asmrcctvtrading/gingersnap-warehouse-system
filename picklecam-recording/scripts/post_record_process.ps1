@@ -107,6 +107,164 @@ function Execute-DatabaseQuery {
     }
 }
 
+# ===== HELPER FUNCTIONS (defined before use) =====
+
+function Process-VideoEncoding {
+    param(
+        [string]$InputFile,
+        [string]$OutputCodec,
+        [string]$AudioCodec
+    )
+
+    try {
+        if (-not (Test-Path $FFMPEG_PATH)) {
+            throw "ffmpeg not found at: $FFMPEG_PATH"
+        }
+
+        $outputFile = [System.IO.Path]::ChangeExtension($InputFile, ".mp4")
+
+        # Build ffmpeg command for re-encoding
+        $ffmpegArgs = @(
+            "-i", $InputFile,
+            "-c:v", $OutputCodec,
+            "-c:a", $AudioCodec,
+            "-b:a", $FFMPEG_AUDIO_BITRATE,
+            "-y",
+            $outputFile
+        )
+
+        Log-Message -Level "DEBUG" -Message "Starting video encoding with ffmpeg..."
+
+        $process = Start-Process -FilePath "$FFMPEG_PATH\ffmpeg.exe" `
+                                 -ArgumentList $ffmpegArgs `
+                                 -NoNewWindow `
+                                 -PassThru `
+                                 -RedirectStandardOutput "$env:TEMP\ffmpeg_out.txt" `
+                                 -RedirectStandardError "$env:TEMP\ffmpeg_err.txt"
+
+        $process.WaitForExit()
+
+        if ($process.ExitCode -ne 0) {
+            $error = Get-Content "$env:TEMP\ffmpeg_err.txt" -Raw
+            throw "ffmpeg exited with code $($process.ExitCode): $error"
+        }
+
+        if (Test-Path $outputFile) {
+            Log-Message -Level "INFO" -Message "Video encoding completed: $outputFile"
+            return $outputFile
+        } else {
+            throw "Output file not created after encoding"
+        }
+
+    } catch {
+        Log-Message -Level "ERROR" -Message "Video encoding failed: $_"
+        return $null
+    }
+}
+
+function Generate-Thumbnail {
+    param(
+        [string]$InputFile,
+        [int]$RecordingID
+    )
+
+    try {
+        if (-not (Test-Path $FFMPEG_PATH)) {
+            throw "ffmpeg not found at: $FFMPEG_PATH"
+        }
+
+        $thumbnailDir = [System.IO.Path]::Combine($VIDEO_STORAGE_PATH, "thumbnails")
+        if (-not (Test-Path $thumbnailDir)) {
+            New-Item -Path $thumbnailDir -ItemType Directory -Force | Out-Null
+        }
+
+        $thumbnailFile = [System.IO.Path]::Combine($thumbnailDir, "recording_$($RecordingID)_thumb.jpg")
+
+        # Generate thumbnail at 5 seconds into video
+        $ffmpegArgs = @(
+            "-i", $InputFile,
+            "-ss", "00:00:05",
+            "-vframes", "1",
+            "-vf", "scale=320:-1",
+            "-y",
+            $thumbnailFile
+        )
+
+        $process = Start-Process -FilePath "$FFMPEG_PATH\ffmpeg.exe" `
+                                 -ArgumentList $ffmpegArgs `
+                                 -NoNewWindow `
+                                 -PassThru `
+                                 -Wait
+
+        if ($process.ExitCode -eq 0 -and (Test-Path $thumbnailFile)) {
+            Log-Message -Level "DEBUG" -Message "Thumbnail generated: $thumbnailFile"
+            return $thumbnailFile
+        } else {
+            throw "Failed to generate thumbnail"
+        }
+
+    } catch {
+        Log-Message -Level "WARNING" -Message "Thumbnail generation failed: $_"
+        return $null
+    }
+}
+
+function Upload-VideoToCPanel {
+    param(
+        [string]$LocalFilePath,
+        [int]$RecordingID
+    )
+
+    try {
+        # FTP Configuration
+        $ftpHost = "ftp.asmrcctvtechnologies.com"
+        $ftpUser = "yitrmcft"
+        $ftpPass = "p@`$`$w0rd@123"
+        $ftpRemotePath = "/public_html/picklecam/videos"
+
+        if (-not (Test-Path $LocalFilePath)) {
+            throw "Local file not found: $LocalFilePath"
+        }
+
+        $fileName = [System.IO.Path]::GetFileName($LocalFilePath)
+        $fileSize = (Get-Item $LocalFilePath).Length / 1MB
+
+        Log-Message -Level "INFO" -Message "Uploading $fileName ($([math]::Round($fileSize, 2)) MB) to cPanel FTP..."
+
+        # Create FTP credentials and request
+        $credentials = New-Object System.Net.NetworkCredential($ftpUser, $ftpPass)
+        $ftpUri = "ftp://$ftpHost$ftpRemotePath/$fileName"
+
+        $ftpRequest = [System.Net.FtpWebRequest]::Create($ftpUri)
+        $ftpRequest.Credentials = $credentials
+        $ftpRequest.Method = [System.Net.WebRequestMethods+Ftp]::UploadFile
+        $ftpRequest.UseBinary = $true
+        $ftpRequest.Timeout = 30000
+
+        # Read and upload file
+        $fileBytes = [System.IO.File]::ReadAllBytes($LocalFilePath)
+        $ftpRequest.ContentLength = $fileBytes.Length
+
+        $uploadStream = $ftpRequest.GetRequestStream()
+        $uploadStream.Write($fileBytes, 0, $fileBytes.Length)
+        $uploadStream.Close()
+
+        # Get response
+        $ftpResponse = $ftpRequest.GetResponse()
+        $ftpResponse.Close()
+
+        # Return remote path for database storage (web URL format for download feature)
+        $remotePath = "https://asmrcctvtechnologies.com/picklecam/videos/$fileName"
+        Log-Message -Level "INFO" -Message "Upload successful: $remotePath"
+
+        return $remotePath
+
+    } catch {
+        Log-Message -Level "ERROR" -Message "FTP upload failed for recording $RecordingID`: $_"
+        return $null
+    }
+}
+
 $startTime = Get-Date
 $processLog = @()
 
@@ -187,7 +345,24 @@ ORDER BY completed_at ASC
                 Log-Message -Level "WARNING" -Message "Failed to generate thumbnail for recording $($recording.id)"
             }
 
-            # ===== SUB-TASK 2C: UPDATE PROCESSING STATUS =====
+            # ===== SUB-TASK 2C: UPLOAD TO CPANEL VIA FTP =====
+            $remoteVideoPath = Upload-VideoToCPanel -LocalFilePath $processedFile -RecordingID $recording.id
+
+            if ($remoteVideoPath) {
+                Log-Message -Level "INFO" -Message "Video uploaded to cPanel: $remoteVideoPath"
+
+                # Update recording with remote path
+                $updateQuery = "UPDATE recording_scheduled SET encoded_file_path = @remote_path WHERE id = @id"
+                $params = @{
+                    id = $recording.id
+                    remote_path = $remoteVideoPath
+                }
+                Execute-DatabaseQuery -Query $updateQuery -Parameters $params
+            } else {
+                Log-Message -Level "WARNING" -Message "Failed to upload video to cPanel for recording $($recording.id)"
+            }
+
+            # ===== SUB-TASK 2D: UPDATE PROCESSING STATUS =====
             $updateQuery = "UPDATE recording_scheduled SET processing_status = 'completed', error_message = NULL WHERE id = @id"
             $params = @{
                 id = $recording.id
@@ -239,106 +414,4 @@ ORDER BY completed_at ASC
     Log-Message -Level "ERROR" -Message $errorMsg
     Write-Error $errorMsg
     exit 1
-}
-
-# ===== HELPER FUNCTIONS =====
-
-function Process-VideoEncoding {
-    param(
-        [string]$InputFile,
-        [string]$OutputCodec,
-        [string]$AudioCodec
-    )
-
-    try {
-        if (-not (Test-Path $FFMPEG_PATH)) {
-            throw "ffmpeg not found at: $FFMPEG_PATH"
-        }
-
-        $outputFile = [System.IO.Path]::ChangeExtension($InputFile, ".mp4")
-
-        # Build ffmpeg command for re-encoding
-        $ffmpegArgs = @(
-            "-i", $InputFile,
-            "-c:v", $OutputCodec,
-            "-c:a", $AudioCodec,
-            "-b:a", $FFMPEG_AUDIO_BITRATE,
-            "-y",
-            $outputFile
-        )
-
-        Log-Message -Level "DEBUG" -Message "Starting video encoding with ffmpeg..."
-
-        $process = Start-Process -FilePath $FFMPEG_PATH `
-                                 -ArgumentList $ffmpegArgs `
-                                 -NoNewWindow `
-                                 -PassThru `
-                                 -RedirectStandardOutput "$env:TEMP\ffmpeg_out.txt" `
-                                 -RedirectStandardError "$env:TEMP\ffmpeg_err.txt"
-
-        $process.WaitForExit()
-
-        if ($process.ExitCode -ne 0) {
-            $error = Get-Content "$env:TEMP\ffmpeg_err.txt" -Raw
-            throw "ffmpeg exited with code $($process.ExitCode): $error"
-        }
-
-        if (Test-Path $outputFile) {
-            Log-Message -Level "INFO" -Message "Video encoding completed: $outputFile"
-            return $outputFile
-        } else {
-            throw "Output file not created after encoding"
-        }
-
-    } catch {
-        Log-Message -Level "ERROR" -Message "Video encoding failed: $_"
-        return $null
-    }
-}
-
-function Generate-Thumbnail {
-    param(
-        [string]$InputFile,
-        [int]$RecordingID
-    )
-
-    try {
-        if (-not (Test-Path $FFMPEG_PATH)) {
-            throw "ffmpeg not found at: $FFMPEG_PATH"
-        }
-
-        $thumbnailDir = [System.IO.Path]::Combine($VIDEO_STORAGE_PATH, "thumbnails")
-        if (-not (Test-Path $thumbnailDir)) {
-            New-Item -Path $thumbnailDir -ItemType Directory -Force | Out-Null
-        }
-
-        $thumbnailFile = [System.IO.Path]::Combine($thumbnailDir, "recording_$($RecordingID)_thumb.jpg")
-
-        # Generate thumbnail at 5 seconds into video
-        $ffmpegArgs = @(
-            "-i", $InputFile,
-            "-ss", "00:00:05",
-            "-vframes", "1",
-            "-vf", "scale=320:-1",
-            "-y",
-            $thumbnailFile
-        )
-
-        $process = Start-Process -FilePath $FFMPEG_PATH `
-                                 -ArgumentList $ffmpegArgs `
-                                 -NoNewWindow `
-                                 -PassThru `
-                                 -Wait
-
-        if ($process.ExitCode -eq 0 -and (Test-Path $thumbnailFile)) {
-            Log-Message -Level "DEBUG" -Message "Thumbnail generated: $thumbnailFile"
-            return $thumbnailFile
-        } else {
-            throw "Failed to generate thumbnail"
-        }
-
-    } catch {
-        Log-Message -Level "WARNING" -Message "Thumbnail generation failed: $_"
-        return $null
-    }
 }
