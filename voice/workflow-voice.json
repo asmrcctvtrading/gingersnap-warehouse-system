@@ -1,0 +1,232 @@
+{
+  "name": "ASMR Lead Confirm (Voice, shadow)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "asmr-lead-voice",
+        "authentication": "headerAuth",
+        "options": {}
+      },
+      "id": "v1-webhook",
+      "name": "Lead Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "asmr-lead-voice-0001"
+    },
+    {
+      "parameters": {
+        "jsCode": "const b = $input.first().json.body || $input.first().json;\nlet p = String(b.phone || '').replace(/[^0-9+]/g, '');\nif (p.startsWith('+63')) { /* ok */ }\nelse if (p.startsWith('63')) p = '+' + p;\nelse if (p.startsWith('09')) p = '+63' + p.slice(1);\nelse if (p.startsWith('9') && p.length === 10) p = '+63' + p;\nconst valid = /^\\+63\\d{9,10}$/.test(p);\nreturn [{ json: {\n  name: b.name || '',\n  email: b.email || '',\n  company: b.company || '',\n  message: b.message || '',\n  form_service: b.service_type || '',\n  phone_raw: b.phone || '',\n  phone: valid ? p : 'incorrect format',\n  valid\n} }];"
+      },
+      "id": "v2-normalize",
+      "name": "Normalize Phone",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ $json.valid }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "v3-valid",
+      "name": "Phone Valid?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        440,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "8179698982",
+        "text": "=BAD PHONE NUMBER\nName: {{ $json.name }}\nTyped: {{ $json.phone_raw }}\nEmail: {{ $json.email }}\nMessage: {{ $json.message }}",
+        "additionalFields": {}
+      },
+      "id": "v4-bad",
+      "name": "Bad Phone Alert",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        660,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// SHADOW MODE: decides only. Nothing in this workflow places a call.\n// Owner: put allowlisted numbers (E.164) in ALLOWLIST below. Empty = nobody is allowed.\nconst ALLOWLIST = [];\n'use strict';\n/**\n * Decides whether the voice workflow may place a call for one lead.\n * Pure function: state in, new state out. In n8n the Code node passes\n * $getWorkflowStaticData('global') as `state` and writes `result.state` back.\n * Checks, in order: allowlist, duplicate, call window, daily cap.\n * Skipped leads never change the counters.\n */\n\nconst DEFAULTS = {\n  allowlist: [],            // E.164 numbers; owner fills this in the n8n node\n  enforceAllowlist: true,   // stays true until plan Task 7 is approved\n  dedupMinutes: 10,\n  windowStartHour: 8,       // Asia/Manila, inclusive\n  windowEndHour: 20,        // Asia/Manila, exclusive\n  dailyCap: 30,\n};\n\nconst MANILA_OFFSET_MS = 8 * 3600000; // Manila has no DST\nconst DAY_MS = 86400000;\n\nfunction manilaParts(now) {\n  const m = new Date(now.getTime() + MANILA_OFFSET_MS);\n  return {\n    date: m.toISOString().slice(0, 10),\n    hour: m.getUTCHours(),\n    minute: m.getUTCMinutes(),\n  };\n}\n\nfunction nextWindowStart(now, cfg) {\n  const p = manilaParts(now);\n  const [y, mo, d] = p.date.split('-').map(Number);\n  let startUtc = Date.UTC(y, mo - 1, d, cfg.windowStartHour) - MANILA_OFFSET_MS;\n  if (p.hour >= cfg.windowStartHour) startUtc += DAY_MS;\n  return new Date(startUtc).toISOString();\n}\n\nfunction prune(state, now) {\n  const today = manilaParts(now).date;\n  const yesterday = manilaParts(new Date(now.getTime() - DAY_MS)).date;\n  const callsByDay = {};\n  for (const [day, n] of Object.entries(state.callsByDay || {})) {\n    if (day === today || day === yesterday) callsByDay[day] = n;\n  }\n  const lastSeen = {};\n  for (const [phone, t] of Object.entries(state.lastSeen || {})) {\n    if (now.getTime() - t < DAY_MS) lastSeen[phone] = t;\n  }\n  return { callsByDay, lastSeen };\n}\n\nfunction evaluateLead(lead, state, now, config) {\n  const cfg = { ...DEFAULTS, ...(config || {}) };\n  const clean = prune(state && typeof state === 'object' ? state : {}, now);\n  const skip = (reason, extra) => ({ action: 'skip', reason, state: clean, ...(extra || {}) });\n\n  const phone = lead && typeof lead.phone === 'string' ? lead.phone : '';\n  if (!/^\\+63\\d{9,10}$/.test(phone)) return skip('invalid_phone');\n\n  if (cfg.enforceAllowlist && !cfg.allowlist.includes(phone)) return skip('not_allowlisted');\n\n  const last = clean.lastSeen[phone];\n  if (last !== undefined && now.getTime() - last < cfg.dedupMinutes * 60000) return skip('duplicate');\n\n  const p = manilaParts(now);\n  if (p.hour < cfg.windowStartHour || p.hour >= cfg.windowEndHour) {\n    return skip('outside_window', { nextWindowStart: nextWindowStart(now, cfg) });\n  }\n\n  if ((clean.callsByDay[p.date] || 0) >= cfg.dailyCap) return skip('daily_cap');\n\n  clean.callsByDay[p.date] = (clean.callsByDay[p.date] || 0) + 1;\n  clean.lastSeen[phone] = now.getTime();\n  return { action: 'call', reason: '', state: clean };\n}\n\n\nconst lead = $input.first().json;\nconst state = $getWorkflowStaticData('global');\nconst res = evaluateLead(lead, state, new Date(), { allowlist: ALLOWLIST });\nstate.callsByDay = res.state.callsByDay;\nstate.lastSeen = res.state.lastSeen;\nreturn [{ json: { ...lead, action: res.action, reason: res.reason, nextWindowStart: res.nextWindowStart || '' } }];"
+      },
+      "id": "v5-guard",
+      "name": "Guard",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        -120
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "c2",
+              "leftValue": "={{ $json.action }}",
+              "rightValue": "call",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "v6-route",
+      "name": "Allowed To Call?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        880,
+        -120
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "8179698982",
+        "text": "=[SHADOW] Would call via Vapi (no call placed)\nName: {{ $json.name }}\nPhone: {{ $json.phone }}\nForm service: {{ $json.form_service }}\nvariableValues: lead_name={{ $json.name }}, lead_company={{ $json.company }}, form_service={{ $json.form_service }}",
+        "additionalFields": {}
+      },
+      "id": "v7-would",
+      "name": "Shadow Would Call",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1100,
+        -200
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "8179698982",
+        "text": "=[SHADOW] Call skipped: {{ $json.reason }}\nName: {{ $json.name }}\nPhone: {{ $json.phone }}\nNext window: {{ $json.nextWindowStart || \"n/a\" }}",
+        "additionalFields": {}
+      },
+      "id": "v8-skip",
+      "name": "Shadow Skipped",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1100,
+        -40
+      ]
+    }
+  ],
+  "connections": {
+    "Lead Webhook": {
+      "main": [
+        [
+          {
+            "node": "Normalize Phone",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Phone": {
+      "main": [
+        [
+          {
+            "node": "Phone Valid?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Phone Valid?": {
+      "main": [
+        [
+          {
+            "node": "Guard",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Bad Phone Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guard": {
+      "main": [
+        [
+          {
+            "node": "Allowed To Call?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Allowed To Call?": {
+      "main": [
+        [
+          {
+            "node": "Shadow Would Call",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Shadow Skipped",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
