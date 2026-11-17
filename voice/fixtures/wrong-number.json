@@ -1,0 +1,4 @@
+{
+  "id": "call-wrong", "status": "ended", "endedReason": "assistant-ended-call",
+  "artifact": { "structuredOutputs": { "so-1": { "name": "lead_confirmation", "result": { "outcome": "wrong_number", "confirmed_service": null, "callback_time": null, "notes": "Not the person who filled the form." } } } }
+}

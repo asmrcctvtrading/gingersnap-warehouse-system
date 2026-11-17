@@ -1,0 +1,4 @@
+{
+  "id": "call-voicemail", "status": "ended", "endedReason": "voicemail",
+  "artifact": { "structuredOutputs": { "so-1": { "name": "lead_confirmation", "result": { "outcome": "confirmed", "confirmed_service": "AI Automation", "callback_time": null, "notes": "" } } } }
+}

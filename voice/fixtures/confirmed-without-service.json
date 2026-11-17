@@ -1,0 +1,4 @@
+{
+  "id": "call-noservice", "status": "ended", "endedReason": "assistant-ended-call",
+  "artifact": { "structuredOutputs": { "so-1": { "name": "lead_confirmation", "result": { "outcome": "confirmed", "confirmed_service": null, "callback_time": null, "notes": "" } } } }
+}

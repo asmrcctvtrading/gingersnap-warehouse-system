@@ -1,0 +1,26 @@
+{
+  "name": "lead_confirmation",
+  "description": "Result of the lead confirmation call: which ASMR service the visitor wants, or why we could not confirm one.",
+  "type": "object",
+  "properties": {
+    "outcome": {
+      "type": "string",
+      "enum": ["confirmed", "unsure", "wants_callback", "do_not_call", "wrong_number"],
+      "description": "confirmed = the person named the service they need. unsure = they spoke with us but could not pick a service. wants_callback = they asked to be called later or reached by a person. do_not_call = they asked not to be called. wrong_number = the person is not the one who filled in the form."
+    },
+    "confirmed_service": {
+      "type": ["string", "null"],
+      "enum": ["CCTV Systems", "Systems Development", "AI Automation", "Network Setup", "Other", null],
+      "description": "The one main service the person wants. Null unless outcome is confirmed. Use Other if their need fits none of the four named services."
+    },
+    "callback_time": {
+      "type": ["string", "null"],
+      "description": "When the person said we may call back, in their own words. Null unless outcome is wants_callback."
+    },
+    "notes": {
+      "type": "string",
+      "description": "One or two short sentences about what the person needs, in English. No personal data beyond what they said about their request."
+    }
+  },
+  "required": ["outcome"]
+}

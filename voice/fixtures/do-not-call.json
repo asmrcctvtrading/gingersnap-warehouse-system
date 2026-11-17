@@ -1,0 +1,4 @@
+{
+  "id": "call-dnc", "status": "ended", "endedReason": "customer-ended-call",
+  "artifact": { "structuredOutputs": { "so-1": { "name": "lead_confirmation", "result": { "outcome": "do_not_call", "confirmed_service": "Network Setup", "callback_time": null, "notes": "Asked not to be called again." } } } }
+}

@@ -1,0 +1,4 @@
+{
+  "id": "call-callback", "status": "ended", "endedReason": "assistant-ended-call",
+  "artifact": { "structuredOutputs": { "so-1": { "name": "lead_confirmation", "result": { "outcome": "wants_callback", "confirmed_service": null, "callback_time": "tomorrow after 3pm", "notes": "In a meeting." } } } }
+}
